@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { CallToAction } from "@/components/ui/CallToAction";
+import { Footer } from "@/components/ui/layout/Footer";
 import {
   SignInButton,
   SignUpButton,
@@ -10,7 +11,23 @@ import {
 import Link from "next/link";
 export default function Home() {
   return (
-    <div className="">
+    <>
+      <header>
+        <nav className="flex items-center justify-between p-4 bg-gray-800 text-white">
+          <Link href="/" className="text-2xl font-bold">
+            <h2 className="text-2xl font-bold">FlashCard Generator</h2>
+          </Link>
+          <div className="flex space-x-4">
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+            <SignedOut>
+              <SignInButton mode="modal" />
+              <SignUpButton mode="modal" />
+            </SignedOut>
+          </div>
+        </nav>
+      </header>
       <main className="grid grid-rows-[20px, 1fr, 1fr] gap-[32px] items-center sm:items-start justify-items-center min-h-screen p-8 pb-20 sm:p-20">
         <h1 className="text-4xl font-bold text-center sm:text-left">
           Bienvenido a la página de inicio de FlashCard Generator
@@ -70,6 +87,7 @@ export default function Home() {
           </div>
         </section>
       </main>
-    </div>
+      <Footer />
+    </>
   );
 }
