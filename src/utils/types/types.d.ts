@@ -2,20 +2,34 @@
 // It is used to define the types of the data used in the project
 // and to ensure that the data is in the correct format
 
+//General types:
 type UUID = `${string}-${string}-${string}-${string}-${string}`;
 
+//Mock data types:
+type Pregunta = {
+    pregunta: string;
+    respuesta: string;
+};
+
+type mocksData = {
+    theme?: string;
+    data: Pregunta[];
+};
+
+
+//Card types:
 export interface cardInputInfo {
     username: string;
     theme: string;
-    question: string | string[]
+    question: string[]
 }
 
-export interface cardProcessInfo extends cardInputInfo {
-    answer: string | string[]
+export interface cardProcessInfo {
+    answer: string[]
 
 }
 
-export interface cardOutput extends cardProcessInfo {
+export interface cardOutput extends cardProcessInfo, cardInputInfo {
     cardOwner: string;
     cardId: UUID
     cardNumber: number;
