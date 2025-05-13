@@ -2,17 +2,8 @@ import type { Metadata } from "next";
 import "@/app/globals.css";
 import { notoSerif } from "@/utils/fonts";
 
-import {
-  ClerkProvider,
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignUpButton,
-  UserButton,
-} from "@clerk/nextjs";
-import { Footer } from "@/components/ui/layout/Footer";
+import { ClerkProvider } from "@clerk/nextjs";
 import { esES } from "@clerk/localizations";
-import Link from "next/link";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/ui/app-sidebar";
 
