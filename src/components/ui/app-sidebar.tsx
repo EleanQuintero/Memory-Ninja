@@ -3,12 +3,11 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { SignedIn, UserButton } from "@clerk/nextjs";
+import { UserButton } from "@clerk/nextjs";
 
 // Menu items.
 import { items } from "@/utils/items";
