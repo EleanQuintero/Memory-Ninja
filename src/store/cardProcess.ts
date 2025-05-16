@@ -1,5 +1,6 @@
 import { create } from 'zustand'
-import { type cardProcessInfo, mocksData } from '@/utils/types/types'
+import { type cardProcessInfo } from '@/utils/types/types'
+import { getMockData } from '@/utils/services/getMockData'
 
 interface State extends cardProcessInfo {
     getAnswer: (limit: number) => Promise<void>
@@ -8,8 +9,7 @@ interface State extends cardProcessInfo {
 export const useCardAnswerStore = create<State>((set) => {
     return {
         getAnswer: async (limit: number) => {
-            const response = await fetch('http://localhost:3000/mocks/data.json')
-            const datos: mocksData = await response.json()
+            const datos = await getMockData()
             const { data } = datos
             const answers = data.map((answer) => answer.respuesta)
             set({ answer: answers })

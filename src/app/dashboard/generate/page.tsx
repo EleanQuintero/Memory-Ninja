@@ -1,12 +1,15 @@
 "use client";
 
+import { Generator } from "@/components/generator/GeneratorFlashCard";
 import { Button } from "@/components/ui/button";
 import { useCardInputStore } from "@/store/cardInput";
 import { useCardAnswerStore } from "@/store/cardProcess";
 
 export default function GeneratorPage() {
+  // Obtenemos información del store global
   const getQuestions = useCardInputStore((state) => state.getQuestions);
   const getAnswers = useCardAnswerStore((state) => state.getAnswer);
+
   const handleClick = () => {
     getQuestions(1);
     getAnswers(1);
@@ -23,6 +26,7 @@ export default function GeneratorPage() {
         Ademas podrás organizarlas y en el <span>futuro</span> podrás exportar
         toda la información a pdf
       </p>
+      <Generator />
     </div>
   );
 }

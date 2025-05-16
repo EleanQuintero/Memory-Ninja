@@ -1,5 +1,6 @@
 import { create } from 'zustand'
-import { type cardInputInfo, mocksData } from '@/utils/types/types'
+import { type cardInputInfo } from '@/utils/types/types'
+import { getMockData } from '@/utils/services/getMockData'
 
 interface State extends cardInputInfo {
     getQuestions: (limit: number) => Promise<void>
@@ -12,8 +13,8 @@ export const useCardInputStore = create<State>((set) => {
         question: '',
 
         getQuestions: async (limit: number) => {
-            const response = await fetch('http://localhost:3000/mocks/data.json')
-            const datos: mocksData = await response.json()
+
+            const datos = await getMockData()
             const { data, theme } = datos
             const preguntas = data.map((pregunta) => pregunta.pregunta)
             set({ question: preguntas, theme: theme, username: "Eleqful" })
