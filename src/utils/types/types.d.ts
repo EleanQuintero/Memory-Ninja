@@ -19,13 +19,13 @@ type mocksData = {
 
 //Card types:
 export interface cardInputInfo {
-    username: string;
+    userName: string;
     theme: string;
-    question: string[]
+    questions: string[]
 }
 
 export interface cardProcessInfo {
-    answer: string[]
+    answers: string[]
 
 }
 

@@ -1,24 +1,31 @@
 import { create } from 'zustand'
-import { type cardInputInfo, mocksData } from '@/utils/types/types'
+import { type cardInputInfo } from '@/utils/types/types'
+import { getMockData } from '@/utils/services/getMockData'
 
 interface State extends cardInputInfo {
-    getQuestions: (limit: number) => Promise<void>
+    getQuestions: () => Promise<void>
+    setQuestions: (questionsToSet: string[]) => void
+    setTheme: (themeToSet: string) => void
 }
 
-export const useCardInputStore = create<State>((set) => {
-    return {
-        username: '',
-        theme: '',
-        question: '',
+export const useCardInputStore = create<State>((set) => ({
+    questions: [],
+    theme: "",
+    userName: "",
 
-        getQuestions: async (limit: number) => {
-            const response = await fetch('http://localhost:3000/mocks/data.json')
-            const datos: mocksData = await response.json()
-            const { data, theme } = datos
-            const preguntas = data.map((pregunta) => pregunta.pregunta)
-            set({ question: preguntas, theme: theme, username: "Eleqful" })
+    getQuestions: async () => {
+        const datos = await getMockData()
+        const { data, theme } = datos
+        const preguntas = data.map((pregunta) => pregunta.pregunta)
+        set({ questions: preguntas, theme: theme, userName: "Eleqful" })
+    },
 
-        }
+    setQuestions(questionsToSet: string[]) {
+        set({ questions: questionsToSet })
+    },
+
+    setTheme(themeToSet: string) {
+        set({ theme: themeToSet })
     }
-}
-)
+
+}))
