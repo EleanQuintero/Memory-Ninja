@@ -4,10 +4,10 @@ import { useCardInputStore } from "@/store/cardInput";
 import { useCardAnswerStore } from "@/store/cardProcess";
 
 export default function FlashCardsPage() {
-  const questions = useCardInputStore((state) => state.question);
+  const questions = useCardInputStore((state) => state.questions);
   const theme = useCardInputStore((state) => state.theme);
-  const user = useCardInputStore((state) => state.username);
-  const answers = useCardAnswerStore((state) => state.answer);
+  const user = useCardInputStore((state) => state.userName);
+  const answers = useCardAnswerStore((state) => state.answers);
   console.log(answers);
 
   const flashcardData = {
@@ -28,7 +28,7 @@ export default function FlashCardsPage() {
         {questions.length < 1 ? (
           <p>No hay preguntas disponibles</p>
         ) : (
-          <div className="flex flex-row gap 4 justify-center items-center">
+          <div className="flex flex-row gap-4 justify-center items-center">
             {flashcardData.questionsData[0].question.map((q, i) => (
               <Flashcard
                 key={i}

@@ -26,7 +26,7 @@ export const DataToggle: React.FC<DatatoggleProps> = ({
         {option}
       </Toggle>
       {selectedOption === option && (
-        <input type="hidden" name="theme" value={option} />
+        <input required type="hidden" name="theme" value={option} />
       )}
     </>
   );

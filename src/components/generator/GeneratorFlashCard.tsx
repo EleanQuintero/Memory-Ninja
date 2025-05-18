@@ -1,18 +1,22 @@
-import { mockOptionData } from "@/utils/optionMocks";
+
 import { FormEvent, useRef, useState } from "react";
 import { Button } from "../ui/button";
-import { DataToggle } from "../ui/DataToggle";
 import { Textarea } from "../ui/textarea";
-import { PROCESS_PATERN } from "@/utils/consts";
 import { useCardInputStore } from "@/store/cardInput";
+import { processToArray } from "@/utils/services/functions/processToArray";
+import { useCardAnswerStore } from "@/store/cardProcess";
+import { formSchema } from "@/utils/schemes/formValidation";
+import ThemeSelectorComponent from "./ThemeSelector";
+import { useThemeStore } from "@/store/interestThemes";
 
 export const Generator = () => {
-  const [selectedOption, setSelectedOption] = useState("");
   const [pregunta, setPregunta] = useState("");
+  const [error, setError] = useState<null | string>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const setQuestions = useCardInputStore((state) => state.setQuestions);
   const setTheme = useCardInputStore((state) => state.setTheme);
-  const options = mockOptionData;
+  const getAnswers = useCardAnswerStore((state) => state.getAnswer);
+  const selectedTheme = useThemeStore((state) => state.selectedTheme)
 
   const handlePreguntaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPregunta(e.target.value);
@@ -23,47 +27,49 @@ export const Generator = () => {
     }
   };
 
+  const resetForm = () => {
+    setPregunta("");
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+    }
+  };
+
   const handleSumbit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
 
+    //Validamos los datos introducidos al formulario
+    const result = formSchema.safeParse(data);
+
+    if (!result.success) {
+      setError(result.error.errors[0].message);
+      setTimeout(() => {
+        setError(null);
+      }, 2000);
+      return;
+    }
+
     // Procesamos las preguntas como array
-    const preguntasRaw = data.pregunta as string;
-    const preguntas: string[] = preguntasRaw
-      .split(PROCESS_PATERN)
-      .map((p) => p.trim())
-      .filter((p) => p.length > 0);
+    const questions = processToArray(data);
 
     // Obtenemos el tema
-    // Separamos el tema del resto de los datos
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const restData = (({ pregunta, ...rest }) => rest)(data);
-    const theme = restData;
+    const theme = selectedTheme
 
     //Enviamos los datos al store
-    setQuestions(preguntas);
-    setTheme(theme as unknown as string);
+    setQuestions(questions);
+    setTheme(theme as string);
+    getAnswers();
+    resetForm();
   };
 
   return (
-    <section className="flex flex-row items-center justify-center border-2 border-black rounded-lg p-5 mt-auto text-xl">
+    <section className="flex flex-row items-center justify-center rounded-lg p-5 mt-auto text-xl">
       <form
         className="flex flex-col items-center justify-center gap-3"
         onSubmit={handleSumbit}
       >
-        <label htmlFor="">Escoge un tema</label>
-        <div>
-          {options.map((option) => (
-            <DataToggle
-              key={option}
-              option={option}
-              setSelectedOption={setSelectedOption}
-              selectedOption={selectedOption}
-            />
-          ))}
-        </div>
-
+      <ThemeSelectorComponent />
         <label htmlFor="pregunta">Introduce aquí tu pregunta</label>
         <Textarea
           id="pregunta"
@@ -75,10 +81,16 @@ export const Generator = () => {
           onChange={handlePreguntaChange}
           ref={textareaRef}
           rows={1}
+          placeholder="Escribe aquí tu pregunta..."
         />
-        <Button className=" cursor-pointer hover:bg-blue-600 " type="submit">
+        <Button
+          disabled={error ? true : false}
+          className=" cursor-pointer hover:bg-blue-600 "
+          type="submit"
+        >
           Generar Flashcard
         </Button>
+        {error ? <p>{error}</p> : ""}
       </form>
     </section>
   );
