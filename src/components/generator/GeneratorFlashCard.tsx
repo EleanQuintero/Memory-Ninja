@@ -68,7 +68,7 @@ export const Generator = () => {
   };
 
   return (
-    <section className="flex flex-row items-center justify-center border-2 border-black rounded-lg p-5 mt-auto text-xl">
+    <section className="flex flex-row items-center justify-center rounded-lg p-5 mt-auto text-xl">
       <form
         className="flex flex-col items-center justify-center gap-3"
         onSubmit={handleSumbit}
