@@ -1,23 +1,22 @@
-import { mockOptionData } from "@/utils/optionMocks";
+
 import { FormEvent, useRef, useState } from "react";
 import { Button } from "../ui/button";
-import { DataToggle } from "../ui/DataToggle";
 import { Textarea } from "../ui/textarea";
 import { useCardInputStore } from "@/store/cardInput";
 import { processToArray } from "@/utils/services/functions/processToArray";
-import { omit } from "@/utils/services/functions/omitProperty";
 import { useCardAnswerStore } from "@/store/cardProcess";
 import { formSchema } from "@/utils/schemes/formValidation";
+import ThemeSelectorComponent from "./ThemeSelector";
+import { useThemeStore } from "@/store/interestThemes";
 
 export const Generator = () => {
-  const [selectedOption, setSelectedOption] = useState("");
   const [pregunta, setPregunta] = useState("");
   const [error, setError] = useState<null | string>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const setQuestions = useCardInputStore((state) => state.setQuestions);
   const setTheme = useCardInputStore((state) => state.setTheme);
   const getAnswers = useCardAnswerStore((state) => state.getAnswer);
-  const options = mockOptionData;
+  const selectedTheme = useThemeStore((state) => state.selectedTheme)
 
   const handlePreguntaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPregunta(e.target.value);
@@ -29,7 +28,6 @@ export const Generator = () => {
   };
 
   const resetForm = () => {
-    setSelectedOption("");
     setPregunta("");
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
@@ -48,7 +46,7 @@ export const Generator = () => {
       setError(result.error.errors[0].message);
       setTimeout(() => {
         setError(null);
-      }, 1000);
+      }, 2000);
       return;
     }
 
@@ -56,13 +54,11 @@ export const Generator = () => {
     const questions = processToArray(data);
 
     // Obtenemos el tema
-    // Separamos el tema del resto de los datos
-    const restData = omit(data, "pregunta");
-    const theme = restData["theme"];
+    const theme = selectedTheme
 
     //Enviamos los datos al store
     setQuestions(questions);
-    setTheme(theme as unknown as string);
+    setTheme(theme as string);
     getAnswers();
     resetForm();
   };
@@ -73,18 +69,7 @@ export const Generator = () => {
         className="flex flex-col items-center justify-center gap-3"
         onSubmit={handleSumbit}
       >
-        <label htmlFor="">Escoge un tema</label>
-        <div>
-          {options.map((option) => (
-            <DataToggle
-              key={option}
-              option={option}
-              setSelectedOption={setSelectedOption}
-              selectedOption={selectedOption}
-            />
-          ))}
-        </div>
-
+      <ThemeSelectorComponent />
         <label htmlFor="pregunta">Introduce aquí tu pregunta</label>
         <Textarea
           id="pregunta"
