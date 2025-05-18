@@ -3,8 +3,9 @@ import { FormEvent, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { DataToggle } from "../ui/DataToggle";
 import { Textarea } from "../ui/textarea";
-import { PROCESS_PATERN } from "@/utils/consts";
 import { useCardInputStore } from "@/store/cardInput";
+import { processToArray } from "@/utils/services/functions/processToArray";
+import { omit } from "@/utils/services/functions/omitProperty";
 
 export const Generator = () => {
   const [selectedOption, setSelectedOption] = useState("");
@@ -29,20 +30,15 @@ export const Generator = () => {
     const data = Object.fromEntries(formData.entries());
 
     // Procesamos las preguntas como array
-    const preguntasRaw = data.pregunta as string;
-    const preguntas: string[] = preguntasRaw
-      .split(PROCESS_PATERN)
-      .map((p) => p.trim())
-      .filter((p) => p.length > 0);
+    const questions = processToArray(data);
 
     // Obtenemos el tema
     // Separamos el tema del resto de los datos
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const restData = (({ pregunta, ...rest }) => rest)(data);
+    const restData = omit(data, "pregunta");
     const theme = restData;
 
     //Enviamos los datos al store
-    setQuestions(preguntas);
+    setQuestions(questions);
     setTheme(theme as unknown as string);
   };
 
@@ -75,6 +71,7 @@ export const Generator = () => {
           onChange={handlePreguntaChange}
           ref={textareaRef}
           rows={1}
+          placeholder="Escribe aquí tu pregunta..."
         />
         <Button className=" cursor-pointer hover:bg-blue-600 " type="submit">
           Generar Flashcard
