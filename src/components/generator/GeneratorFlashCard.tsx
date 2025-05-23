@@ -1,13 +1,13 @@
-
 import { FormEvent, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { useCardInputStore } from "@/store/cardInput";
 import { processToArray } from "@/utils/services/functions/processToArray";
-import { useCardAnswerStore } from "@/store/cardProcess";
 import { formSchema } from "@/utils/schemes/formValidation";
 import ThemeSelectorComponent from "./ThemeSelector";
 import { useThemeStore } from "@/store/interestThemes";
+import { getMockData } from "@/utils/services/getMockData";
+import { useCardAnswerStore } from "@/store/cardProcess";
 
 export const Generator = () => {
   const [pregunta, setPregunta] = useState("");
@@ -15,8 +15,10 @@ export const Generator = () => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const setQuestions = useCardInputStore((state) => state.setQuestions);
   const setTheme = useCardInputStore((state) => state.setTheme);
-  const getAnswers = useCardAnswerStore((state) => state.getAnswer);
-  const selectedTheme = useThemeStore((state) => state.selectedTheme)
+  const setAnswers = useCardAnswerStore((state) => state.setAnswers);
+  const isLoading = useCardAnswerStore((state) => state.isLoading);
+  const storeError = useCardAnswerStore((state) => state.error);
+  const selectedTheme = useThemeStore((state) => state.selectedTheme);
 
   const handlePreguntaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPregunta(e.target.value);
@@ -34,7 +36,7 @@ export const Generator = () => {
     }
   };
 
-  const handleSumbit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSumbit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
@@ -50,17 +52,36 @@ export const Generator = () => {
       return;
     }
 
-    // Procesamos las preguntas como array
-    const questions = processToArray(data);
+    try {
+      // Procesamos las preguntas como array
+      const questions = processToArray(data);
 
-    // Obtenemos el tema
-    const theme = selectedTheme
+      // Obtenemos el tema
+      const theme = selectedTheme;
+      
+      //Enviamos los datos a la API
+      const userLevel = "basic";
+      const answer = await getMockData(theme as string, questions, userLevel);
+      
+      if (!answer) {
+        throw new Error('No se recibieron respuestas de la API');
+      }
 
-    //Enviamos los datos al store
-    setQuestions(questions);
-    setTheme(theme as string);
-    getAnswers();
-    resetForm();
+      // Asegurarnos de que answer sea un array de strings
+      const processedAnswers = Array.isArray(answer) ? answer : 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (typeof answer === 'object' && answer.data) ? answer.data.map((item: any) => item.respuesta) : 
+        [answer];
+
+      //Enviamos los datos al store
+      setQuestions(questions);
+      setTheme(theme as string);
+      await setAnswers(processedAnswers);
+      console.log("Respuesta procesada: ", processedAnswers);
+      resetForm();
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Error al procesar la solicitud');
+    }
   };
 
   return (
@@ -69,7 +90,7 @@ export const Generator = () => {
         className="flex flex-col items-center justify-center gap-3"
         onSubmit={handleSumbit}
       >
-      <ThemeSelectorComponent />
+        <ThemeSelectorComponent />
         <label htmlFor="pregunta">Introduce aquí tu pregunta</label>
         <Textarea
           id="pregunta"
@@ -84,13 +105,14 @@ export const Generator = () => {
           placeholder="Escribe aquí tu pregunta..."
         />
         <Button
-          disabled={error ? true : false}
-          className=" cursor-pointer hover:bg-blue-600 "
+          disabled={error ? true : false || isLoading}
+          className="cursor-pointer hover:bg-blue-600"
           type="submit"
         >
-          Generar Flashcard
+          {isLoading ? 'Generando...' : 'Generar Flashcard'}
         </Button>
-        {error ? <p>{error}</p> : ""}
+        {error && <p className="text-red-500">{error}</p>}
+        {storeError && <p className="text-red-500">{storeError}</p>}
       </form>
     </section>
   );
