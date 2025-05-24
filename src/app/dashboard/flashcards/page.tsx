@@ -8,27 +8,28 @@ export default function FlashCardsPage() {
   const theme = useCardInputStore((state) => state.theme);
   const user = useCardInputStore((state) => state.userName);
   const answers = useCardAnswerStore((state) => state.answers);
-  
-  console.log('Questions:', questions);
-  console.log('Answers:', answers);
 
   const flashcardData = {
     theme: theme,
     questionsData: questions.map((question, index) => ({
       question,
-      answer: typeof answers[index] === 'object' ? JSON.stringify(answers[index]) : (answers[index] || 'No hay respuesta disponible')
+      answer: answers[index],
     })),
   };
 
   return (
     <div>
-      <h1>Hola {user} aqui tienes tus flashcards listas para estudiar</h1>
+      <h1>Hola {user} aquí tienes tus flashcards listas para estudiar</h1>
       <p>Tema: {theme}</p>
-       <button onClick={() => {
-        console.log('Questions:', questions);
-        console.log('Answers:', answers);
-        console.log('FlashcardData:', flashcardData);
-       }}>debug</button>
+      <button
+        onClick={() => {
+          console.log("Questions:", questions);
+          console.log("Answers:", answers);
+          console.log("FlashcardData:", flashcardData);
+        }}
+      >
+        debug
+      </button>
       <div>
         {questions.length < 1 ? (
           <p>No hay preguntas disponibles</p>

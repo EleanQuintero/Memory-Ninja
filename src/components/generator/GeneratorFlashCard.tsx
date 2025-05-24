@@ -16,8 +16,6 @@ export const Generator = () => {
   const setQuestions = useCardInputStore((state) => state.setQuestions);
   const setTheme = useCardInputStore((state) => state.setTheme);
   const setAnswers = useCardAnswerStore((state) => state.setAnswers);
-  const isLoading = useCardAnswerStore((state) => state.isLoading);
-  const storeError = useCardAnswerStore((state) => state.error);
   const selectedTheme = useThemeStore((state) => state.selectedTheme);
 
   const handlePreguntaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -58,29 +56,26 @@ export const Generator = () => {
 
       // Obtenemos el tema
       const theme = selectedTheme;
-      
+
       //Enviamos los datos a la API
       const userLevel = "basic";
       const answer = await getMockData(theme as string, questions, userLevel);
-      
-      if (!answer) {
-        throw new Error('No se recibieron respuestas de la API');
-      }
 
-      // Asegurarnos de que answer sea un array de strings
-      const processedAnswers = Array.isArray(answer) ? answer : 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (typeof answer === 'object' && answer.data) ? answer.data.map((item: any) => item.respuesta) : 
-        [answer];
+      if (!answer) {
+        throw new Error("No se recibieron respuestas de la API");
+      }
 
       //Enviamos los datos al store
       setQuestions(questions);
       setTheme(theme as string);
-      await setAnswers(processedAnswers);
-      console.log("Respuesta procesada: ", processedAnswers);
+      await setAnswers(answer);
       resetForm();
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Error al procesar la solicitud');
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Error al procesar la solicitud"
+      );
     }
   };
 
@@ -105,14 +100,10 @@ export const Generator = () => {
           placeholder="Escribe aquí tu pregunta..."
         />
         <Button
-          disabled={error ? true : false || isLoading}
           className="cursor-pointer hover:bg-blue-600"
           type="submit"
-        >
-          {isLoading ? 'Generando...' : 'Generar Flashcard'}
-        </Button>
+        ></Button>
         {error && <p className="text-red-500">{error}</p>}
-        {storeError && <p className="text-red-500">{storeError}</p>}
       </form>
     </section>
   );
