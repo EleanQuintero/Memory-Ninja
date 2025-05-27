@@ -2,6 +2,8 @@ import SubscriptionFallback from "@/components/fallbacks/subscription";
 import { Protect } from "@clerk/nextjs";
 
 export default function DashboardPage() {
+
+ 
   return (
     <Protect plan={"pro_user"} fallback={<SubscriptionFallback />}>
       <main className="flex flex-col items-center justify-center min-h-screen p-4">
@@ -13,6 +15,7 @@ export default function DashboardPage() {
           Ademas podrás organizarlas y en el <span>futuro</span> podrás exportar
           toda la información a pdf
         </p>
+        
       </main>
     </Protect>
   );
