@@ -1,15 +1,39 @@
+"use client"
 import { Button } from "@/components/ui/button";
 import { CallToAction } from "@/components/ui/CallToAction";
 import { Footer } from "@/components/ui/layout/Footer";
+import { syncUser } from "@/utils/services/functions/postUserData";
 import {
   SignInButton,
   SignUpButton,
   SignedIn,
   SignedOut,
   UserButton,
+  useUser,
 } from "@clerk/nextjs";
 import Link from "next/link";
+import { useEffect } from "react";
 export default function Home() {
+
+  const { user, isLoaded } = useUser()
+
+useEffect(() => {
+  const postUserData = async () => {
+    if(!isLoaded || !user || ! user.createdAt) return
+
+    const userCreatedAt = new Date(user.createdAt).getTime()
+    const now = Date.now() 
+    const isNewUser = now - userCreatedAt < 5000
+
+    if(!isNewUser) return 
+
+    syncUser()
+    alert("Usuario sincronizado con exito")
+  }
+
+  postUserData()
+}, [isLoaded, user])  
+
   return (
     <>
       <header>
