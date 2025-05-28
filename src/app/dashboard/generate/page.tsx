@@ -1,28 +1,12 @@
 "use client";
 
+import SubscriptionFallback from "@/components/fallbacks/subscription";
 import { Generator } from "@/components/generator/GeneratorFlashCard";
+import { Protect } from "@clerk/nextjs";
 
 export default function GeneratorPage() {
-
-  const syncUser = async () => {
-    const res = await fetch("/api/user-data", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // Puedes enviar datos adicionales si quieres
-      body: JSON.stringify({}),
-    });
-  
-    if (!res.ok) {
-      console.error("❌ Error al sincronizar usuario");
-    } else {
-      console.log("✅ Usuario sincronizado con éxito");
-    }
-  };
-
-
   return (
+    <Protect plan={"pro_user"} fallback={<SubscriptionFallback />}>
     <main className="flex flex-col gap-27 items-center justify-center min-h-screen p-4">
       <section className="flex flex-col items-center justify-center gap-3">
         <h1 className="text-4xl font-bold">Generador de FlashCards</h1>
@@ -32,14 +16,12 @@ export default function GeneratorPage() {
         <p className="mt-4 text-2xl">
           Puedes elegir entre diferentes temas y organizar tus tarjetas para
           estudiar de forma cómoda y sencilla en cualquier lugar.
-          <button onClick={() => {
-          syncUser()
-        }}>enviar datos</button>
         </p>
       </section>
       <section>
         <Generator />
       </section>
     </main>
+    </Protect>
   );
 }

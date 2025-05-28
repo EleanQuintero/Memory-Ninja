@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import "@/app/globals.css";
 import { notoSerif } from "@/utils/fonts";
 
-import { ClerkProvider } from "@clerk/nextjs";
+import { ClerkProvider, Protect } from "@clerk/nextjs";
 import { esES } from "@clerk/localizations";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/ui/app-sidebar";
+import SubscriptionFallback from "@/components/fallbacks/subscription";
 
 export const metadata: Metadata = {
   title: "FlashCard Generator",
@@ -17,8 +18,14 @@ export default function DashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+
+
+
   return (
     <ClerkProvider localization={esES}>
+       <Protect plan={"pro_user"} fallback={<SubscriptionFallback />}>
+       
       <section className="grid grid-cols-[auto,1fr] min-h-screen">
         <SidebarProvider>
           <aside>
@@ -34,6 +41,7 @@ export default function DashboardLayout({
           </main>
         </SidebarProvider>
       </section>
+      </Protect>
     </ClerkProvider>
   );
 }
