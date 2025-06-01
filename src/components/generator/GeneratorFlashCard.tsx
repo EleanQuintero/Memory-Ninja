@@ -2,11 +2,11 @@ import { FormEvent, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { useCardInputStore } from "@/store/cardInput";
-import { processToArray } from "@/utils/services/functions/processToArray";
+import { processToArray } from "@/utils/services/functions/process/processToArray";
 import { formSchema } from "@/utils/schemes/formValidation";
 import ThemeSelectorComponent from "./ThemeSelector";
 import { useThemeStore } from "@/store/interestThemes";
-import { getMockData } from "@/utils/services/getMockData";
+import { getMockData } from "@/utils/services/functions/api/getModelAnswers";
 import { useCardAnswerStore } from "@/store/cardProcess";
 
 export const Generator = () => {

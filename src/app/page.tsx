@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { CallToAction } from "@/components/ui/CallToAction";
 import { Footer } from "@/components/ui/layout/Footer";
-import { syncUser } from "@/utils/services/functions/postUserData";
+import { syncUser } from "@/utils/services/functions/api/postUserData";
 import {
   SignInButton,
   SignUpButton,

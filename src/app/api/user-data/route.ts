@@ -11,6 +11,10 @@ export async function POST() {
     }
 
     const features = user.privateMetadata?.feature
+    let userRole
+    if(features === "pro_user") {
+        userRole = 1;
+    }
     
     const data = {
         id: user.id,
@@ -18,7 +22,7 @@ export async function POST() {
         lastName: user.lastName,
         userName: user.username,
         email: user.emailAddresses[0].emailAddress,
-        role: features
+        role: userRole
     }
 
     const res = await fetch("http://localhost:4444/api/user/new", {

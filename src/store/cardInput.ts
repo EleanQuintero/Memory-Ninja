@@ -10,15 +10,8 @@ interface State extends cardInputInfo {
 export const useCardInputStore = create<State>((set) => ({
     questions: [],
     theme: "",
-    userName: "",
-
-    /* getQuestions: async () => {
-        const datos = await getMockData()
-        const { data, theme } = datos
-        const preguntas = data.map((pregunta) => pregunta.pregunta)
-        set({ questions: preguntas, theme: theme, userName: "Eleqful" })
-    },*/ 
-
+    userName: "", 
+    
     setQuestions(questionsToSet: string[]) {
         set({ questions: questionsToSet })
     },
