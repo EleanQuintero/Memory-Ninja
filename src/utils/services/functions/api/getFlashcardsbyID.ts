@@ -1,4 +1,6 @@
-export const  getFlashCardsByID = async (user_id: string): Promise<void> => {
+import { FlashcardData } from "@/utils/types/types"
+
+export const  getFlashCardsByID = async (user_id: string): Promise<FlashcardData> => {
     try {
         const response = fetch(`/api/getFlashcards`, {
             method: 'GET',

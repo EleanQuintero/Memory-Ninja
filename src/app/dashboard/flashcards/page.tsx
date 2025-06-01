@@ -1,24 +1,25 @@
 "use client";
 import Flashcard from "@/components/flashcards/flashcard";
 import { useCardInputStore } from "@/store/cardInput";
-import { useCardAnswerStore } from "@/store/cardProcess";
-import { getFlashCardsByID } from "@/utils/services/functions/getFlashcardsbyID";
+import { useFlashCardStore } from "@/store/flashCardData";
+import { getFlashCardsByID } from "@/utils/services/functions/api/getFlashcardsbyID";
+import { setFlashcardData } from "@/utils/services/functions/states/updateFlashcardData";
 import { useUser } from "@clerk/nextjs";
 
 export default function FlashCardsPage() {
-  const questions = useCardInputStore((state) => state.questions);
-  const theme = useCardInputStore((state) => state.theme);
+  const questions = useFlashCardStore((state) => state.questions)
+  const theme = useFlashCardStore((state) => state.theme)
   const userName = useCardInputStore((state) => state.userName);
-  const answers = useCardAnswerStore((state) => state.answers);
+  const answers = useFlashCardStore((state) => state.answer)
 
-  const {  user } = useUser()
+  const { user } = useUser()
 
-
-  const user_id  = user?.id
+  const user_id = user?.id
 
   async function handleClick(){
     if (user_id) {
       const data = await getFlashCardsByID(user_id);
+      setFlashcardData(data)
     }
   }
   
@@ -33,7 +34,12 @@ export default function FlashCardsPage() {
   return (
     <div>
       <h1>Hola {userName} aquí tienes tus flashcards listas para estudiar</h1>
-      <p>Tema: {theme}</p>
+      <label htmlFor="theme">Tema:</label>
+      <select name="theme" id="theme"> 
+        {theme.map((theme, index) => (
+          <option key={index} value={theme}>{theme}</option>
+        ))}
+      </select>
       <button
         onClick={() => {
           console.log("Questions:", questions);
@@ -58,7 +64,7 @@ export default function FlashCardsPage() {
                 key={i}
                 question={data.question}
                 answer={data.answer}
-                theme={flashcardData.theme}
+                theme={flashcardData.theme[i]}
               />
             ))}
           </div>

@@ -3,7 +3,7 @@
 import SubscriptionFallback from "@/components/fallbacks/subscription";
 import { Generator } from "@/components/generator/GeneratorFlashCard";
 import { Button } from "@/components/ui/button";
-import { syncUser } from "@/utils/services/functions/postUserData";
+import { syncUser } from "@/utils/services/functions/api/postUserData";
 import { Protect } from "@clerk/nextjs";
 
 export default function GeneratorPage() {
