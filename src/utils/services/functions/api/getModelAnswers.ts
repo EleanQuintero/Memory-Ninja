@@ -1,6 +1,10 @@
+interface AnswerData {
+    answer: string[];
+  }
 
 
-export const getMockData = async (tema: string, questions: string[], userLevel: string ) => {
+export const getModelAnswer = async (tema: string, questions: string[], userLevel: string ): Promise<AnswerData> => {
+      
     try {
         const response = await fetch('/api/generate-answer',{
             method: 'POST',
@@ -14,11 +18,11 @@ export const getMockData = async (tema: string, questions: string[], userLevel: 
             throw new Error(`Error: ${response.status}`)
           }
 
-        const datos = await response.json()
+        const datos: AnswerData  = await response.json()
         return datos
         
     } catch (error) {
         console.error('Error al llamar al API:', error)
-        return null
+        throw error
     }
 }

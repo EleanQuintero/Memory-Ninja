@@ -2,7 +2,6 @@
 import Flashcard from "@/components/flashcards/flashcard";
 import { useCardInputStore } from "@/store/cardInput";
 import { useFlashCardStore } from "@/store/flashCardData";
-import { getFlashCardsByID } from "@/utils/services/functions/api/getFlashcardsbyID";
 import { setFlashcardData } from "@/utils/services/functions/states/updateFlashcardData";
 import { useUser } from "@clerk/nextjs";
 
@@ -11,7 +10,6 @@ export default function FlashCardsPage() {
   const theme = useFlashCardStore((state) => state.theme)
   const userName = useCardInputStore((state) => state.userName);
   const answers = useFlashCardStore((state) => state.answer)
-
   const { user } = useUser()
 
   const user_id = user?.id
