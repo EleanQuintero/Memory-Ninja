@@ -1,4 +1,4 @@
-import { FlashcardData } from '@/utils/types/types';
+import { FlashcardData } from '@/domain/flashcards';
 import { create } from 'zustand'
 
 interface State extends FlashcardData{
@@ -11,7 +11,7 @@ export const useFlashCardStore = create<State>((set) => ({
     answer: [], 
 
     setFlashCardsState(data) {
-        
+
         set({ theme: data.theme, questions: data.questions, answer: data.answer })
     }
 }))

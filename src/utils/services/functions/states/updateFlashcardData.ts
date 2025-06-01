@@ -1,5 +1,5 @@
 import { useFlashCardStore } from "@/store/flashCardData";
-import { FlashcardData } from "@/utils/types/types";
+import { FlashcardData } from "@/domain/flashcards";
 
 export const setFlashcardData = (data: FlashcardData) => {
     const store = useFlashCardStore.getState();

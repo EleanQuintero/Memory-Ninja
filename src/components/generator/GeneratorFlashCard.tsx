@@ -1,22 +1,27 @@
 import { FormEvent, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
-import { useCardInputStore } from "@/store/cardInput";
 import { processToArray } from "@/utils/services/functions/process/processToArray";
 import { formSchema } from "@/utils/schemes/formValidation";
 import ThemeSelectorComponent from "./ThemeSelector";
 import { useThemeStore } from "@/store/interestThemes";
-import { getMockData } from "@/utils/services/functions/api/getModelAnswers";
-import { useCardAnswerStore } from "@/store/cardProcess";
+import { getModelAnswer } from "@/utils/services/functions/api/getModelAnswers";
+import { useFlashCardsStore } from "@/store/flashCardsStore";
+import { useFlashcardSync } from "@/hooks/useFlashcardSync";
+import { useUser } from "@clerk/nextjs"
 
 export const Generator = () => {
   const [pregunta, setPregunta] = useState("");
   const [error, setError] = useState<null | string>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const setQuestions = useCardInputStore((state) => state.setQuestions);
-  const setTheme = useCardInputStore((state) => state.setTheme);
-  const setAnswers = useCardAnswerStore((state) => state.setAnswers);
+  const { user } = useUser() 
   const selectedTheme = useThemeStore((state) => state.selectedTheme);
+  const addToBuffer = useFlashCardsStore((state) => state.addToBuffer);
+  const Buffer = useFlashCardsStore((state) => state.buffer);
+  const user_id = user?.id
+  const { startSync } = useFlashcardSync();
+
+  
 
   const handlePreguntaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPregunta(e.target.value);
@@ -59,16 +64,26 @@ export const Generator = () => {
 
       //Enviamos los datos a la API
       const userLevel = "basic";
-      const answer = await getMockData(theme as string, questions, userLevel);
+      const response = await getModelAnswer(
+        theme as string,
+        questions,
+        userLevel
+      );
 
-      if (!answer) {
+      if (!response) {
         throw new Error("No se recibieron respuestas de la API");
       }
 
+      // La respuesta ya es el array de respuestas directamente
+      const answers = response;
+      console.log(Buffer);
+      // Agrega las respuestas al store de sincronización
+      addToBuffer(user_id as string, theme as string, questions, answers as unknown as string[]);
+      console.log("despues", Buffer);
+      // Iniciamos la sincronización
+      startSync();
+
       //Enviamos los datos al store
-      setQuestions(questions);
-      setTheme(theme as string);
-      await setAnswers(answer);
       resetForm();
     } catch (error) {
       setError(

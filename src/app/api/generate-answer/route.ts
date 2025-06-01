@@ -3,6 +3,10 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function POST(req: NextRequest) {
   const { tema, questions, userLevel } = await req.json()
   console.log('Datos recibidos:', { tema, questions, userLevel });
+  interface AnswerData {
+    answer: string[];
+  }
+  
 
   try {
     const response = await fetch("http://localhost:4444/api/questions/ask", {
@@ -16,7 +20,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Error en la API interna', status: 500 })
     }
 
-    const data = await response.json()
+    const data: AnswerData = await response.json()
     console.log('Respuesta de la API:', data);
 
     return NextResponse.json(data.answer)
