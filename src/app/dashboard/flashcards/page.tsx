@@ -1,26 +1,26 @@
 "use client";
+import { ChooseTheme } from "@/components/flashcards/ChooseTheme";
 import Flashcard from "@/components/flashcards/flashcard";
 import { useCardInputStore } from "@/store/cardInput";
-import { useFlashCardStore } from "@/store/flashCardData";
-import { setFlashcardData } from "@/utils/services/functions/states/updateFlashcardData";
+import { useFlashCardsStore } from "@/store/flashCardsStore";
+import { flashcardUnitOfWork } from "@/utils/services/unitOfWork/flashcardUnitOfWork";
 import { useUser } from "@clerk/nextjs";
+import { useEffect } from "react";
 
 export default function FlashCardsPage() {
-  const questions = useFlashCardStore((state) => state.questions)
-  const theme = useFlashCardStore((state) => state.theme)
+  const allFlashCardData = useFlashCardsStore((state) => state.allFlashCards)
+  const questions = allFlashCardData.questions
+  const theme = allFlashCardData.theme
   const userName = useCardInputStore((state) => state.userName);
-  const answers = useFlashCardStore((state) => state.answer)
-  const { user } = useUser()
+  const answers = allFlashCardData.answer
+  const user = useUser()
+  const user_id = user.user?.id
 
-  const user_id = user?.id
+  useEffect(() => {
+    flashcardUnitOfWork.loadUserFlashCards(user_id as string)
+  }, [user_id])
 
-  async function handleClick(){
-    if (user_id) {
-      const data = await getFlashCardsByID(user_id);
-      setFlashcardData(data)
-    }
-  }
-  
+
   const flashcardData = {
     theme: theme,
     questionsData: questions.map((question, index) => ({
@@ -33,25 +33,7 @@ export default function FlashCardsPage() {
     <div>
       <h1>Hola {userName} aquí tienes tus flashcards listas para estudiar</h1>
       <label htmlFor="theme">Tema:</label>
-      <select name="theme" id="theme"> 
-        {theme.map((theme, index) => (
-          <option key={index} value={theme}>{theme}</option>
-        ))}
-      </select>
-      <button
-        onClick={() => {
-          console.log("Questions:", questions);
-          console.log("Answers:", answers);
-          console.log("FlashcardData:", flashcardData);
-        }}
-      >
-        debug
-      </button>
-      <button 
-        onClick={handleClick}
-      >
-        Cargar Flashcards
-      </button>
+      <ChooseTheme theme={theme} />
       <div>
         {questions.length < 1 ? (
           <p>No hay preguntas disponibles</p>

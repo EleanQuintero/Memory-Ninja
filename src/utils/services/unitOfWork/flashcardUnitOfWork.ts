@@ -10,5 +10,10 @@ export const flashcardUnitOfWork = {
 
         await repository.saveBatch(buffer)
         useFlashCardsStore.getState().clearBuffer()
+    },
+
+    async loadUserFlashCards(user_id: string): Promise<void>  {
+            const flashcards = await repository.getAll(user_id)
+            useFlashCardsStore.getState().setAllFlashcards(flashcards)
     }
 }
