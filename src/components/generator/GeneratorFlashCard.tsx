@@ -7,8 +7,8 @@ import ThemeSelectorComponent from "./ThemeSelector";
 import { useThemeStore } from "@/store/interestThemes";
 import { getModelAnswer } from "@/utils/services/functions/api/getModelAnswers";
 import { useFlashCardsStore } from "@/store/flashCardsStore";
-import { useFlashcardSync } from "@/hooks/useFlashcardSync";
 import { useUser } from "@clerk/nextjs"
+import { useFlashcardSync } from "@/hooks/useFlashcardSync";
 
 export const Generator = () => {
   const [pregunta, setPregunta] = useState("");
@@ -17,11 +17,10 @@ export const Generator = () => {
   const { user } = useUser() 
   const selectedTheme = useThemeStore((state) => state.selectedTheme);
   const addToBuffer = useFlashCardsStore((state) => state.addToBuffer);
-  const Buffer = useFlashCardsStore((state) => state.buffer);
   const user_id = user?.id
-  const { startSync } = useFlashcardSync();
 
-  
+  // Iniciar sincronización
+  useFlashcardSync(user_id as string);
 
   const handlePreguntaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPregunta(e.target.value);
@@ -76,13 +75,10 @@ export const Generator = () => {
 
       // La respuesta ya es el array de respuestas directamente
       const answers = response;
-      console.log(Buffer);
+      
       // Agrega las respuestas al store de sincronización
-      addToBuffer(user_id as string, theme as string, questions, answers as unknown as string[]);
-      console.log("despues", Buffer);
-      // Iniciamos la sincronización
-      startSync();
-
+      addToBuffer(user_id as string, theme as string, questions, answers);
+      
       //Enviamos los datos al store
       resetForm();
     } catch (error) {

@@ -1,5 +1,13 @@
-export interface FlashcardData {
-    theme: string[];        // Temas relacionados con cada pregunta
-    questions: string[];    // Preguntas formuladas
-    answer: string[];       // Respuestas correspondientes
-  }
+// src/domain/models/flashcard.ts
+export interface FlashcardBatch {
+  user_id: string;
+  theme: string;
+  question: string[];
+  answer: string[];
+}
+
+export interface FlashcardResponse {
+  theme: string[];
+  questions: string[];
+  answer: string[];
+}

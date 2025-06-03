@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     console.log('Respuesta de la API:', data);
 
     const answers = Array.isArray(data.answer) ? data.answer : [data.answer];
-    return NextResponse.json(answers)
+    return NextResponse.json({ answer: answers })
   } catch (error) {
     console.error('Error interno:', error)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })

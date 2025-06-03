@@ -1,9 +1,8 @@
 interface AnswerData {
     answer: string[];
-  }
+}
 
-
-export const getModelAnswer = async (tema: string, questions: string[], userLevel: string ): Promise<AnswerData> => {
+export const getModelAnswer = async (tema: string, questions: string[], userLevel: string ): Promise<string[]> => {
       
     try {
         const response = await fetch('/api/generate-answer',{
@@ -18,8 +17,8 @@ export const getModelAnswer = async (tema: string, questions: string[], userLeve
             throw new Error(`Error: ${response.status}`)
           }
 
-        const datos: AnswerData  = await response.json()
-        return datos
+        const datos: AnswerData = await response.json()
+        return datos.answer
         
     } catch (error) {
         console.error('Error al llamar al API:', error)
