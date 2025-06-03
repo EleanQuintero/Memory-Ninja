@@ -1,27 +1,27 @@
-import { FlashcardData } from "@/domain/flashcards"
+import { FlashcardResponse, FlashcardBatch } from "@/domain/flashcards"
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
-
-interface FlashcardsBatch {
-  user_id: string
-  theme: string
-  question: string[]
-  answer: string[]
-}
+import { NativeCacheService } from "@/utils/services/cache/nativeCacheService"
 
 interface FlashcardState {
-  buffer: FlashcardsBatch
-  allFlashCards: FlashcardData
-  addToBuffer: (
-    user_id: string,
-    theme: string,
-    question: string[],
-    answer: string[]
-  ) => void
+  buffer: FlashcardBatch
+  allFlashCards: FlashcardResponse
+  lastSyncTimestamp: number
+  isInitialized: boolean
+  isDirty: boolean
+
+
+  //Acciones del estado
+  
+  setAllFlashcards: (flashCardData: FlashcardResponse) => void
+  addToBuffer: (user_id: string, theme: string, question: string[], answer: string[]) => void
   clearBuffer: () => void
-  getBuffer: () => FlashcardsBatch
-  setAllFlashcards: (flashCardData: FlashcardData) => void
+  getBuffer: () => FlashcardBatch 
+  markAsDirty: () => void
+  markAsSynced: () => void
 }
+
+
 
 export const useFlashCardsStore = create<FlashcardState>()(
   persist(
@@ -37,6 +37,23 @@ export const useFlashCardsStore = create<FlashcardState>()(
         questions: [],
         answer: []
       },
+
+      lastSyncTimestamp:0,
+      isInitialized: false,
+      isDirty: false,
+      
+      setAllFlashcards: async (flashCardData) =>  {
+        const cacheService = NativeCacheService.getInstance()
+        await cacheService.setCache(get().buffer.user_id, flashCardData)
+
+        set({
+          allFlashCards: flashCardData,
+          lastSyncTimestamp: Date.now(), // Puede cambiar API en el futuro
+          isInitialized: true,
+          isDirty: false
+        })
+      }, 
+
       addToBuffer: (user_id, theme, question, answer) =>
         set((state) => ({
           buffer: {
@@ -44,8 +61,10 @@ export const useFlashCardsStore = create<FlashcardState>()(
             theme: theme,
             question: [...state.buffer.question, ...question],
             answer: [...state.buffer.answer, ...answer]
-          }
+          },
+          isDirty: true
         })),
+
       clearBuffer: () =>
         set({
           buffer: {
@@ -55,12 +74,20 @@ export const useFlashCardsStore = create<FlashcardState>()(
             answer: []
           }
         }),
+
       getBuffer: () => get().buffer,
-      setAllFlashcards: (flashCardData) => set({ allFlashCards: flashCardData })
+      markAsDirty: () => set({ isDirty: true }),
+      markAsSynced: () => set({
+        isDirty: false,
+        lastSyncTimestamp: Date.now()
+      })
     }), 
     {
       name: "flashcard-buffer",
-      partialize: (state) => ({ buffer: state.buffer })
+      partialize: (state) => ({ 
+        buffer: state.buffer, 
+        lastSyncTimestamp: state.lastSyncTimestamp
+      })
     }
   )
 )

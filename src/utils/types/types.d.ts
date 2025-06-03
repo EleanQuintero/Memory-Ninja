@@ -24,10 +24,6 @@ export interface cardInputInfo {
     questions: string[]
 }
 
-export interface cardProcessInfo {
-    answers: string[]
-
-}
 
 export interface cardOutput extends cardProcessInfo, cardInputInfo {
     cardOwner: string;

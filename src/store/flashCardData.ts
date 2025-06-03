@@ -1,8 +1,8 @@
-import { FlashcardData } from '@/domain/flashcards';
+import { FlashcardResponse } from '@/domain/flashcards';
 import { create } from 'zustand'
 
-interface State extends FlashcardData{
-    setFlashCardsState: (data: FlashcardData) => void
+interface State extends FlashcardResponse {
+    setFlashCardsState: (data: FlashcardResponse) => void
 }
 
 export const useFlashCardStore = create<State>((set) => ({
@@ -11,7 +11,6 @@ export const useFlashCardStore = create<State>((set) => ({
     answer: [], 
 
     setFlashCardsState(data) {
-
         set({ theme: data.theme, questions: data.questions, answer: data.answer })
     }
 }))

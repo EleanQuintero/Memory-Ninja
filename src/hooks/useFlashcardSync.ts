@@ -1,36 +1,56 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useFlashCardsStore } from "@/store/flashCardsStore";
 import { flashcardUnitOfWork } from "@/utils/services/unitOfWork/flashcardUnitOfWork";
 
+const SYNC_INTERVAL = 30000; // 30 segundos
+const DIRTY_CHECK_INTERVAL = 5000; // 5 segundos
 
-const SYNC_INTERVAL = 3000
+export const useFlashcardSync = (user_id: string) => {
+  const syncInProgress = useRef(false);
+  const { isDirty, lastSyncTimestamp, markAsSynced, allFlashCards } = useFlashCardsStore();
 
-export const useFlashcardSync = () => {
-    const [shouldSync, setShouldSync] = useState(false);
-    const buffer = useFlashCardsStore((state) => state.getBuffer())
+  useEffect(() => {
+    const shouldSync = () => {
+      const timeSinceLastSync = Date.now() - lastSyncTimestamp;
+      return isDirty && timeSinceLastSync >= SYNC_INTERVAL;
+    };
 
-    useEffect(() => {
-        if (!shouldSync) return;
+    const sync = async () => {
+      if (syncInProgress.current || !shouldSync()) return;
 
-        const interval = setInterval(()=> {
-            flashcardUnitOfWork.commit()
-        }, SYNC_INTERVAL)
+      try {
+        syncInProgress.current = true;
+        await flashcardUnitOfWork.commit();
+        markAsSynced();
+      } catch (error) {
+        console.error("Error durante la sincronizacion: ", error);
+      } finally {
+        syncInProgress.current = false;
+      }
+    };
 
-        const handleBeforeUnload = () => {
-            if (buffer.question.length > 0 ){
-                navigator.sendBeacon('/api/saveFlashcards', JSON.stringify({
-                  buffer
-                }))
-              }
-              
+    const checkInterval = setInterval(() => {
+      if (shouldSync()) {
+        sync();
+      }
+    }, DIRTY_CHECK_INTERVAL);
+
+    // Sincronizacion de emergencia al cerrar
+    const handleBeforeUnload = async () => {
+      if (isDirty) {
+        try {
+          await flashcardUnitOfWork.commit();
+        } catch (error) {
+          console.error("Error durante sincronizacion de emergencia: ", error);
         }
-        window.addEventListener('beforeunload', handleBeforeUnload)
+      }
+    };
 
-        return () => {
-            clearInterval(interval)
-            window.removeEventListener('beforeunload', handleBeforeUnload)
-        }
-    }, [buffer, shouldSync])
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
-    return { startSync: () => setShouldSync(true) };
-}
+    return () => {
+      clearInterval(checkInterval);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [user_id, isDirty, lastSyncTimestamp, markAsSynced, allFlashCards]);
+};
