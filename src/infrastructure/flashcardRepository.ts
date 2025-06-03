@@ -1,14 +1,9 @@
-import { FlashcardData } from "@/domain/flashcards";
+import { FlashcardBatch, FlashcardResponse } from "@/domain/flashcards";
 
-interface FlashcardsBatch {
-    user_id: string
-    theme: string
-    question: string[]
-    answer: string[]
-}
+
 
 export class FlashcardRepository {
-    async saveBatch(flashcardsData: FlashcardsBatch): Promise<void>{
+    async saveBatch(flashcardsData: FlashcardBatch): Promise<void>{
         try {
             const response = await fetch("/api/saveFlashcards", {
                 method: "POST",
@@ -25,7 +20,7 @@ export class FlashcardRepository {
         }
     }
 
-    async getAll(user_id: string): Promise<FlashcardData>{
+    async getAll(user_id: string): Promise<FlashcardResponse>{
         try {
             const response = fetch(`/api/getFlashcards`, {
                 method: 'GET',
