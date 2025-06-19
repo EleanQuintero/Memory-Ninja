@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { notoSerif } from "@/utils/fonts";
+import { sfPro } from "@/utils/fonts";
 import { ClerkProvider } from "@clerk/nextjs";
 import { esES } from "@clerk/localizations";
 
@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <ClerkProvider localization={esES}>
       <html lang="en" className="dark">
-        <body className={` ${notoSerif.className} font-extrabold antialiased`}>
+        <body className={` ${sfPro.className} antialiased`}>
           {children}
         </body>
       </html>
