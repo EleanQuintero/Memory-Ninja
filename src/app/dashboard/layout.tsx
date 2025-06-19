@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "@/app/globals.css";
-import { notoSerif } from "@/utils/fonts";
+import { sfPro } from "@/utils/fonts";
 
 import { ClerkProvider, Protect } from "@clerk/nextjs";
 import { esES } from "@clerk/localizations";
@@ -18,10 +18,6 @@ export default function DashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-
-
-
   return (
     <ClerkProvider localization={esES}>
        <Protect plan={"pro_user"} fallback={<SubscriptionFallback />}>
@@ -32,7 +28,7 @@ export default function DashboardLayout({
             <AppSidebar />
           </aside>
           <main
-            className={` ${notoSerif.className} font-extrabold antialiased dark flex flex-col w-full p-4 bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white`}
+            className={` ${sfPro.className} antialiased dark flex flex-col w-full p-4 bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white`}
           >
             <div>
               <SidebarTrigger />

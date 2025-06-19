@@ -19,6 +19,7 @@ interface FlashcardState {
   getBuffer: () => FlashcardBatch 
   markAsDirty: () => void
   markAsSynced: () => void
+  setLocalFlashcards: (flashCardData: FlashcardResponse) => void
 }
 
 
@@ -53,6 +54,17 @@ export const useFlashCardsStore = create<FlashcardState>()(
           isDirty: false
         })
       }, 
+
+      setLocalFlashcards: (flashCardData: FlashcardResponse) => 
+          set((state) => ({
+            allFlashCards: {
+                theme: [...state.allFlashCards.theme, ...flashCardData.theme],
+                questions: [...state.allFlashCards.questions, ...flashCardData.questions],
+                answer: [...state.allFlashCards.answer, ...flashCardData.answer]
+            }
+          }))
+      ,
+
 
       addToBuffer: (user_id, theme, question, answer) =>
         set((state) => ({

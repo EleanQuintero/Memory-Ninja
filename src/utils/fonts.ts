@@ -1,9 +1,9 @@
-import { Noto_Serif } from 'next/font/google';
+import { Inter } from 'next/font/google';
 
-export const notoSerif = Noto_Serif({
+export const sfPro = Inter({
     subsets: ['latin'],
-    variable: '--font-noto-serif',
-    weight: ['600'],
+    variable: '--font-sf-pro',
+    weight: ['400', '500', '600', '700'],
     style: ['normal']
 })
 

@@ -9,6 +9,7 @@ import { getModelAnswer } from "@/utils/services/functions/api/getModelAnswers";
 import { useFlashCardsStore } from "@/store/flashCardsStore";
 import { useUser } from "@clerk/nextjs"
 import { useFlashcardSync } from "@/hooks/useFlashcardSync";
+import { SyncIndicator } from "../ui/sync-indicator";
 
 export const Generator = () => {
   const [pregunta, setPregunta] = useState("");
@@ -17,6 +18,7 @@ export const Generator = () => {
   const { user } = useUser() 
   const selectedTheme = useThemeStore((state) => state.selectedTheme);
   const addToBuffer = useFlashCardsStore((state) => state.addToBuffer);
+  const setLocalFlashcards = useFlashCardsStore((state) => state.setLocalFlashcards);
   const user_id = user?.id
 
   // Iniciar sincronización
@@ -75,11 +77,12 @@ export const Generator = () => {
 
       // La respuesta ya es el array de respuestas directamente
       const answers = response;
-      
+      //Enviamos los datos al store para mostrar de forma local
+
+      setLocalFlashcards({ answer: answers, theme: theme as unknown as string[], questions: questions })
       // Agrega las respuestas al store de sincronización
       addToBuffer(user_id as string, theme as string, questions, answers);
       
-      //Enviamos los datos al store
       resetForm();
     } catch (error) {
       setError(
@@ -113,9 +116,10 @@ export const Generator = () => {
         <Button
           className="cursor-pointer hover:bg-blue-600"
           type="submit"
-        ></Button>
+        >Generar Flashcard</Button>
         {error && <p className="text-red-500">{error}</p>}
       </form>
+      <SyncIndicator />
     </section>
   );
 };
