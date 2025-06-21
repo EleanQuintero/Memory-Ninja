@@ -1,25 +1,25 @@
 import { FlashcardResponse, FlashcardBatch } from "@/domain/flashcards"
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
-import { NativeCacheService } from "@/utils/services/cache/nativeCacheService"
 
 interface FlashcardState {
-  buffer: FlashcardBatch
-  allFlashCards: FlashcardResponse
+
+  // Estado consolidado (API + nuevas flashcards)
+  consolidatedFlashCards: FlashcardResponse
+
+  // Tracking de la sincronizacion
+  lastSyncIndex: number
   lastSyncTimestamp: number
   isInitialized: boolean
   isDirty: boolean
 
 
   //Acciones del estado
-  
-  setAllFlashcards: (flashCardData: FlashcardResponse) => void
-  addToBuffer: (user_id: string, theme: string, question: string[], answer: string[]) => void
-  clearBuffer: () => void
-  getBuffer: () => FlashcardBatch 
-  markAsDirty: () => void
+  setConsolidatedFlashcards: (data: FlashcardResponse) => void
+  addNewFlashcards: (theme: string, question: string[], answers: string[]) => void
+  getNewFlashcardsForSync: (user_id: string) => FlashcardBatch
   markAsSynced: () => void
-  setLocalFlashcards: (flashCardData: FlashcardResponse) => void
+  resetSyncState: () => void
 }
 
 
@@ -27,77 +27,80 @@ interface FlashcardState {
 export const useFlashCardsStore = create<FlashcardState>()(
   persist(
     (set, get) => ({
-      buffer: {
-        user_id: "",
-        theme: "",
-        question: [],
-        answer: []
-      },
-      allFlashCards: {
+      // Estado inical
+      consolidatedFlashCards: {
         theme: [],
         questions: [],
         answer: []
       },
-
+      lastSyncIndex: 0,
       lastSyncTimestamp:0,
       isInitialized: false,
       isDirty: false,
-      
-      setAllFlashcards: async (flashCardData) =>  {
-        const cacheService = NativeCacheService.getInstance()
-        await cacheService.setCache(get().buffer.user_id, flashCardData)
 
+      // Acciones del estado
+      
+      setConsolidatedFlashcards: (data: FlashcardResponse) =>  {
         set({
-          allFlashCards: flashCardData,
+          consolidatedFlashCards: data,
+          lastSyncIndex: data.questions.length,
           lastSyncTimestamp: Date.now(), // Puede cambiar API en el futuro
           isInitialized: true,
           isDirty: false
         })
       }, 
 
-      setLocalFlashcards: (flashCardData: FlashcardResponse) => 
+      addNewFlashcards(theme: string, questions: string[], answers: string[]) {
           set((state) => ({
-            allFlashCards: {
-                theme: [...state.allFlashCards.theme, ...flashCardData.theme],
-                questions: [...state.allFlashCards.questions, ...flashCardData.questions],
-                answer: [...state.allFlashCards.answer, ...flashCardData.answer]
-            }
+            consolidatedFlashCards: {
+              theme: [...state.consolidatedFlashCards.theme, ...Array(questions.length).fill(theme)],
+              questions: [...state.consolidatedFlashCards.questions, ...questions],
+              answer: [...state.consolidatedFlashCards.answer, ...answers]
+            },
+            isDirty: true
           }))
-      ,
+      },
 
+      getNewFlashcardsForSync(user_id: string): FlashcardBatch {
+        const state = get()
+        const { consolidatedFlashCards, lastSyncIndex } = state
 
-      addToBuffer: (user_id, theme, question, answer) =>
-        set((state) => ({
-          buffer: {
-            user_id: user_id,
-            theme: theme,
-            question: [...state.buffer.question, ...question],
-            answer: [...state.buffer.answer, ...answer]
-          },
-          isDirty: true
-        })),
+        // Extraer solo las flashcards nuevas
+        const newThemes = consolidatedFlashCards.theme.slice(lastSyncIndex)
+        const newQuestions = consolidatedFlashCards.questions.slice(lastSyncIndex)
+        const newAnswers = consolidatedFlashCards.answer.slice(lastSyncIndex)
 
-      clearBuffer: () =>
+        return {
+          user_id,
+          theme: newThemes[0] || "", // Se asume que todas las nuevas son del mismo tema (si)
+          question: newQuestions,
+          answer: newAnswers
+        }
+          
+      },
+      
+      markAsSynced: () => {
+        const state = get()
         set({
-          buffer: {
-            user_id: "",
-            theme: "",
-            question: [],
-            answer: []
-          }
-        }),
+          lastSyncIndex: state.consolidatedFlashCards.questions.length,
+          isDirty: false,
+          lastSyncTimestamp: Date.now()
+        })
+      }, 
 
-      getBuffer: () => get().buffer,
-      markAsDirty: () => set({ isDirty: true }),
-      markAsSynced: () => set({
-        isDirty: false,
-        lastSyncTimestamp: Date.now()
-      })
+      resetSyncState: () => {
+          set({
+            lastSyncIndex: 0,
+            lastSyncTimestamp: 0,
+            isDirty: false
+          })
+      }
     }), 
     {
-      name: "flashcard-buffer",
+      name: "flashcard-consolidated",
       partialize: (state) => ({ 
-        buffer: state.buffer, 
+        consolidatedFlashCards: state.consolidatedFlashCards,
+        lastSyncIndex: state.lastSyncIndex,
         lastSyncTimestamp: state.lastSyncTimestamp
       })
     }

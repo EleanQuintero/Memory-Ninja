@@ -7,9 +7,14 @@ const DIRTY_CHECK_INTERVAL = 5000; // 5 segundos
 
 export const useFlashcardSync = (user_id: string) => {
   const syncInProgress = useRef(false);
-  const { isDirty, lastSyncTimestamp, markAsSynced, allFlashCards } = useFlashCardsStore();
+  const isDirty = useFlashCardsStore((state) => state.isDirty)
+  const lastSyncTimestamp = useFlashCardsStore((state) => state.lastSyncTimestamp)
+  
 
   useEffect(() => {
+
+    if(!user_id) return
+
     const shouldSync = () => {
       const timeSinceLastSync = Date.now() - lastSyncTimestamp;
       return isDirty && timeSinceLastSync >= SYNC_INTERVAL;
@@ -20,8 +25,7 @@ export const useFlashcardSync = (user_id: string) => {
 
       try {
         syncInProgress.current = true;
-        await flashcardUnitOfWork.commit();
-        markAsSynced();
+        await flashcardUnitOfWork.commit(user_id);
       } catch (error) {
         console.error("Error durante la sincronizacion: ", error);
       } finally {
@@ -39,7 +43,7 @@ export const useFlashcardSync = (user_id: string) => {
     const handleBeforeUnload = async () => {
       if (isDirty) {
         try {
-          await flashcardUnitOfWork.commit();
+          await flashcardUnitOfWork.commit(user_id);
         } catch (error) {
           console.error("Error durante sincronizacion de emergencia: ", error);
         }
@@ -52,5 +56,5 @@ export const useFlashcardSync = (user_id: string) => {
       clearInterval(checkInterval);
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [user_id, isDirty, lastSyncTimestamp, markAsSynced, allFlashCards]);
+  }, [user_id, isDirty, lastSyncTimestamp]);
 };

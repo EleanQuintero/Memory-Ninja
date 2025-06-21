@@ -13,10 +13,10 @@ export default function FlashCardsPage() {
   const [error, setError] = useState<Error | null>(null);
   
   // Obtener datos del store
-  const allFlashCardData = useFlashCardsStore((state) => state.allFlashCards);
-  const questions = allFlashCardData.questions;
-  const theme = allFlashCardData.theme;
-  const answers = allFlashCardData.answer;
+  const consolidatedFlashCards = useFlashCardsStore((state) => state.consolidatedFlashCards);
+  const questions = consolidatedFlashCards.questions;
+  const theme = consolidatedFlashCards.theme;
+  const answers = consolidatedFlashCards.answer;
   
   // Obtener datos del usuario
   const userName = useCardInputStore((state) => state.userName);
