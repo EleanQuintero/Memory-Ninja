@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useFlashCardsStore } from "@/store/flashCardsStore";
-import { flashcardUnitOfWork } from "@/utils/services/unitOfWork/flashcardUnitOfWork";
+import { flashcardUnitOfWork } from "@/utils/services/unitOfWork/flashcardUnitOfWork"
+import { UserSessionService } from "@/utils/services/userSession/userSessionService"; 
 
 const SYNC_INTERVAL = 30000; // 30 segundos
 const DIRTY_CHECK_INTERVAL = 5000; // 5 segundos
@@ -9,11 +10,17 @@ export const useFlashcardSync = (user_id: string) => {
   const syncInProgress = useRef(false);
   const isDirty = useFlashCardsStore((state) => state.isDirty)
   const lastSyncTimestamp = useFlashCardsStore((state) => state.lastSyncTimestamp)
+  const userSessionService = UserSessionService.getInstance()
   
 
   useEffect(() => {
 
     if(!user_id) return
+
+    //Verificamos el cambio de usuario al inicio
+    if(userSessionService.hasUserChanged(user_id)){
+      console.log("cambio de usuario detectado en el hook de sincronizacion")
+    }
 
     const shouldSync = () => {
       const timeSinceLastSync = Date.now() - lastSyncTimestamp;

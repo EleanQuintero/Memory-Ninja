@@ -20,6 +20,7 @@ interface FlashcardState {
   getNewFlashcardsForSync: (user_id: string) => FlashcardBatch
   markAsSynced: () => void
   resetSyncState: () => void
+  clearAllData: () => void
 }
 
 
@@ -94,8 +95,24 @@ export const useFlashCardsStore = create<FlashcardState>()(
             lastSyncTimestamp: 0,
             isDirty: false
           })
+      },
+      
+      clearAllData: () => {
+        set({
+          consolidatedFlashCards: {
+            theme: [],
+            questions: [],
+            answer: []
+          },
+          lastSyncIndex: 0,
+          lastSyncTimestamp: 0,
+          isDirty: false,
+          isInitialized: false
+        })
       }
+
     }), 
+    
     {
       name: "flashcard-consolidated",
       partialize: (state) => ({ 

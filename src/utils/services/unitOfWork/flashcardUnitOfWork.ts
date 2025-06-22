@@ -2,9 +2,11 @@ import { FlashcardRepository } from "@/infrastructure/flashcardRepository";
 import { useFlashCardsStore } from "@/store/flashCardsStore";
 import { NativeCacheService } from "../cache/nativeCacheService";
 import { FlashcardResponse } from "@/domain/flashcards";
+import { UserSessionService } from "../userSession/userSessionService";
 
 const repository = new FlashcardRepository()
 const cacheService = NativeCacheService.getInstance()
+const userSessionService = UserSessionService.getInstance()
 
 
 export const flashcardUnitOfWork = {
@@ -29,6 +31,9 @@ export const flashcardUnitOfWork = {
     },
 
     async loadUserFlashCards(user_id: string): Promise<FlashcardResponse> {
+
+        await this._handleUserChange(user_id)
+
         // Obtener el estado actual del store
         const currentState = useFlashCardsStore.getState();
         
@@ -55,5 +60,25 @@ export const flashcardUnitOfWork = {
         await cacheService.setCache(user_id, flashcards);
         useFlashCardsStore.getState().setConsolidatedFlashcards(flashcards);
         return flashcards;
+    },
+
+    async _handleUserChange(newUserId: string): Promise<void>{
+        if(userSessionService.hasUserChanged(newUserId)) {
+            const previousUserId = userSessionService.getPreviousUserId()
+
+            if(previousUserId){
+                console.log(`Cambio de usuario detectado: ${previousUserId} -> ${newUserId}`)
+
+                //Limpiamos el estado del store
+                useFlashCardsStore.getState().clearAllData()
+
+                //Limpiar datos del usuario anterior
+                await userSessionService.cleanupPreviousUserData(previousUserId)
+            }
+
+            //Actualizamos sesion del nuevo usuario
+            userSessionService.updateUserSession(newUserId)
+        }
     }
+    
 }
