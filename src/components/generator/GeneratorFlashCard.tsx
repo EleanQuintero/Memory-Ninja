@@ -16,9 +16,8 @@ export const Generator = () => {
   const [error, setError] = useState<null | string>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { user } = useUser() 
-  const selectedTheme = useThemeStore((state) => state.selectedTheme);
-  const addToBuffer = useFlashCardsStore((state) => state.addToBuffer);
-  const setLocalFlashcards = useFlashCardsStore((state) => state.setLocalFlashcards);
+  const selectedTheme = useThemeStore((state) => state.selectedTheme)
+  const addNewFlashcards = useFlashCardsStore((state) => state.addNewFlashcards)
   const user_id = user?.id
 
   // Iniciar sincronización
@@ -65,24 +64,22 @@ export const Generator = () => {
 
       //Enviamos los datos a la API
       const userLevel = "basic";
-      const response = await getModelAnswer(
+
+      // La respuesta ya es el array de respuestas directamente
+      const answers = await getModelAnswer(
         theme as string,
         questions,
         userLevel
       );
 
-      if (!response) {
+      if (!answers) {
         throw new Error("No se recibieron respuestas de la API");
       }
 
-      // La respuesta ya es el array de respuestas directamente
-      const answers = response;
+    
       //Enviamos los datos al store para mostrar de forma local
-
-      setLocalFlashcards({ answer: answers, theme: theme as unknown as string[], questions: questions })
-      // Agrega las respuestas al store de sincronización
-      addToBuffer(user_id as string, theme as string, questions, answers);
-      
+      addNewFlashcards(theme as string, questions, answers)
+    
       resetForm();
     } catch (error) {
       setError(
