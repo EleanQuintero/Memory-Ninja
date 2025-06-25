@@ -1,9 +1,10 @@
-"use client"
+"use client";
 import { Button } from "@/components/ui/button";
 import { CallToAction } from "@/components/ui/CallToAction";
 import { Footer } from "@/components/ui/layout/Footer";
 import { syncUser } from "@/utils/services/functions/api/postUserData";
 import {
+  PricingTable,
   SignInButton,
   SignUpButton,
   SignedIn,
@@ -14,25 +15,24 @@ import {
 import Link from "next/link";
 import { useEffect } from "react";
 export default function Home() {
+  const { user, isLoaded } = useUser();
 
-  const { user, isLoaded } = useUser()
+  useEffect(() => {
+    const postUserData = async () => {
+      if (!isLoaded || !user || !user.createdAt) return;
 
-useEffect(() => {
-  const postUserData = async () => {
-    if(!isLoaded || !user || ! user.createdAt) return
+      const userCreatedAt = new Date(user.createdAt).getTime();
+      const now = Date.now();
+      const isNewUser = now - userCreatedAt < 5000;
 
-    const userCreatedAt = new Date(user.createdAt).getTime()
-    const now = Date.now() 
-    const isNewUser = now - userCreatedAt < 5000
+      if (!isNewUser) return;
 
-    if(!isNewUser) return 
+      syncUser();
+      alert("Usuario sincronizado con exito");
+    };
 
-    syncUser()
-    alert("Usuario sincronizado con exito")
-  }
-
-  postUserData()
-}, [isLoaded, user])  
+    postUserData();
+  }, [isLoaded, user]);
 
   return (
     <>
@@ -54,7 +54,8 @@ useEffect(() => {
       </header>
       <main className="grid grid-rows-[20px, 1fr, 1fr] gap-[32px] items-center sm:items-start justify-items-center min-h-screen p-8 pb-20 sm:p-20">
         <h1 className="text-4xl font-bold text-center sm:text-left">
-          Bienvenido a la página de inicio de FlashCard Generator
+          Bienvenido FlashCard Generator: tu solución para el aprendizaje
+          optimizado con IA
         </h1>
         <section className="flex flex-row gap-4 p-4 text-center sm:text-left">
           <CallToAction
@@ -82,34 +83,64 @@ useEffect(() => {
             mas rápido. Integrando toda la magia de la IA en el proceso de
             aprendizaje.
           </p>
-          <div className="flex flex-row gap-5">
-            <SignedOut>
-              <div className=" bg-blue-500 p-4 rounded-lg hover:cursor-pointer hover:bg-blue-700 transition duration-300 ease-in-out">
-                <SignUpButton mode="modal" />
-              </div>
-              <div className=" bg-blue-500 p-4 rounded-lg hover:cursor-pointer hover:bg-blue-700 transition duration-300 ease-in-out">
-                <SignInButton mode="modal" />
-              </div>
-            </SignedOut>
-            <SignedIn>
-              <Link href={"/dashboard"}>
-                <Button className="hover:cursor-pointer hover:bg-blue-700 transition duration-300 ease-in-out">
-                  Ver mis FlashCards
-                </Button>
-              </Link>
-              <Link href={"/trial"}>
-                <Button className="hover:cursor-pointer hover:bg-blue-700 transition duration-300 ease-in-out">
-                  Version de prueba
-                </Button>
-              </Link>
-              <Link href={"/pricing"}>
-                <Button className="hover:cursor-pointer hover:bg-blue-700 transition duration-300 ease-in-out">
-                  Pricing
-                </Button>
-              </Link>
-            </SignedIn>
+          <p className="text-lg">
+            Puedes establecer distintos temas, seleccionar el que mas te guste y
+            empezar a generar tus flashcards! La IA te dará las respuestas para
+            que aprendas al máximo, asi obtendrás los conceptos clave de esas
+            dudas y podrás profundizar fácilmente
+          </p>
+        </section>
+        <section className="flex flex-col items-center justify-center gap-4 p-4 text-center">
+          <h1 className="text-2xl">¿Como empezar?</h1>
+          <p className="text-xl">
+            <span>Crea tu cuenta</span>, Elige un plan de suscripción y listo!
+            Empieza a crear tus flashcards mientras optimizas al máximo tu
+            aprendizaje
+          </p>
+
+          <div className="flex flex-col items-center justify-center gap-4 p-4 text-center">
+            <h2 className="text-2xl font-bold">Planes de suscripción</h2>
+            <PricingTable
+              appearance={{
+                variables: {
+                  colorPrimary: "#4f46e5",
+                  colorText: "#111827",
+                },
+                elements: {
+                  card: "shadow-lg rounded-md",
+                  header: "text-xl font-semibold",
+                },
+              }}
+            />
           </div>
         </section>
+        <div className="flex flex-row gap-5">
+          <SignedOut>
+            <div className=" bg-blue-500 p-4 rounded-lg hover:cursor-pointer hover:bg-blue-700 transition duration-300 ease-in-out">
+              <SignUpButton mode="modal" />
+            </div>
+            <div className=" bg-blue-500 p-4 rounded-lg hover:cursor-pointer hover:bg-blue-700 transition duration-300 ease-in-out">
+              <SignInButton mode="modal" />
+            </div>
+          </SignedOut>
+          <SignedIn>
+            <Link href={"/dashboard"}>
+              <Button className="hover:cursor-pointer hover:bg-blue-700 transition duration-300 ease-in-out">
+                Ver mis FlashCards
+              </Button>
+            </Link>
+            <Link href={"/trial"}>
+              <Button className="hover:cursor-pointer hover:bg-blue-700 transition duration-300 ease-in-out">
+                Version de prueba
+              </Button>
+            </Link>
+            <Link href={"/pricing"}>
+              <Button className="hover:cursor-pointer hover:bg-blue-700 transition duration-300 ease-in-out">
+                Pricing
+              </Button>
+            </Link>
+          </SignedIn>
+        </div>
       </main>
       <Footer />
     </>
