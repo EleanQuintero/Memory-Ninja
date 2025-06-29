@@ -2,8 +2,6 @@
 
 import SubscriptionFallback from "@/components/fallbacks/subscription";
 import { Generator } from "@/components/generator/GeneratorFlashCard";
-import { Button } from "@/components/ui/button";
-import { syncUser } from "@/utils/services/functions/api/postUserData";
 import { Protect } from "@clerk/nextjs";
 
 export default function GeneratorPage() {
@@ -13,15 +11,11 @@ export default function GeneratorPage() {
       <section className="flex flex-col items-center justify-center gap-3">
         <h1 className="text-4xl font-bold">Generador de FlashCards</h1>
         <p className="mt-4 text-2xl">
-          Aquí podrás generar tus tarjetas de estudio con IA.
+          Descubre la forma más inteligente y rápida de crear tus tarjetas de estudio personalizadas con la ayuda de IA.
         </p>
         <p className="mt-4 text-2xl">
-          Puedes elegir entre diferentes temas y organizar tus tarjetas para
-          estudiar de forma cómoda y sencilla en cualquier lugar.
+          Elige entre una amplia variedad de temas, organiza tus tarjetas y estudia donde y cuando quieras, optimizando tu aprendizaje al máximo.
         </p>
-      </section>
-      <Button onClick={syncUser}>Cargar usuario</Button>
-      <section>
         <Generator />
       </section>
     </main>
