@@ -11,6 +11,7 @@ import { useUser } from "@clerk/nextjs"
 import { useFlashcardSync } from "@/hooks/useFlashcardSync";
 import { SyncIndicator } from "../ui/sync-indicator";
 import debounce from "debounce"
+import { usePing } from "@/hooks/usePing";
 
 export const Generator = () => {
   const [pregunta, setPregunta] = useState("");
@@ -22,6 +23,7 @@ export const Generator = () => {
   const addNewFlashcards = useFlashCardsStore((state) => state.addNewFlashcards)
   const user_id = user?.id
 
+  usePing()
 
   const debouncedSetError = useRef(
     debounce((errorMessage: string | null) => {
