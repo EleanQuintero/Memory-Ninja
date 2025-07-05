@@ -27,6 +27,9 @@ Generador de tarjetas de estudio con IA, personalizables por temas de interés y
 - Panel de usuario, generación y visualización de flashcards.
 - Soporte para múltiples temas y gestión dinámica de intereses.
 - API REST para operaciones de flashcards.
+- Sistema de debounce para optimización de consultas.
+- Manejo robusto de hibernación y reconexión automática.
+- Validación mejorada de preguntas en el generador.
 
 ## Arquitectura
 
@@ -37,10 +40,18 @@ El proyecto sigue una arquitectura modular y escalable basada en los principios 
 - **Gestión de Estado Global**: Zustand se emplea para manejar el estado global de flashcards, temas y preferencias, con persistencia local y sincronización automática.
 - **Hooks Personalizados**: Los hooks (`src/hooks/`) encapsulan lógica de sincronización, mobile y otras funcionalidades transversales.
 - **Dominio y Tipado**: Los tipos y modelos de dominio (`src/domain/`, `src/utils/types/`) aseguran consistencia y validación de datos en toda la app.
-- **Infraestructura y Servicios**: Acceso a datos, caché, sincronización y lógica de usuario se abstraen en servicios y repositorios bajo `src/infrastructure/` y `src/utils/services/`.
+- **Infraestructura y Servicios**: 
+  - Acceso a datos, caché, sincronización y lógica de usuario se abstraen en servicios y repositorios.
+  - Sistema de debounce implementado para optimizar llamadas a la API.
+  - Manejo mejorado de reconexión y estados de hibernación.
 - **API Interna**: Los endpoints bajo `src/app/api/` actúan como capa de integración entre el frontend y servicios externos (IA, almacenamiento, etc).
-- **Autenticación y Seguridad**: Clerk gestiona la autenticación, autorización y protección de rutas, integrándose en el layout y los endpoints.
-- **Persistencia y Sincronización**: El estado se sincroniza periódicamente y se limpia al cambiar de usuario, garantizando integridad y privacidad.
+- **Autenticación y Seguridad**: 
+  - Clerk gestiona la autenticación, autorización y protección de rutas.
+  - Limpieza automática de estado al cambiar de usuario.
+- **Persistencia y Sincronización**: 
+  - Estado sincronizado periódicamente con manejo robusto de desconexiones.
+  - Sistema de caché para optimizar rendimiento y reducir llamadas innecesarias.
+  - Gestión mejorada de cambios de usuario y limpieza de datos.
 - **Estilos y Temas**: Tailwind CSS y utilidades personalizadas para un diseño consistente y adaptable.
 
 Esta arquitectura permite escalar el proyecto, facilitar el testing, la colaboración y la extensión de nuevas funcionalidades.
