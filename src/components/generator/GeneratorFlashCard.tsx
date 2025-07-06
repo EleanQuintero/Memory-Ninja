@@ -1,9 +1,6 @@
 import { FormEvent, useRef, useState } from "react";
-import { Button } from "../ui/button";
-import { Textarea } from "../ui/textarea";
 import { processToArray } from "@/utils/services/functions/process/processToArray";
 import { validatePregunta } from "@/utils/schemes/formValidation";
-import ThemeSelectorComponent from "./ThemeSelector";
 import { useThemeStore } from "@/store/interestThemes";
 import { useFlashCardsStore } from "@/store/flashCardsStore";
 import { useUser } from "@clerk/nextjs";
@@ -11,12 +8,13 @@ import { useFlashcardSync } from "@/hooks/useFlashcardSync";
 import { SyncIndicator } from "../ui/sync-indicator";
 import debounce from "debounce";
 import { useGetAnswers } from "@/hooks/useGetAnswers";
-//import { usePing } from "@/hooks/usePing";
+import { usePing } from "@/hooks/usePing";
+import LoadingModal from "../fallbacks/LoadingModal";
+import { FlashCardGenerator } from "./FlashCardGenerator";
 
 export const Generator = () => {
   const [pregunta, setPregunta] = useState("");
   const [error, setError] = useState<null | string>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { user, isLoaded } = useUser();
   const selectedTheme = useThemeStore((state) => state.selectedTheme);
@@ -26,7 +24,7 @@ export const Generator = () => {
   const user_id = user?.id;
   const { getAnswers, loadingAnswers } = useGetAnswers();
 
-  //usePing()
+  usePing();
 
   const debouncedSetError = useRef(
     debounce((errorMessage: string | null) => {
@@ -60,7 +58,6 @@ export const Generator = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
 
@@ -97,9 +94,6 @@ export const Generator = () => {
       addNewFlashcards(theme, questions, answers);
 
       resetForm();
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 5000);
     } catch (error) {
       setError(
         error instanceof Error
@@ -121,45 +115,32 @@ export const Generator = () => {
   }
 
   return (
-   
     <section className="flex flex-row items-center justify-center rounded-lg p-5 mt-auto text-xl">
-      {loadingAnswers ?  (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
-    ) :  (
-        <form
-          className="flex flex-col items-center justify-center gap-3"
-          onSubmit={handleSubmit}
-        >
-          <ThemeSelectorComponent />
-          <label htmlFor="pregunta">Introduce aquí tu pregunta</label>
-          <Textarea
-            id="pregunta"
-            name="pregunta"
-            className="resize-none w-80 text-lg md:w-[45em] md:text-xl overflow-hidden"
-            minLength={10}
-            maxLength={200}
-            value={pregunta}
-            onChange={handlePreguntaChange}
-            ref={textareaRef}
-            rows={1}
-            placeholder="¿Que es una flashcard?"
-          />
-          <Button
-            className="cursor-pointer hover:bg-blue-600"
-            type="submit"
-            disabled={!user || !user.id || !!error || isLoading}
-          >
-            Generar Flashcard
-          </Button>
-          {error && (
-            <p className="text-red-500" aria-live="assertive">
-              {error}
-            </p>
-          )}
-        </form>
-      ) }
+      {loadingAnswers ? (
+        <LoadingModal
+          isLoading={loadingAnswers}
+          message="Processing your request..."
+          theme={{
+            container: "bg-gradient-to-br from-blue-950 via-slate-900 to-black",
+            spinner: "border-slate-700/40 border-t-blue-500",
+            message: "from-blue-300 via-cyan-200 to-blue-300",
+          }}
+          size="md"
+          spinnerType="ring"
+          showClose={true}
+          blur={true}
+        />
+      ) : (
+        <FlashCardGenerator
+          user={user}
+          error={error}
+          pregunta={pregunta}
+          textareaRef={textareaRef}
+          loadingAnswers={loadingAnswers}
+          handleSubmit={handleSubmit}
+          handlePreguntaChange={handlePreguntaChange}
+        />
+      )}
       <SyncIndicator />
     </section>
   );
