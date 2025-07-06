@@ -17,7 +17,8 @@ export async function POST(req: NextRequest) {
 
     if (!response.ok) {
       console.error('Error en la respuesta de la API:', response.status);
-      return NextResponse.json({ error: 'Error en la API interna', status: 500 })
+      const errorText = await response.text();
+      throw new Error(`Error ${response.status}: ${errorText}`);
     }
 
     const data: AnswerData = await response.json()
@@ -26,7 +27,13 @@ export async function POST(req: NextRequest) {
     const answers = Array.isArray(data.answer) ? data.answer : [data.answer];
     return NextResponse.json({ answer: answers })
   } catch (error) {
-    console.error('Error interno:', error)
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+    if (error instanceof Error) {
+      console.error('Error interno:', error.message)
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    } else {
+      // Manejar errores que no son instancias de Error
+      console.error('Error interno desconocido:', error)
+      return NextResponse.json({ error: 'Error interno desconocido' }, { status: 500 })
+    }
   }
 }
