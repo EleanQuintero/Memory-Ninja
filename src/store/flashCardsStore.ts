@@ -50,6 +50,7 @@ export const useFlashCardsStore = create<FlashcardState>()(
       addNewFlashcards(theme: string, questions: string[], answers: string[]) {
 
         const newFlashcards: flashcard[] = questions.map((question, index) => ({
+          flashcard_id: Date.now().toString(),
           theme,
           question,
           answer: answers[index]
