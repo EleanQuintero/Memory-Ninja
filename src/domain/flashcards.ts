@@ -6,8 +6,14 @@ export interface FlashcardBatch {
   answer: string[];
 }
 
-export interface FlashcardResponse {
-  theme: string[];
-  questions: string[];
-  answer: string[];
+export interface flashcard{
+  flashcard_id?: string;
+  question: string;
+  answer: string;
+  theme: string;
+}
+
+export interface flashcardToSync {
+  user_id: string 
+  flashcard: flashcard[]
 }

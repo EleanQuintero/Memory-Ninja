@@ -11,11 +11,6 @@ type Pregunta = {
     respuesta: string;
 };
 
-type mocksData = {
-    theme?: string;
-    data: Pregunta[];
-};
-
 
 //Card types:
 export interface cardInputInfo {

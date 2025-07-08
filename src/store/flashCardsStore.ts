@@ -1,11 +1,11 @@
-import { FlashcardResponse, FlashcardBatch } from "@/domain/flashcards"
+import { flashcard, flashcardToSync } from "@/domain/flashcards"
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
 interface FlashcardState {
 
   // Estado consolidado (API + nuevas flashcards)
-  consolidatedFlashCards: FlashcardResponse
+  consolidatedFlashCards: flashcard[]
 
   // Tracking de la sincronizacion
   lastSyncIndex: number
@@ -15,9 +15,9 @@ interface FlashcardState {
 
 
   //Acciones del estado
-  setConsolidatedFlashcards: (data: FlashcardResponse) => void
+  setConsolidatedFlashcards: (data: flashcard[]) => void
   addNewFlashcards: (theme: string, question: string[], answers: string[]) => void
-  getNewFlashcardsForSync: (user_id: string) => FlashcardBatch
+  getNewFlashcardsForSync: (user_id: string) => flashcardToSync
   markAsSynced: () => void
   resetSyncState: () => void
   clearAllData: () => void
@@ -29,11 +29,7 @@ export const useFlashCardsStore = create<FlashcardState>()(
   persist(
     (set, get) => ({
       // Estado inical
-      consolidatedFlashCards: {
-        theme: [],
-        questions: [],
-        answer: []
-      },
+      consolidatedFlashCards: [],
       lastSyncIndex: 0,
       lastSyncTimestamp:0,
       isInitialized: false,
@@ -41,10 +37,10 @@ export const useFlashCardsStore = create<FlashcardState>()(
 
       // Acciones del estado
       
-      setConsolidatedFlashcards: (data: FlashcardResponse) =>  {
+      setConsolidatedFlashcards: (data) =>  {
         set({
           consolidatedFlashCards: data,
-          lastSyncIndex: data.questions.length,
+          lastSyncIndex: data.length,
           lastSyncTimestamp: Date.now(), // Puede cambiar API en el futuro
           isInitialized: true,
           isDirty: false
@@ -52,30 +48,29 @@ export const useFlashCardsStore = create<FlashcardState>()(
       }, 
 
       addNewFlashcards(theme: string, questions: string[], answers: string[]) {
-          set((state) => ({
-            consolidatedFlashCards: {
-              theme: [...state.consolidatedFlashCards.theme, ...Array(questions.length).fill(theme)],
-              questions: [...state.consolidatedFlashCards.questions, ...questions],
-              answer: [...state.consolidatedFlashCards.answer, ...answers]
-            },
-            isDirty: true
-          }))
+
+        const newFlashcards: flashcard[] = questions.map((question, index) => ({
+          theme,
+          question,
+          answer: answers[index]
+        }));
+
+        set(state => ({
+          consolidatedFlashCards: [...state.consolidatedFlashCards, ...newFlashcards],
+          isDirty: true,
+        }));
       },
 
-      getNewFlashcardsForSync(user_id: string): FlashcardBatch {
+      getNewFlashcardsForSync(user_id: string) {
         const state = get()
         const { consolidatedFlashCards, lastSyncIndex } = state
 
         // Extraer solo las flashcards nuevas
-        const newThemes = consolidatedFlashCards.theme.slice(lastSyncIndex)
-        const newQuestions = consolidatedFlashCards.questions.slice(lastSyncIndex)
-        const newAnswers = consolidatedFlashCards.answer.slice(lastSyncIndex)
+        const newFlashcards = consolidatedFlashCards.slice(lastSyncIndex);
 
         return {
           user_id,
-          theme: newThemes[0] || "", // Se asume que todas las nuevas son del mismo tema (si)
-          question: newQuestions,
-          answer: newAnswers
+          flashcard: newFlashcards
         }
           
       },
@@ -83,7 +78,7 @@ export const useFlashCardsStore = create<FlashcardState>()(
       markAsSynced: () => {
         const state = get()
         set({
-          lastSyncIndex: state.consolidatedFlashCards.questions.length,
+          lastSyncIndex: state.consolidatedFlashCards.length,
           isDirty: false,
           lastSyncTimestamp: Date.now()
         })
@@ -99,11 +94,7 @@ export const useFlashCardsStore = create<FlashcardState>()(
       
       clearAllData: () => {
         set({
-          consolidatedFlashCards: {
-            theme: [],
-            questions: [],
-            answer: []
-          },
+          consolidatedFlashCards: [],
           lastSyncIndex: 0,
           lastSyncTimestamp: 0,
           isDirty: false,

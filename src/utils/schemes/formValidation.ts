@@ -2,7 +2,7 @@ import { z } from "zod"
 
 
 export const formSchema = z.object({
-    pregunta: z.string().min(10, "Cada pregunta debe tener al menos 10 caracteres").max(40, "Cada pregunta debe tener menos de 40 caracteres")
+    pregunta: z.string().min(10, "Cada pregunta debe tener al menos 10 caracteres").max(100, "Cada pregunta debe tener menos de 40 caracteres")
 })
 
 export const validatePregunta = (value: string) => {
