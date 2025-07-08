@@ -6,10 +6,10 @@ interface Props {
 }
 
 export const ChooseTheme = ({ selectedTheme, onThemeChange }: Props) => {
-    const { theme } = useFlashCardsStore((state) => state.consolidatedFlashCards);
+    const allFlashCards = useFlashCardsStore((state) => state.consolidatedFlashCards);
 
     // Eliminamos duplicados usando Set
-    const uniqueThemes = [...new Set(theme)];
+    const uniqueThemes = [...new Set(allFlashCards.map(flashcard => flashcard.theme))];
     
     return (
         <select 

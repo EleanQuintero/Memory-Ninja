@@ -13,7 +13,7 @@ export default function FlashCardsPage() {
   const user = useUser();
   const user_id = user.user?.id;
   const [selectedTheme, setSelectedTheme] = useState<string>("");
-  const { flashCardData } = useFlashCardData({ themeToFilter: selectedTheme });
+  const { filteredFlashcards } = useFlashCardData({ themeToFilter: selectedTheme });
   
   // iniciamos carga de datos
   const { isLoading, error} = useLoad(user_id as string)
@@ -54,18 +54,18 @@ export default function FlashCardsPage() {
       </div>
 
       <div>
-        {flashCardData.questionsData.question.length < 1 ? (
+        {filteredFlashcards.length < 1 ? (
           <div className="text-center py-8">
             <p className="text-gray-500 text-lg">No hay preguntas disponibles</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {flashCardData.questionsData.question.map((data, i) => (
+            {filteredFlashcards.map((data) => (
               <Flashcard
-                key={i}
-                question={data}
-                answer={flashCardData.questionsData.answer[i]}
-                theme={flashCardData.theme[i]}
+                key={data.flashcard_id}
+                question={data.question}
+                answer={data.answer}
+                theme={data.theme}
               />
             ))}
           </div>

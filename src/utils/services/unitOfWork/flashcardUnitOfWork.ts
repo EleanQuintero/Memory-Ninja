@@ -1,7 +1,7 @@
 import { FlashcardRepository } from "@/infrastructure/flashcardRepository";
 import { useFlashCardsStore } from "@/store/flashCardsStore";
 import { NativeCacheService } from "../cache/nativeCacheService";
-import { FlashcardResponse } from "@/domain/flashcards";
+import { flashcard } from "@/domain/flashcards";
 import { UserSessionService } from "../userSession/userSessionService";
 
 const repository = new FlashcardRepository()
@@ -19,7 +19,7 @@ export const flashcardUnitOfWork = {
         // Obtenemos las nuevas flashcards
         const newFlashCards = state.getNewFlashcardsForSync(user_id)
 
-        if(newFlashCards.question.length === 0) return // Nada que sincronizar
+        if(newFlashCards.flashcard.length === 0) return // Nada que sincronizar
 
         try {
             await repository.saveBatch(newFlashCards)
@@ -30,7 +30,7 @@ export const flashcardUnitOfWork = {
         }
     },
 
-    async loadUserFlashCards(user_id: string): Promise<FlashcardResponse> {
+    async loadUserFlashCards(user_id: string): Promise<flashcard[]> {
 
         await this._handleUserChange(user_id)
 
@@ -38,7 +38,7 @@ export const flashcardUnitOfWork = {
         const currentState = useFlashCardsStore.getState();
         
         // DECISIÓN 1: Verificar si ya hay flashcards en el estado consolidado
-        if (currentState.consolidatedFlashCards.questions.length > 0) {
+        if (currentState.consolidatedFlashCards.length > 0) {
             console.log("Estado ya tiene flashcards, no sobrescribir");
             return currentState.consolidatedFlashCards;
         }
