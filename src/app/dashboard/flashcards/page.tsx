@@ -2,22 +2,21 @@
 import { ChooseTheme } from "@/components/flashcards/ChooseTheme";
 import Flashcard from "@/components/flashcards/flashcard";
 import { useCardInputStore } from "@/store/cardInput";
-import { useFlashCardsStore } from "@/store/flashCardsStore";
 import { flashcardUnitOfWork } from "@/utils/services/unitOfWork/flashcardUnitOfWork";
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { useFlashcardSync } from "@/hooks/useFlashcardSync";
+import { useFlashCardData } from "@/hooks/useFlashCardData";
+import LoadingModal from "@/components/fallbacks/LoadingModal";
 
 export default function FlashCardsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const [selectedTheme, setSelectedTheme] = useState<string>("");
+  const { flashCardData } = useFlashCardData({ themeToFilter: selectedTheme });
   
   // Obtener datos del store
-  const consolidatedFlashCards = useFlashCardsStore((state) => state.consolidatedFlashCards);
-  const questions = consolidatedFlashCards.questions;
-  const theme = consolidatedFlashCards.theme;
-  const answers = consolidatedFlashCards.answer;
-  
+   
   // Obtener datos del usuario
   const userName = useCardInputStore((state) => state.userName);
   const user = useUser();
@@ -25,34 +24,27 @@ export default function FlashCardsPage() {
 
   // Cargar flashcards
   useEffect(() => {
+    setIsLoading(true);
+    setError(null);
+    if (!user_id) return;
     const loadFlashcards = async () => {
-      if (!user_id) return;
-
       try {
-        setIsLoading(true);
-        setError(null);
-        await flashcardUnitOfWork.loadUserFlashCards(user_id);
+        await flashcardUnitOfWork.loadUserFlashCards(user_id)
+        
+        
       } catch (err) {
         setError(err instanceof Error ? err : new Error('Error loading flashcards'));
       } finally {
         setIsLoading(false);
       }
     };
-
-    loadFlashcards();
+    
+    setTimeout(() => {loadFlashcards();}, 600)
+    
   }, [user_id]);
 
   // Iniciar sincronización
   useFlashcardSync(user_id as string);
-
-  // Preparar datos para las flashcards
-  const flashcardData = {
-    theme: theme,
-    questionsData: questions.map((question, index) => ({
-      question,
-      answer: answers[index],
-    })),
-  };
 
   // Manejar estados de carga y error
   if (error) {
@@ -66,9 +58,7 @@ export default function FlashCardsPage() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
+      <LoadingModal message="Cargando tus flashcards..." isLoading={isLoading} />
     );
   }
 
@@ -79,25 +69,25 @@ export default function FlashCardsPage() {
       </h1>
       
       <div className="mb-6">
-        <label htmlFor="theme" className="block text-sm font-medium text-gray-700 mb-2">
-          Tema:
+        <label htmlFor="theme" className="block text-md font-bold text-white mb-2">
+          Tema seleccionado:
         </label>
-        <ChooseTheme theme={theme} />
+        <ChooseTheme onThemeChange={setSelectedTheme} selectedTheme={selectedTheme} />
       </div>
 
       <div>
-        {questions.length < 1 ? (
+        {flashCardData.questionsData.question.length < 1 ? (
           <div className="text-center py-8">
             <p className="text-gray-500 text-lg">No hay preguntas disponibles</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {flashcardData.questionsData.map((data, i) => (
+            {flashCardData.questionsData.question.map((data, i) => (
               <Flashcard
                 key={i}
-                question={data.question}
-                answer={data.answer}
-                theme={flashcardData.theme[i]}
+                question={data}
+                answer={flashCardData.questionsData.answer[i]}
+                theme={flashCardData.theme[i]}
               />
             ))}
           </div>

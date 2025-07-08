@@ -19,6 +19,8 @@ user: UserResource | null | undefined
 
 export const FlashCardGenerator = ({ textareaRef, error, handlePreguntaChange, handleSubmit, loadingAnswers, pregunta, user }: GeneratorProps) => {
 
+    console.log("esto se renderiza")
+
     return (
         <form
           className="flex flex-col items-center justify-center gap-3"
