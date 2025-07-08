@@ -1,7 +1,8 @@
 import { useFlashCardsStore } from "@/store/flashCardsStore";
 import { cn } from "@/lib/utils";
+import React from "react";
 
-export const SyncIndicator = () => {
+const SyncIndicator = () => {
   const isDirty = useFlashCardsStore((state) => state.isDirty);
 
   return (
@@ -21,3 +22,5 @@ export const SyncIndicator = () => {
     </div>
   );
 }; 
+
+export default React.memo(SyncIndicator);

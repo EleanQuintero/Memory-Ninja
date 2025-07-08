@@ -5,7 +5,7 @@ import { useThemeStore } from "@/store/interestThemes";
 import { useFlashCardsStore } from "@/store/flashCardsStore";
 import { useUser } from "@clerk/nextjs";
 import { useFlashcardSync } from "@/hooks/useFlashcardSync";
-import { SyncIndicator } from "../ui/sync-indicator";
+import SyncIndicator  from "../ui/sync-indicator";
 import debounce from "debounce";
 import { useGetAnswers } from "@/hooks/useGetAnswers";
 import { usePing } from "@/hooks/usePing";

@@ -1,3 +1,4 @@
+import { ReactScan } from "@/components/scan/ReactScan";
 import type { Metadata } from "next";
 import "./globals.css";
 import { sfPro } from "@/utils/fonts";
@@ -17,6 +18,7 @@ export default function RootLayout({
   return (
     <ClerkProvider localization={esES}>
       <html lang="en" className="dark">
+      <ReactScan />
         <body className={` ${sfPro.className} antialiased`}>
           {children}
         </body>
