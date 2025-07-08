@@ -2,46 +2,24 @@
 import { ChooseTheme } from "@/components/flashcards/ChooseTheme";
 import Flashcard from "@/components/flashcards/flashcard";
 import { useCardInputStore } from "@/store/cardInput";
-import { flashcardUnitOfWork } from "@/utils/services/unitOfWork/flashcardUnitOfWork";
 import { useUser } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useFlashcardSync } from "@/hooks/useFlashcardSync";
 import { useFlashCardData } from "@/hooks/useFlashCardData";
 import LoadingModal from "@/components/fallbacks/LoadingModal";
+import { useLoad } from "@/hooks/useLoad";
 
 export default function FlashCardsPage() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+  const user = useUser();
+  const user_id = user.user?.id;
   const [selectedTheme, setSelectedTheme] = useState<string>("");
   const { flashCardData } = useFlashCardData({ themeToFilter: selectedTheme });
   
-  // Obtener datos del store
+  // iniciamos carga de datos
+  const { isLoading, error} = useLoad(user_id as string)
    
   // Obtener datos del usuario
   const userName = useCardInputStore((state) => state.userName);
-  const user = useUser();
-  const user_id = user.user?.id;
-
-  // Cargar flashcards
-  useEffect(() => {
-    setIsLoading(true);
-    setError(null);
-    if (!user_id) return;
-    const loadFlashcards = async () => {
-      try {
-        await flashcardUnitOfWork.loadUserFlashCards(user_id)
-        
-        
-      } catch (err) {
-        setError(err instanceof Error ? err : new Error('Error loading flashcards'));
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    
-    setTimeout(() => {loadFlashcards();}, 600)
-    
-  }, [user_id]);
 
   // Iniciar sincronización
   useFlashcardSync(user_id as string);
