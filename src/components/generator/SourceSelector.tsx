@@ -1,13 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { ChevronDownIcon, LayersIcon } from 'lucide-react'
-interface SourceSelectorProps {
-  selected: string
-  onSelect: (source: string) => void
-}
-export const SourceSelector: React.FC<SourceSelectorProps> = ({
-  selected,
-  onSelect,
+
+export const SourceSelector: React.FC = ({
 }) => {
+  const [selectedSource, setSelectedSource] = useState("all");
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const sources = [
@@ -28,8 +24,8 @@ export const SourceSelector: React.FC<SourceSelectorProps> = ({
       name: 'Custom data',
     },
   ]
-  const selectedSource =
-    sources.find((source) => source.id === selected) || sources[0]
+  const sourceSelected =
+    sources.find((source) => source.id === selectedSource) || sources[0]
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -52,7 +48,7 @@ export const SourceSelector: React.FC<SourceSelectorProps> = ({
         className="flex items-center space-x-2 text-[#b3bac1] hover:text-white py-2 px-3 rounded-md bg-[#24272b]/40 hover:bg-[#24272b]/70 transition-colors"
       >
         <LayersIcon className="w-4 h-4" />
-        <span className="text-sm">{selectedSource.name}</span>
+        <span className="text-sm">{sourceSelected.name}</span>
         <ChevronDownIcon className="w-4 h-4" />
       </button>
       {isOpen && (
@@ -61,9 +57,9 @@ export const SourceSelector: React.FC<SourceSelectorProps> = ({
             {sources.map((source) => (
               <button
                 key={source.id}
-                className={`${selected === source.id ? 'bg-[#19324a] text-white' : 'text-[#b3bac1] hover:bg-[#19324a]/50'} block w-full text-left px-4 py-2 text-sm`}
+                className={`${selectedSource === source.id ? 'bg-[#19324a] text-white' : 'text-[#b3bac1] hover:bg-[#19324a]/50'} block w-full text-left px-4 py-2 text-sm`}
                 onClick={() => {
-                  onSelect(source.id)
+                  setSelectedSource(source.id)
                   setIsOpen(false)
                 }}
               >

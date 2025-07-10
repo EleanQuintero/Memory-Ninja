@@ -1,8 +1,5 @@
-import { FormEvent, useRef, useState } from "react";
-import { processToArray } from "@/utils/services/functions/process/processToArray";
+import { useRef, useState } from "react";
 import { validatePregunta } from "@/utils/schemes/formValidation";
-import { useThemeStore } from "@/store/interestThemes";
-import { useFlashCardsStore } from "@/store/flashCardsStore";
 import { useUser } from "@clerk/nextjs";
 import { useFlashcardSync } from "@/hooks/useFlashcardSync";
 import SyncIndicator  from "../ui/sync-indicator";
@@ -17,12 +14,10 @@ export const Generator = () => {
   const [error, setError] = useState<null | string>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { user, isLoaded } = useUser();
-  const selectedTheme = useThemeStore((state) => state.selectedTheme);
-  const addNewFlashcards = useFlashCardsStore(
-    (state) => state.addNewFlashcards
-  );
+
+
   const user_id = user?.id;
-  const { getAnswers, loadingAnswers } = useGetAnswers();
+  const { loadingAnswers } = useGetAnswers();
 
   usePing();
 
@@ -42,66 +37,21 @@ export const Generator = () => {
     const errorMessage = validatePregunta(value);
     debouncedSetError(errorMessage);
 
-    if (textareaRef.current) {
+   /* if (textareaRef.current) {
       textareaRef.current.style.height = "auto"; // Reinicia el alto
       textareaRef.current.style.height =
         textareaRef.current.scrollHeight + "px"; // Ajusta al contenido
-    }
+    } */
   };
 
-  const resetForm = () => {
+  /*const resetForm = () => {
     setPregunta("");
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
     }
-  };
+  };*/
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-
-    // Procesamos las preguntas como array
-    const questions = processToArray(data);
-
-    //Validamos cada pregunta
-    for (const question of questions) {
-      const errorMessage = validatePregunta(question);
-      if (errorMessage) {
-        setError(errorMessage);
-        setTimeout(() => {
-          setError(null);
-        }, 2000);
-        return;
-      }
-    }
-
-    try {
-      // Obtenemos el tema
-      const theme = selectedTheme;
-
-      //Enviamos los datos a la API
-      const userLevel = "basic";
-
-      // La respuesta ya es el array de respuestas directamente
-      const answers = await getAnswers({ theme, questions, userLevel });
-
-      if (!answers) {
-        throw new Error("No se recibieron respuestas de la API");
-      }
-
-      //Enviamos los datos al store para mostrar de forma local
-      addNewFlashcards(theme, questions, answers);
-
-      resetForm();
-    } catch (error) {
-      setError(
-        error instanceof Error
-          ? error.message
-          : "Error al procesar la solicitud"
-      );
-    }
-  };
+ 
 
   // Mostrar mensaje de carga si el usuario aún no está listo
   if (!isLoaded || !user || !user.id) {
@@ -137,7 +87,6 @@ export const Generator = () => {
           pregunta={pregunta}
           textAreaRef={textareaRef}
           loadingAnswers={loadingAnswers}
-          handleSubmit={handleSubmit}
           handlePreguntaChange={handlePreguntaChange}
         />
         )}
