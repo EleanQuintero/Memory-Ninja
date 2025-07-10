@@ -1,5 +1,6 @@
+import { useUIState } from "@/store/uiState/uiState";
 import { getModelAnswer } from "@/utils/services/functions/api/getModelAnswers";
-import { useState } from "react";
+
 
 interface getAnswersProps {
   theme: string;
@@ -8,17 +9,16 @@ interface getAnswersProps {
 }
 
 export const useGetAnswers = () => {
-  const [loadingAnswers, setLoadingAnswers] = useState(false);
-
+  const  { setLoading } = useUIState()
   const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
   const getAnswers = async ({ theme, userLevel, questions}: getAnswersProps) => {
-    setLoadingAnswers(true);
+    setLoading(true);
     let retries = 2;
     while (retries > 0) {
       try {
         const modelAnswers = await getModelAnswer(theme, questions, userLevel);
-        setLoadingAnswers(false);
+        setLoading(false);
         if (modelAnswers.length > 0) {
           return modelAnswers;
         }
@@ -27,7 +27,7 @@ export const useGetAnswers = () => {
         if (retries > 0) {
           await delay(5000);
         } else {
-          setLoadingAnswers(false);
+          setLoading(false);
           if (error instanceof Error) {
             throw new Error(error.message);
           } else {
@@ -36,9 +36,9 @@ export const useGetAnswers = () => {
         }
       }
     }
-    setLoadingAnswers(false);
+    setLoading(false);
     return [];
   };
 
-  return { getAnswers, loadingAnswers };
+  return { getAnswers };
 };
