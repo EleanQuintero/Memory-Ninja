@@ -23,7 +23,6 @@ export const FlashCardGenerator: React.FC<Props> = ({
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-full  p-4 md:p-8">
       <div className="w-full max-w-3xl flex flex-col items-center gap-8">
-        {/* Títulos principales */}
         <div className="w-full flex flex-col items-center">
           <h1 className="text-4xl md:text-5xl font-bold text-white text-center mb-2">
             Crear Flashcards

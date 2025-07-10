@@ -11,8 +11,8 @@ export const Generator = () => {
   const user_id = user?.id;
   const { loading } = useUIState()
 
-  usePing();
   // Iniciar sincronización
+  usePing();
   useFlashcardSync(user_id as string);
 
   // Mostrar mensaje de carga si el usuario aún no está listo
