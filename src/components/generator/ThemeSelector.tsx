@@ -4,7 +4,7 @@ import { ThemeSetupModal } from "@/components/theme-setup-modal";
 import { useThemeStore } from "@/store/interestThemes";
 
 export default function ThemeSelectorComponent() {
-  const { selectedTheme, isSetupComplete, setAvailableThemes, setSelectedTheme, setSetupComplete } = useThemeStore();
+  const { isSetupComplete, setAvailableThemes, setSelectedTheme, setSetupComplete } = useThemeStore();
   const [isModalOpen, setIsModalOpen] = useState(!isSetupComplete);
 
   const handleSetupComplete = (themes: string[]) => {
@@ -18,7 +18,7 @@ export default function ThemeSelectorComponent() {
   };
 
   return (
-    <main className="container max-w-2xl mx-auto py-10 px-4">
+    <section className="container mx-auto py-2">
       <ThemeSetupModal
         isOpen={isModalOpen}
         onComplete={handleSetupComplete}
@@ -34,13 +34,6 @@ export default function ThemeSelectorComponent() {
           maxThemes={8}
         />
       )}
-
-      {isSetupComplete && selectedTheme && (
-        <div className="mt-6 p-4 border rounded-md bg-muted/30">
-          <p className="font-medium">Tema seleccionado actualmente:</p>
-          <p className="text-xl font-bold text-primary">{selectedTheme}</p>
-        </div>
-      )}
-    </main>
+    </section>
   );
 }
