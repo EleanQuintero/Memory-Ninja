@@ -147,7 +147,7 @@ export const ThemeSelector = React.memo(
                       "group flex items-center justify-between p-3 rounded-md border transition-colors",
                       isSelected
                         ? "bg-primary/10 border-primary/30"
-                        : "bg-background hover:bg-muted/50"
+                        : "bg-[#19324a] hover:bg-muted/50"
                     )}
                   >
                     <div className="flex items-center gap-3">
@@ -156,7 +156,7 @@ export const ThemeSelector = React.memo(
                           "flex items-center justify-center w-5 h-5 rounded-full border cursor-pointer",
                           isSelected
                             ? "bg-primary border-primary text-primary-foreground"
-                            : "bg-background border-muted-foreground/30"
+                            : "bg-[#05264f] border-muted-foreground/30"
                         )}
                         onClick={() => selectTheme(theme)}
                       >
@@ -166,7 +166,7 @@ export const ThemeSelector = React.memo(
                     </div>
   
                     <Button
-                      variant="ghost"
+                      variant="primary"
                       size="icon"
                       className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity"
                       onClick={() => removeTheme(theme)}

@@ -115,7 +115,7 @@ export const Generator = () => {
   }
 
   return (
-    <section className="flex flex-row items-center justify-center rounded-lg p-5 mt-auto text-xl">
+    <section className="flex flex-row items-center justify-center rounded-lg w-full mt-auto text-xl">
       {loadingAnswers ? (
         <LoadingModal
           isLoading={loadingAnswers}
@@ -135,12 +135,12 @@ export const Generator = () => {
           user={user}
           error={error}
           pregunta={pregunta}
-          textareaRef={textareaRef}
+          textAreaRef={textareaRef}
           loadingAnswers={loadingAnswers}
           handleSubmit={handleSubmit}
           handlePreguntaChange={handlePreguntaChange}
         />
-      )}
+        )}
       <SyncIndicator />
     </section>
   );
