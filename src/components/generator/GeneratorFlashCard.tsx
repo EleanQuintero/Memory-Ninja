@@ -1,15 +1,15 @@
 import { useUser } from "@clerk/nextjs";
 import { useFlashcardSync } from "@/hooks/useFlashcardSync";
 import SyncIndicator  from "../ui/sync-indicator";
-import { useGetAnswers } from "@/hooks/useGetAnswers";
 import { usePing } from "@/hooks/usePing";
 import LoadingModal from "../fallbacks/LoadingModal";
 import { FlashCardGenerator } from "./FlashCardGenerator";
+import { useUIState } from "@/store/uiState/uiState";
 
 export const Generator = () => {
   const { user, isLoaded } = useUser();
   const user_id = user?.id;
-  const { loadingAnswers } = useGetAnswers();
+  const { loading } = useUIState()
 
   usePing();
   // Iniciar sincronización
@@ -28,9 +28,9 @@ export const Generator = () => {
 
   return (
     <section className="flex flex-row items-center justify-center rounded-lg w-full mt-auto text-xl">
-      {loadingAnswers ? (
+      {loading ? (
         <LoadingModal
-          isLoading={loadingAnswers}
+          isLoading={loading}
           message="Processing your request..."
           theme={{
             container: "bg-gradient-to-br from-blue-950 via-slate-900 to-black",
@@ -45,7 +45,7 @@ export const Generator = () => {
       ) : (
         <FlashCardGenerator
           user={user}
-          loadingAnswers={loadingAnswers}
+          loadingAnswers={loading}
         />
         )}
       <SyncIndicator />

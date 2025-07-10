@@ -5,9 +5,9 @@ import { Send } from "lucide-react";
 import type { UserResource } from "@clerk/types";
 import { SourceSelector } from "./SourceSelector";
 import { InfoCards } from "../cards/info-cards";
-import { useErrorMessage } from "@/hooks/useErrorMessage";
 
 import { useForm } from "@/hooks/useForm";
+import { useUIState } from "@/store/uiState/uiState";
 
 interface Props {
   loadingAnswers: boolean;
@@ -23,7 +23,7 @@ export const FlashCardGenerator: React.FC<Props> = ({
 
 
   const { handleSubmit, pregunta, handlePreguntaChange, textareaRef  } = useForm()
-  const {  error } = useErrorMessage();
+  const {   error } = useUIState()
   
  
 

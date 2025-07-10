@@ -1,9 +1,10 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import debounce from "debounce";
+import { useUIState } from "@/store/uiState/uiState";
 
 
 export const useErrorMessage = () => {
-    const [error, setError] = useState<string |null> (null)
+    const setError = useUIState((state) => state.setError)
 
 
     const debouncedSetError = useRef(
@@ -19,6 +20,6 @@ export const useErrorMessage = () => {
 
       const clearError = () => setError(null)
 
-      return {error, setError, debouncedSetError, showError, clearError}
+      return { setError, debouncedSetError, showError, clearError}
 
 }
