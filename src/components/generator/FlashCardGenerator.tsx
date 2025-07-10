@@ -1,5 +1,3 @@
-
-import { FormEvent } from "react"
 import ThemeSelectorComponent from "./ThemeSelector";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
@@ -7,73 +5,27 @@ import { Send } from "lucide-react";
 import type { UserResource } from "@clerk/types";
 import { SourceSelector } from "./SourceSelector";
 import { InfoCards } from "../cards/info-cards";
-import { useThemeStore } from "@/store/interestThemes";
-import { processQuestions } from "@/utils/services/functions/process/processQuestion";
-import { useGetAnswers } from "@/hooks/useGetAnswers";
-import { useFlashCardsStore } from "@/store/flashCardsStore";
 import { useErrorMessage } from "@/hooks/useErrorMessage";
 
+import { useForm } from "@/hooks/useForm";
+
 interface Props {
-  error: string | null;
-  pregunta: string;
   loadingAnswers: boolean;
-  handlePreguntaChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   user: UserResource | null | undefined
-  textAreaRef: React.RefObject<HTMLTextAreaElement | null>;
 }
 
 
 
 export const FlashCardGenerator: React.FC<Props> = ({
-  error,
-  pregunta,
   loadingAnswers,
-  handlePreguntaChange,
   user,
-  textAreaRef
 }) => {
-  const addNewFlashcards = useFlashCardsStore((state) => state.addNewFlashcards);
-  const selectedTheme = useThemeStore((state) => state.selectedTheme);
-  const {  getAnswers } = useGetAnswers() 
+
+
+  const { handleSubmit, pregunta, handlePreguntaChange, textareaRef  } = useForm()
+  const {  error } = useErrorMessage();
   
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-    const result = processQuestions({data})
-
-    if(result.error) {
-      
-      return;
-    }
-      const questions = result.questions as string[];
-
-    try {
-      // Obtenemos el tema
-      const theme = selectedTheme;
-      
-      //Enviamos los datos a la API
-      const userLevel = "basic";
-      
-      // La respuesta ya es el array de respuestas directamente
-      const answers = await getAnswers({ theme, questions, userLevel });
-      
-      if (!answers) {
-        throw new Error("No se recibieron respuestas de la API");
-      }
-
-      //Enviamos los datos al store para mostrar de forma local
-      addNewFlashcards(theme, questions, answers);
-
-      //resetForm();
-    } catch (error) {
-      setError(
-        error instanceof Error
-          ? error.message
-          : "Error al procesar la solicitud"
-      );
-    }
-  };
+ 
 
 
   return (
@@ -95,7 +47,7 @@ export const FlashCardGenerator: React.FC<Props> = ({
         >
           <section className="p-4 md:p-6 flex flex-col gap-4">
             <Textarea
-              ref={textAreaRef}
+              ref={textareaRef}
               id="pregunta"
               name="pregunta"
               className="w-full min-h-[120px] bg-transparent text-white placeholder-[#8d97a1]/70 outline-none resize-none text-base md:text-lg"
