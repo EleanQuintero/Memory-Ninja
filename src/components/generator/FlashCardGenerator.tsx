@@ -11,6 +11,7 @@ import { useThemeStore } from "@/store/interestThemes";
 import { processQuestions } from "@/utils/services/functions/process/processQuestion";
 import { useGetAnswers } from "@/hooks/useGetAnswers";
 import { useFlashCardsStore } from "@/store/flashCardsStore";
+import { useErrorMessage } from "@/hooks/useErrorMessage";
 
 interface Props {
   error: string | null;
@@ -33,7 +34,7 @@ export const FlashCardGenerator: React.FC<Props> = ({
 }) => {
   const addNewFlashcards = useFlashCardsStore((state) => state.addNewFlashcards);
   const selectedTheme = useThemeStore((state) => state.selectedTheme);
-  const {  getAnswers } = useGetAnswers()
+  const {  getAnswers } = useGetAnswers() 
   
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,10 +43,7 @@ export const FlashCardGenerator: React.FC<Props> = ({
     const result = processQuestions({data})
 
     if(result.error) {
-      setError(result.error);
-      setTimeout(() => {
-        setError(null);
-      }, 2000); 
+      
       return;
     }
       const questions = result.questions as string[];

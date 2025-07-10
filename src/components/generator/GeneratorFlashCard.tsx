@@ -21,11 +21,7 @@ export const Generator = () => {
 
   usePing();
 
-  const debouncedSetError = useRef(
-    debounce((errorMessage: string | null) => {
-      setError(errorMessage);
-    }, 500)
-  ).current;
+ 
 
   // Iniciar sincronización
   useFlashcardSync(user_id as string);
