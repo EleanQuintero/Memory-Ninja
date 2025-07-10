@@ -17,7 +17,7 @@ export const Generator = () => {
 
   // Mostrar mensaje de carga si el usuario aún no está listo
   if (!isLoaded || !user || !user.id) {
-    return <LoadingModal isLoading={loading} message="Cargando Usuario..." />
+    return <LoadingModal message="Cargando usuario..." isLoading={loading}/>
   }
 
   return (
