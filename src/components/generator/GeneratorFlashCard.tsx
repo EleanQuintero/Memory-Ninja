@@ -13,7 +13,6 @@ export const Generator = () => {
 
   // Iniciar sincronización
   usePing();
-  usePing();
   useFlashcardSync(user_id as string);
 
   // Mostrar mensaje de carga si el usuario aún no está listo
