@@ -63,5 +63,5 @@ export const useFlashcardSync = (user_id: string) => {
       clearInterval(checkInterval);
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [user_id, isDirty, lastSyncTimestamp]);
+  }, [user_id, isDirty, lastSyncTimestamp, userSessionService]);
 };
