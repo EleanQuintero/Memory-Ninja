@@ -17,13 +17,7 @@ export const Generator = () => {
 
   // Mostrar mensaje de carga si el usuario aún no está listo
   if (!isLoaded || !user || !user.id) {
-    return (
-      <section className="flex flex-row items-center justify-center rounded-lg p-5 mt-auto text-xl">
-        <div className="flex flex-col items-center justify-center gap-3">
-          <p className="text-blue-500 text-lg">Cargando datos...</p>
-        </div>
-      </section>
-    );
+    return <LoadingModal isLoading={loading} message="Cargando Usuario..." />
   }
 
   return (
