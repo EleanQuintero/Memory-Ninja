@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings, CirclePlus, CreditCard } from "lucide-react";
+import {  Home,  Search, CirclePlus, CreditCard } from "lucide-react";
 export const items = [
     {
         title: "Home",

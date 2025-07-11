@@ -18,6 +18,7 @@ export default function DashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <ClerkProvider localization={esES}>
        <Protect plan={"pro_user"} fallback={<SubscriptionFallback />}>

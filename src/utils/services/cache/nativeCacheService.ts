@@ -1,8 +1,8 @@
-import { FlashcardResponse } from '@/domain/flashcards'
+import { flashcard } from '@/domain/flashcards'
 
 interface CacheEntry {
-    data: FlashcardResponse
-    timestamp: number
+    data: flashcard[]
+    expiresAt: number
     version: string
 }
 
@@ -22,11 +22,11 @@ export class NativeCacheService {
         return NativeCacheService.instance
     }
 
-    async setCache(user_id: string, data: FlashcardResponse): Promise<void> {
+    async setCache(user_id: string, data: flashcard[]): Promise<void> {
         try {
             const cacheEntry: CacheEntry = {
                 data,
-                timestamp: Date.now(), // De cara al futuro puede cambiar la API NATIVA
+                expiresAt: Date.now() + this.CACHE_DURATION, // De cara al futuro puede cambiar la API NATIVA
                 version: this.CACHE_VERSION 
             }
 
@@ -39,7 +39,7 @@ export class NativeCacheService {
             }
     }
 
-    async getCache(user_id: string): Promise<FlashcardResponse | null> {
+    async getCache(user_id: string): Promise<flashcard[] | null> {
         try {
             const cache = await this.getFullCache()
             const entry = cache[user_id]
@@ -47,7 +47,7 @@ export class NativeCacheService {
             if(!entry) return null
 
             //Verificamos la expiracion
-            if (Date.now() - entry.timestamp > this.CACHE_DURATION) {
+            if (Date.now() > entry.expiresAt) {
                 await this.clearCache(user_id)
                 return null
             }

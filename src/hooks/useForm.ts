@@ -55,7 +55,7 @@ export const useForm = () => {
     
           resetForm();
         } catch (error) {
-          if (error instanceof Error) showError(error.message, 3500)
+          if (error instanceof Error) showError("Error al obtener la respuesta", 1500)
         }
       }
     
