@@ -5,28 +5,20 @@ import { Send } from "lucide-react";
 import type { UserResource } from "@clerk/types";
 import { SourceSelector } from "./SourceSelector";
 import { InfoCards } from "../cards/info-cards";
-
 import { useForm } from "@/hooks/useForm";
 import { useUIState } from "@/store/uiState/uiState";
 
 interface Props {
   loadingAnswers: boolean;
-  user: UserResource | null | undefined
+  user: UserResource | null | undefined;
 }
-
-
 
 export const FlashCardGenerator: React.FC<Props> = ({
   loadingAnswers,
   user,
 }) => {
-
-
-  const { handleSubmit, pregunta, handlePreguntaChange, textareaRef  } = useForm()
-  const {   error } = useUIState()
-  
- 
-
+  const { handleSubmit, pregunta, handlePreguntaChange, textareaRef } = useForm();
+  const { error } = useUIState();
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-full  p-4 md:p-8">
@@ -39,8 +31,8 @@ export const FlashCardGenerator: React.FC<Props> = ({
           <p className="text-sm md:text-base text-[#84aed5] mb-2 text-center">
             POTENCIADO POR IA PARA MEJORAR TU APRENDIZAJE
           </p>
-        </div>        
-            <ThemeSelectorComponent />
+        </div>
+        <ThemeSelectorComponent />
         <form
           onSubmit={handleSubmit}
           className="w-full bg-opacity-[0.03] border border-[#4a525a]/20 rounded-xl shadow-lg"
@@ -76,12 +68,15 @@ export const FlashCardGenerator: React.FC<Props> = ({
           </section>
         </form>
         {error && (
-            <p className="text-red-500 text-center px-4 pb-2" aria-live="assertive">
-              {error}
-            </p>
-          )}
-       <InfoCards />
+          <p
+            className="text-red-500 text-center px-4 pb-2"
+            aria-live="assertive"
+          >
+            {error}
+          </p>
+        )}
+        <InfoCards />
       </div>
     </div>
   );
-}; 
+};

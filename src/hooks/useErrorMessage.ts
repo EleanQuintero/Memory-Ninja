@@ -6,11 +6,13 @@ import { useUIState } from "@/store/uiState/uiState";
 export const useErrorMessage = () => {
     const setError = useUIState((state) => state.setError)
 
-
+//TODO: Hacer que verifique si es el primer input
     const debouncedSetError = useRef(
         debounce((errorMessage: string | null) => {
           setError(errorMessage);
+          setTimeout(() => setError(null), 1500)
         }, 500)
+        
       ).current;
 
       const showError = (errorMessage: string, timeout = 2000) => {
