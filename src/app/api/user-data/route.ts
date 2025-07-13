@@ -1,13 +1,15 @@
+import { rateLimitter } from "@/middleware/rate-limit";
+import { REQUEST_MESSAGES } from "@/utils/consts";
 import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 
-export async function POST() {
+async function saveUser() {
     try {
         const user = await currentUser()
 
     if (!user) {
-        return new NextResponse('Usuario no encontrado', { status: 404 })
+        return NextResponse.json({ message: REQUEST_MESSAGES.UNAUTHORIZED_MESSAGE }, { status: 401 })
     }
 
     const features = user.privateMetadata?.feature
@@ -36,12 +38,15 @@ export async function POST() {
     if(!res.ok){
         const errorData = await res.text();
         console.error('Error al guardar el usuario:', errorData);
-        return new NextResponse("Error al guardar el usuario", {status:500})
+        return NextResponse.json({error: 'Error al guardar el usuario'}, {status:500})
     }
 
-    return new NextResponse("ok", {status: 200})
+    return NextResponse.json({ok: true}, {status: 200})
     } catch (error) {
         console.error(error)
+        return NextResponse.json({error: 'Error interno del servidor'}, {status: 500})
     }
     
 }
+
+export const POST = rateLimitter({fn: saveUser})

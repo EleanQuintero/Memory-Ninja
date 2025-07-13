@@ -1,14 +1,15 @@
+import { rateLimitter } from '@/middleware/rate-limit';
 import { NextRequest, NextResponse } from 'next/server'
+interface AnswerData {
+  answer: string[];
+}
 
-export async function POST(req: NextRequest) {
-  const { tema, questions, userLevel } = await req.json()
-  console.log('Datos recibidos:', { tema, questions, userLevel });
-  interface AnswerData {
-    answer: string[];
-  }
-  
 
+async function generateAnswer(req: NextRequest) {
+ 
   try {
+    const { tema, questions, userLevel } = await req.json()
+    console.log('Datos recibidos:', { tema, questions, userLevel });
     const response = await fetch("http://localhost:4444/api/questions/ask", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -37,3 +38,5 @@ export async function POST(req: NextRequest) {
     }
   }
 }
+
+export const POST = rateLimitter({ fn: generateAnswer })
