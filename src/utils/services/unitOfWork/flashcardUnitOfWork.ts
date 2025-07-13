@@ -56,6 +56,8 @@ export const flashcardUnitOfWork = {
       state.markAsSynced();
     } catch (error) {
       console.error("Error durante la sincronizacion:", error);
+      state.markAsSynced();
+      throw error;
       // No se marca como sincronizado si falla
     }
   },
