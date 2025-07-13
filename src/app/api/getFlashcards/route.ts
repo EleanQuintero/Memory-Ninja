@@ -1,7 +1,9 @@
+import { rateLimitter } from "@/middleware/rate-limit";
 import { NextResponse, NextRequest } from "next/server";
 
-export async function GET(req: NextRequest) {
+ async function getFlashcards(req: NextRequest) {
     try {
+    
         const user_id = req.headers.get('x-user-id');
 
         if (!user_id) {
@@ -24,3 +26,5 @@ export async function GET(req: NextRequest) {
         return new NextResponse("Error interno del servidor", {status: 500})
     }
 }
+
+export const GET = rateLimitter({fn: getFlashcards})

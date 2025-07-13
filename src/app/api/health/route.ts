@@ -1,13 +1,14 @@
-import { NextResponse } from "next/server"
+import { rateLimitter } from "@/middleware/rate-limit"
+import {  NextResponse} from "next/server"
 
-export async function GET() {
+
+ async function ping() {
+  
     try {
       const response = await fetch("http://localhost:4444/api/health/health", {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          // Puedes agregar headers adicionales si tu API los requiere
-          // 'Authorization': 'Bearer your-token',
         },
         // Timeout para evitar esperas largas
         signal: AbortSignal.timeout(5000)
@@ -23,3 +24,5 @@ export async function GET() {
       return NextResponse.json({ status: 'error' }, { status: 503 })
     }
 }
+
+export const GET = rateLimitter({fn: ping})
