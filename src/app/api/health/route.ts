@@ -11,7 +11,7 @@ import {  NextResponse} from "next/server"
           'Content-Type': 'application/json',
         },
         // Timeout para evitar esperas largas
-        signal: AbortSignal.timeout(5000)
+        signal: AbortSignal.timeout(1000)
       })
   
       if (response.ok) {

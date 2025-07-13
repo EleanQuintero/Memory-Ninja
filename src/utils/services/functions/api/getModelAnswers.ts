@@ -1,9 +1,6 @@
-interface AnswerData {
-    answer: string[];
-}
+import { AnswerData, getAnswersProps } from "@/domain/flashcards";
 
-
-export const getModelAnswer = async (tema: string, questions: string[], userLevel: string ): Promise<string[]> => {
+export const getModelAnswer = async ({ userLevel,  questions, theme, }: getAnswersProps): Promise<AnswerData> => {
       
     try {
         const response = await fetch('/api/generate-answer',{
@@ -11,14 +8,14 @@ export const getModelAnswer = async (tema: string, questions: string[], userLeve
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ tema, questions, userLevel })
+            body: JSON.stringify({ theme, questions, userLevel })
         })
 
         if (!response.ok) {
             throw new Error(response.statusText);
         }
 
-        const datos: AnswerData = await response.json()
+        const datos = await response.json()
         return datos.answer
         
     } catch (error) {

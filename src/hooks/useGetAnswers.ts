@@ -1,13 +1,10 @@
+import { getAnswersProps } from "@/domain/flashcards";
 import { useUIState } from "@/store/uiState/uiState";
 import { getModelAnswer } from "@/utils/services/functions/api/getModelAnswers";
 import { retryFetchData } from "@/utils/services/functions/process/retryFetchData";
 
 
-interface getAnswersProps {
-  theme: string;
-  userLevel: string;
-  questions: string[];
-}
+
 
 export const useGetAnswers = () => {
   const { setLoading } = useUIState();
@@ -16,7 +13,7 @@ export const useGetAnswers = () => {
     setLoading(true);
     try {
       const modelAnswers = await retryFetchData(() =>
-        getModelAnswer( theme, questions, userLevel )
+        getModelAnswer( { theme, userLevel, questions} )
       );
       setLoading(false);
       return Array.isArray(modelAnswers) ? modelAnswers : [];
