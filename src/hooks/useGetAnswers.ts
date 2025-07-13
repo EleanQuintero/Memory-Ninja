@@ -1,5 +1,6 @@
 import { useUIState } from "@/store/uiState/uiState";
 import { getModelAnswer } from "@/utils/services/functions/api/getModelAnswers";
+import { retryFetchData } from "@/utils/services/functions/process/retryFetchData";
 
 
 interface getAnswersProps {
@@ -9,35 +10,23 @@ interface getAnswersProps {
 }
 
 export const useGetAnswers = () => {
-  const  { setLoading } = useUIState()
-  const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+  const { setLoading } = useUIState();
 
-  const getAnswers = async ({ theme, userLevel, questions}: getAnswersProps) => {
+  const getAnswers = async ({ theme, userLevel, questions }: getAnswersProps) => {
     setLoading(true);
-    let retries = 2;
-    while (retries > 0) {
-      try {
-        const modelAnswers = await getModelAnswer(theme, questions, userLevel);
-        setLoading(false);
-        if (modelAnswers.length > 0) {
-          return modelAnswers;
-        }
-      } catch (error) {
-        retries -= 1;
-        if (retries > 0) {
-          await delay(5000);
-        } else {
-          setLoading(false);
-          if (error instanceof Error) {
-            throw new Error(error.message);
-          } else {
-            throw new Error("Error desconocido");
-          }
-        }
+    try {
+      const modelAnswers = await retryFetchData(() =>
+        getModelAnswer( theme, questions, userLevel )
+      );
+      setLoading(false);
+      return Array.isArray(modelAnswers) ? modelAnswers : [];
+    } catch (error) {
+      setLoading(false);
+      if (error instanceof Error) {
+        throw new Error(error.message);
       }
+      throw new Error("Error desconocido al obtener respuestas");
     }
-    setLoading(false);
-    return [];
   };
 
   return { getAnswers };

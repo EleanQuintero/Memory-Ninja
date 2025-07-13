@@ -1,8 +1,11 @@
 import { create } from 'zustand'
-import { type cardInputInfo } from '@/utils/types/types'
 
 
-interface State extends cardInputInfo {
+interface State {
+    questions: string[];
+    theme: string;
+    userName: string;
+
     setQuestions: (questionsToSet: string[]) => void
     setTheme: (themeToSet: string) => void
 }

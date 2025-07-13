@@ -3,6 +3,7 @@ import { useFlashCardsStore } from "@/store/flashCardsStore";
 import { NativeCacheService } from "../cache/nativeCacheService";
 import { flashcard } from "@/domain/flashcards";
 import { UserSessionService } from "../userSession/userSessionService";
+import { retryFetchData } from "../functions/process/retryFetchData";
 
 
 const repository = new FlashcardRepository();
@@ -81,7 +82,8 @@ export const flashcardUnitOfWork = {
     }
 
     // Si no hay cache, cargar desde la API
-    const flashcards = await this._fetchAndSyncFlashcards(user_id);
+   
+    const flashcards = await retryFetchData(() => this._fetchAndSyncFlashcards(user_id));
     return flashcards;
   },
 
