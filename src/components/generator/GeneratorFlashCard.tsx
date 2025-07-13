@@ -11,13 +11,13 @@ export const Generator = () => {
   const user_id = user?.id;
   const { loading } = useUIState()
 
-  usePing();
   // Iniciar sincronización
+  usePing();
   useFlashcardSync(user_id as string);
 
   // Mostrar mensaje de carga si el usuario aún no está listo
   if (!isLoaded || !user || !user.id) {
-    return <LoadingModal isLoading={loading} message="Cargando Usuario..." />
+    return <LoadingModal message="Cargando usuario..." isLoading={loading}/>
   }
 
   return (
