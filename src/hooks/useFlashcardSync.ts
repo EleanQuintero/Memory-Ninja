@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useFlashCardsStore } from "@/store/flashCardsStore";
+import { useFlashCardsStore } from "@/app/dashboard/flashcards/store/flashCardsStore";
 import { flashcardUnitOfWork } from "@/utils/services/unitOfWork/flashcardUnitOfWork"
 import { UserSessionService } from "@/utils/services/userSession/userSessionService"; 
 

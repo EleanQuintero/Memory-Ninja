@@ -1,11 +1,11 @@
-import { useFlashCardsStore } from "@/store/flashCardsStore";
+import { useFlashCardsStore } from "@/app/dashboard/flashcards/store/flashCardsStore";
 
 interface Props {
   selectedTheme: string;
   onThemeChange: (theme: string) => void;
 }
 
-export const ChooseTheme = ({ selectedTheme, onThemeChange }: Props) => {
+export const ThemeSelector = ({ selectedTheme, onThemeChange }: Props) => {
     const allFlashCards = useFlashCardsStore((state) => state.consolidatedFlashCards);
 
     // Eliminamos duplicados usando Set

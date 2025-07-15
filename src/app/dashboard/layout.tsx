@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "@/app/globals.css";
-import { sfPro } from "@/utils/fonts";
+import { sfPro } from "@/utils/fonts/sfPro";
 
 import { ClerkProvider, Protect } from "@clerk/nextjs";
 import { esES } from "@clerk/localizations";

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Plus, X, Check, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/services/functions/helpers/cnFunction";
 import {
   Card,
   CardContent,
@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { motion } from "framer-motion";
-import { useThemeStore } from "@/store/interestThemes";
+import { useThemeStore } from "@/app/dashboard/generate/components/theme-selector/store/interestThemes";
 
 interface ThemeSelectorProps {
   onThemeChange?: (theme: string ) => void;

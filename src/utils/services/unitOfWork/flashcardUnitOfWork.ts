@@ -1,7 +1,7 @@
 import { FlashcardRepository } from "@/infrastructure/flashcardRepository";
-import { useFlashCardsStore } from "@/store/flashCardsStore";
+import { useFlashCardsStore } from "@/app/dashboard/flashcards/store/flashCardsStore";
 import { NativeCacheService } from "../cache/nativeCacheService";
-import { flashcard } from "@/domain/flashcards";
+import { AnswerData, flashcard, getAnswersProps } from "@/domain/flashcards";
 import { UserSessionService } from "../userSession/userSessionService";
 import { retryFetchData } from "../functions/process/retryFetchData";
 
@@ -12,7 +12,7 @@ const userSessionService = UserSessionService.getInstance();
 
 export const flashcardUnitOfWork = {
   async _fetchAndSyncFlashcards(user_id: string) {
-    const flashcards = await repository.getAll(user_id);
+    const flashcards = await repository.getAllFlashcards(user_id);
     await cacheService.setCache(user_id, flashcards);
     useFlashCardsStore.getState().setConsolidatedFlashcards(flashcards);
     return flashcards;
@@ -52,7 +52,7 @@ export const flashcardUnitOfWork = {
     if (newFlashCards.flashcard.length === 0) return; // Nada que sincronizar
 
     try {
-      await repository.saveBatch(newFlashCards);
+      await repository.saveFlashcards(newFlashCards);
       state.markAsSynced();
     } catch (error) {
       console.error("Error durante la sincronizacion:", error);
@@ -105,4 +105,17 @@ export const flashcardUnitOfWork = {
       userSessionService.updateUserSession(newUserId);
     }
   },
+
+  async getAnswers ({ theme, userLevel, questions }: getAnswersProps): Promise<AnswerData> {
+    try {
+      const answer = await repository.getModelAnswer({ theme, userLevel, questions });
+      return answer;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw new Error("Error desconocido al obtener respuestas");
+    }
+  }
+
 };

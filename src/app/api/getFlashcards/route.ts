@@ -22,7 +22,7 @@ import { NextResponse, NextRequest } from "next/server";
         }
 
         const flashCardData = await response.json()
-        return NextResponse.json(JSON.stringify(flashCardData))
+        return NextResponse.json(flashCardData)
         
     } catch (error) {
         console.error(error)
