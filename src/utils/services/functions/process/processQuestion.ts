@@ -1,4 +1,4 @@
-import { validatePregunta } from "@/utils/schemes/formValidation";
+import { validatePregunta } from "@/utils/schemes/form-question-validation/formValidation";
 import { processToArray } from "./processToArray";
 
 interface props {
@@ -14,7 +14,7 @@ export function processQuestions({ data }: props) {
   for (const question of questions) {
     const errorMessage = validatePregunta(question);
     if (errorMessage) {
-      return { error: errorMessage };
+      throw new Error(errorMessage);
     }
   }
 

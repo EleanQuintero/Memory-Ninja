@@ -6,7 +6,7 @@ interface UIState {
     loading: boolean 
     setError: (error: string | null) => void
     setLoading: (loading: boolean) => void
-
+ 
 }
 
 export const useUIState = create<UIState>((set) => ({

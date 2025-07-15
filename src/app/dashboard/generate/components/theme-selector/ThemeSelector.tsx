@@ -1,10 +1,15 @@
 import { useState } from "react";
-import { ThemeSelector } from "@/components/theme-selector";
-import { ThemeSetupModal } from "@/components/theme-setup-modal";
-import { useThemeStore } from "@/store/interestThemes";
+import { useThemeStore } from "@/app/dashboard/generate/components/theme-selector/store/interestThemes";
+import { ThemeSelector } from "./theme-selector";
+import { ThemeSetupModal } from "./theme-setup-modal";
 
 export default function ThemeSelectorComponent() {
-  const { isSetupComplete, setAvailableThemes, setSelectedTheme, setSetupComplete } = useThemeStore();
+  const {
+    isSetupComplete,
+    setAvailableThemes,
+    setSelectedTheme,
+    setSetupComplete,
+  } = useThemeStore();
   const [isModalOpen, setIsModalOpen] = useState(!isSetupComplete);
 
   const handleSetupComplete = (themes: string[]) => {

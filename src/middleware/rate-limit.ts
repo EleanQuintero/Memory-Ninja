@@ -2,8 +2,6 @@ import { Ratelimit } from "@upstash/ratelimit";
 import { redis } from "@/lib/redis";
 import { NextRequest, NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
-import { REQUEST_MESSAGES } from "@/utils/consts";
-
 interface rateLimitterProps {
   fn: (req: NextRequest, context: unknown) => Promise<NextResponse>;
 }
@@ -22,7 +20,7 @@ export const rateLimitter = ({ fn }: rateLimitterProps) => {
 
     if (!user || !user.id) {
         return NextResponse.json(
-          { error: REQUEST_MESSAGES.UNAUTHORIZED_MESSAGE },
+          { error: "Unauthorized" },
           { status: 401 }
         );
       }

@@ -1,7 +1,7 @@
 import { ReactScan } from "@/components/scan/ReactScan";
 import type { Metadata } from "next";
 import "./globals.css";
-import { sfPro } from "@/utils/fonts";
+import { sfPro } from "@/utils/fonts/sfPro";
 import { ClerkProvider } from "@clerk/nextjs";
 import { esES } from "@clerk/localizations";
 

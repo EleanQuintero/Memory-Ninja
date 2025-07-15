@@ -1,5 +1,5 @@
-import { useFlashCardsStore } from "@/store/flashCardsStore";
-import { cn } from "@/lib/utils";
+import { useFlashCardsStore } from "@/app/dashboard/flashcards/store/flashCardsStore";
+import { cn } from "@/utils/services/functions/helpers/cnFunction";
 import React from "react";
 
 const SyncIndicator = () => {

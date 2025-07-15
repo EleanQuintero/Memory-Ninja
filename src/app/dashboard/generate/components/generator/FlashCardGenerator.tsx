@@ -1,11 +1,11 @@
-import ThemeSelectorComponent from "./ThemeSelector";
-import { Button } from "../ui/button";
-import { Textarea } from "../ui/textarea";
+import ThemeSelectorComponent from "../theme-selector/ThemeSelector";
+import { Button } from "../../../../../components/ui/button";
+import { Textarea } from "../../../../../components/ui/textarea";
 import { Send } from "lucide-react";
 import type { UserResource } from "@clerk/types";
 import { SourceSelector } from "./SourceSelector";
-import { InfoCards } from "../cards/info-cards";
-import { useForm } from "@/hooks/useForm";
+import { InfoCards } from "./info-cards";
+import { useForm } from "@/app/dashboard/generate/hooks/useForm";
 import { useUIState } from "@/store/uiState/uiState";
 
 interface Props {

@@ -1,4 +1,4 @@
-import { useFlashCardsStore } from "@/store/flashCardsStore";
+import { useFlashCardsStore } from "@/app/dashboard/flashcards/store/flashCardsStore";
 import { useState, useEffect } from "react";
 import { flashcard } from "@/domain/flashcards";
 
@@ -7,7 +7,7 @@ interface Props {
   themeToFilter?: string | null;
 }
 
-export const useFlashCardData = ({ themeToFilter }: Props) => {
+export const useFilterFlashcards = ({ themeToFilter }: Props) => {
  
     const allFlashCards = useFlashCardsStore((state) => state.consolidatedFlashCards);
     const [filteredFlashcards, setFilteredFlashcards] = useState<flashcard[]>([]);

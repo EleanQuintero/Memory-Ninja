@@ -17,7 +17,7 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { motion, AnimatePresence } from "framer-motion";
-import { useThemeStore } from "@/store/interestThemes";
+import { useThemeStore } from "@/app/dashboard/generate/components/theme-selector/store/interestThemes";
 
 interface ThemeSetupModalProps {
   isOpen: boolean;
