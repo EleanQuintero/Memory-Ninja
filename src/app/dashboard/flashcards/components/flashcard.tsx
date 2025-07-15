@@ -4,14 +4,22 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { X } from "lucide-react"
+import { useUser } from "@clerk/nextjs";
+import { flashcardUnitOfWork } from "@/utils/services/unitOfWork/flashcardUnitOfWork";
 
 interface FlashcardProps {
+  flashcard_id: string;
   question: string;
   answer: string;
   theme: string;
 }
 
-export default function Flashcard({ question, answer, theme }: FlashcardProps) {
+export default function Flashcard({ question, answer, theme, flashcard_id }: FlashcardProps) {
+  const { user } = useUser();
+ 
+
+  const user_id = user?.id; 
+
   const [isFlipped, setIsFlipped] = useState(false);
 
   const handleFlip = () => {
@@ -32,7 +40,7 @@ export default function Flashcard({ question, answer, theme }: FlashcardProps) {
               <Button
                 variant="custom"
                 className="absolute top-2 right-2 group"
-                onClick={() => {alert("delee")}}
+                onClick={() => {flashcardUnitOfWork.deleteFlashcard(user_id as string, flashcard_id )}}
               >
                 <X className="size-5 text-gray-500 group-hover:text-red-700 transition-colors duration-200" />
               </Button>

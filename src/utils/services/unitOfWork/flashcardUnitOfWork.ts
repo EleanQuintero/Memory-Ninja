@@ -116,6 +116,18 @@ export const flashcardUnitOfWork = {
       }
       throw new Error("Error desconocido al obtener respuestas");
     }
-  }
+  },
 
-};
+  async deleteFlashcard(user_id: string,id: string): Promise<void> {  
+    try {
+      const response = await repository.deleteFlashcard(user_id, id );
+      return response
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw new Error("Error desconocido al eliminar flashcard");
+    }
+    }
+    }
+
