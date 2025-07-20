@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { X } from "lucide-react"
 import { useUser } from "@clerk/nextjs";
-import { flashcardUnitOfWork } from "@/utils/services/unitOfWork/flashcardUnitOfWork";
+import { useDelete } from "../hooks/useDelete";
 
 interface FlashcardProps {
   flashcard_id: string;
@@ -16,6 +16,7 @@ interface FlashcardProps {
 
 export default function Flashcard({ question, answer, theme, flashcard_id }: FlashcardProps) {
   const { user } = useUser();
+  const { deleteFlashcard } = useDelete()
  
 
   const user_id = user?.id; 
@@ -25,6 +26,10 @@ export default function Flashcard({ question, answer, theme, flashcard_id }: Fla
   const handleFlip = () => {
     setIsFlipped(!isFlipped);
   };
+
+  const handleDelete = async () => {
+      await deleteFlashcard(user_id as string, flashcard_id)
+  }
 
   return (
     <div className="w-full max-w-md mx-auto p-4">
@@ -40,7 +45,7 @@ export default function Flashcard({ question, answer, theme, flashcard_id }: Fla
               <Button
                 variant="custom"
                 className="absolute top-2 right-2 group"
-                onClick={() => {flashcardUnitOfWork.deleteFlashcard(user_id as string, flashcard_id )}}
+                onClick={handleDelete}
               >
                 <X className="size-5 text-gray-500 group-hover:text-red-700 transition-colors duration-200" />
               </Button>
