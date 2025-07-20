@@ -23,13 +23,13 @@ export default function DashboardLayout({
     <ClerkProvider localization={esES}>
        <Protect plan={"pro_user"} fallback={<SubscriptionFallback />}>
        
-      <section className="grid grid-cols-[auto,1fr] min-h-screen">
+      <section className="grid grid-cols-[auto,1fr]">
         <SidebarProvider>
           <aside>
             <AppSidebar />
           </aside>
           <main
-            className={` ${sfPro.className} antialiased dark flex flex-col w-full p-4 bg-gray-100 dark:bg-gradient-to-br from-[#05264f] to-[#19324a] text-gray-900 dark:text-white`}
+            className={` ${sfPro.className} antialiased dark  w-full h-full  bg-gray-100 dark:bg-gradient-to-br from-[#05264f] to-[#19324a] text-gray-900 dark:text-white`}
           >
             <div>
               <SidebarTrigger />
