@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 async function deleteFlashcard(req: NextRequest) {
   const userID = req.headers.get("x-user-id");
   const id = req.headers.get("x-flashcard-id");
+  console.log(userID, id);
 
   if (!id) {
     return NextResponse.json(
