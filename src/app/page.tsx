@@ -9,7 +9,6 @@ import {
   SignUpButton,
   SignedIn,
   SignedOut,
-  UserButton,
   useUser,
 } from "@clerk/nextjs";
 import Link from "next/link";
@@ -36,40 +35,19 @@ export default function Home() {
 
   return (
     <>
-      <header>
-        <nav className="flex items-center justify-between p-4 bg-gray-800 text-white">
-          <Link href="/" className="text-2xl font-bold">
-            <h2 className="text-2xl font-bold">FlashCard Generator</h2>
-          </Link>
-          <div className="flex space-x-4">
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-            <SignedOut>
-              <SignInButton mode="modal" />
-              <SignUpButton mode="modal" />
-            </SignedOut>
-          </div>
-        </nav>
-      </header>
-      <main className="grid grid-rows-[20px, 1fr, 1fr] gap-[32px] items-center sm:items-start justify-items-center min-h-screen p-8 pb-20 sm:p-20">
-        <h1 className="text-4xl font-bold text-center sm:text-left">
-          Bienvenido FlashCard Generator: tu solución para el aprendizaje
-          optimizado con IA
-        </h1>
-        <section className="flex flex-row gap-4 p-4 text-center sm:text-left">
+      <main className="grid grid-rows-[20px, 1fr, 1fr] gap-[32px] bg-gradient-to-br from-[#05264f] to-[#19324a] items-center sm:items-start justify-items-center min-h-screen p-8 pb-20 sm:p-20">
+        <section className="flex flex-row gap-10 p-4 text-center font-extrabold sm:text-left">
           <CallToAction
-            title="Con IA FlashCard Generator"
-            description="¡Llevaras tu aprendizaje al siguiente nivel!"
+            title="Estudia con la precisión de un ninja."
+            description={`"Aprende como un ninja: Rápido. Preciso. Invisible."`}
             showButton={true}
             url="#start-section"
           />
-          <div className="with-[300px] h-[300px] sm:w-[600px] sm:h-[400px] ">
+          <div className="w-full h-full">
             <img
-              src="/dashboardPreview.png"
+              src="/memory-ninja-card-logo.png"
               alt="FlashCard Generator Preview"
-              className="w-full solid rounded-3xl"
-              aspect-ratio="3/2"
+              className="mx-auto w-full max-w-2xl md:max-w-3xl h-auto aspect-[3/2] rounded-3xl"
             />
           </div>
         </section>
