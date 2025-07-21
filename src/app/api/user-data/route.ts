@@ -1,5 +1,4 @@
 import { rateLimitter } from "@/middleware/rate-limit";
-import { REQUEST_MESSAGES } from "@/utils/consts";
 import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
@@ -9,7 +8,7 @@ async function saveUser() {
         const user = await currentUser()
 
     if (!user) {
-        return NextResponse.json({ message: REQUEST_MESSAGES.UNAUTHORIZED_MESSAGE }, { status: 401 })
+        return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
     }
 
     const features = user.privateMetadata?.feature
