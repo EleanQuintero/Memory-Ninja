@@ -4,8 +4,6 @@ export const syncUser = async () => {
       headers: {
         "Content-Type": "application/json",
       },
-      // Puedes enviar datos adicionales si quieres
-      body: JSON.stringify({}),
     });
   
     if (!res.ok) {

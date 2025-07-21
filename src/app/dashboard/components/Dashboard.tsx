@@ -8,8 +8,12 @@ import { StatCard } from "@/app/dashboard/components/dashboard/StatCard"
 import { RecentCards } from "@/app/dashboard/components/dashboard/RecentCards"
 import { TopicDistributionChart } from "@/app/dashboard/components/dashboard/TopicDistributionChart"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useUserSync } from "../hooks/user-sync/useUserSync"
 
 const Dashboard: React.FC = () => {
+
+  useUserSync()
+
   // Mock de datos
   const stats = [
     {
