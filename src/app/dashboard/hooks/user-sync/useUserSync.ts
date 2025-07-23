@@ -3,22 +3,30 @@ import { useUser } from "@clerk/nextjs";
 import { useEffect } from "react";
 
 export const useUserSync = () => {
-    const { user, isLoaded } = useUser();
+  const { user, isLoaded } = useUser();
 
   useEffect(() => {
     const postUserData = async () => {
-      if (!isLoaded || !user || !user.createdAt) return;
+      try {
+        // Verificación inicial con mensaje de debu
+        if (!isLoaded || !user || !user.createdAt) {
+          return;
+        }
 
-      const userCreatedAt = new Date(user.createdAt).getTime();
-      const now = Date.now();
-      const isNewUser = now - userCreatedAt < 5000;
+        const userCreatedAt = new Date(user.createdAt).getTime();
+        const now = Date.now();
+        const isNewUser = now - userCreatedAt < 50000; // 50 segundos
 
-      if (!isNewUser) return;
+        if (!isNewUser) {
+          return;
+        }
 
-      syncUser();
-      alert("Usuario sincronizado con exito");
+        await syncUser();
+      } catch (error) {
+        console.error("Error al sincronizar el usuario:", error);
+      }
     };
 
     postUserData();
   }, [isLoaded, user]);
-}
+};
