@@ -1,5 +1,9 @@
+"use client";
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { motion } from "framer-motion";
 
 /**
  * Hero principal de la landing page.
@@ -15,12 +19,17 @@ export const Hero = () => {
       <div className="absolute top-20 left-10 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-40 right-20 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -bottom-10 left-1/4 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="container mx-auto px-4 pt-20 pb-32 md:pt-32 md:pb-48 relative z-0">
-        <div className="flex flex-col md:flex-row items-center">
+      <div className="container mx-auto px-4 pt-20 pb-32 md:pt-32 md:pb-48 relative ">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col md:flex-row items-center"
+        >
           {/* Columna izquierda: texto y botones */}
           <div className="w-full md:w-1/2 mb-16 md:mb-0 relative">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-              Potencia Tu Memoria Con{' '}
+              Potencia Tu Memoria Con{" "}
               <span className="text-blue-400">Inteligencia Artificial</span>
             </h1>
             <p className="text-lg text-gray-300 mb-8 max-w-lg">
@@ -31,16 +40,17 @@ export const Hero = () => {
             <div className="flex flex-col sm:flex-row gap-4">
               {/* Botón primario (shadcn) */}
               <Button
-                className="py-3 px-8 rounded-full text-base font-medium shadow-lg hover:scale-105 hover:shadow-blue-400/30 transition-transform"
+                className="rounded-full text-base font-medium shadow-lg hover:scale-105 hover:shadow-blue-400/30 transition-transform z-50"
                 aria-label="Comenzar ahora"
                 size="lg"
+                asChild
               >
-                Comenzar ahora
+                <Link href="/onboarding">Comenzar ahora</Link>
               </Button>
               {/* Botón secundario (shadcn, variante outline) */}
               <Button
                 variant="outline"
-                className="border-blue-400/30 bg-transparent hover:bg-blue-800/30 text-white py-3 px-8 rounded-full text-base font-medium"
+                className="border-blue-400/30 bg-transparent hover:bg-blue-800/30 text-white py-3 px-8 rounded-full text-base font-medium z-50"
                 aria-label="Ver demostración"
                 size="lg"
               >
@@ -76,7 +86,7 @@ export const Hero = () => {
                 />
               </div>
               <span className="ml-4 text-sm text-gray-300">
-                <span className="font-bold text-blue-300">500+</span>{' '}
+                <span className="font-bold text-blue-300">500+</span>{" "}
                 estudiantes satisfechos
               </span>
             </div>
@@ -152,7 +162,7 @@ export const Hero = () => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
       {/* Wave divider */}
       <div className="absolute bottom-0 left-0 right-0">
@@ -170,4 +180,4 @@ export const Hero = () => {
       </div>
     </section>
   );
-}; 
+};
