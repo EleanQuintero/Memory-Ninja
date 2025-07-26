@@ -1,6 +1,7 @@
 import React from "react";
 import { Menu } from "lucide-react"; // Icono hamburguesa de Lucide
 import Link from "next/link";
+import { Button } from "../ui/button";
 
 /**
  * Header principal de la landing page.
@@ -43,7 +44,7 @@ export const Header = () => {
           </li>
           <li>
             <a
-              href="/pricing"
+              href="#pricing"
               className="hover:text-blue-300 transition-colors focus:outline-none focus:text-blue-400"
               tabIndex={0}
               aria-label="Precios"
@@ -51,36 +52,26 @@ export const Header = () => {
               Precios
             </a>
           </li>
-          <li>
-            <a
-              href="#testimonials"
-              className="hover:text-blue-300 transition-colors focus:outline-none focus:text-blue-400"
-              tabIndex={0}
-              aria-label="Testimonios"
-            >
-              Testimonios
-            </a>
-          </li>
-          <li>
-            <Link
-              href="/sign-in"
-              className="bg-blue-500 hover:bg-blue- 600 text-white font-semibold py-2 px-4 rounded-full shadow-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
-              tabIndex={0}
-              aria-label="Iniciar sesión"
-            >
-              Iniciar sesión
-            </Link>
-          </li>
         </ul>
         {/* Botón Comenzar (solo desktop) */}
-        <div className="hidden md:block">
-          <button
+        <div className="hidden gap-x-20 md:block">
+          <Button
+            size={"lg"}
+            className="bg-blue-500 hover:bg-blue- 600 text-white font-semibold py-2 px-4 rounded-full shadow-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+            asChild
+          >
+            <Link href="/sign-in" tabIndex={0} aria-label="Iniciar sesión">
+              Iniciar sesión
+            </Link>
+          </Button>
+          <Button
+            size={"lg"}
             className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-full shadow-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
             tabIndex={0}
             aria-label="Comenzar"
           >
             Comenzar
-          </button>
+          </Button>
         </div>
         {/* Menú hamburguesa en mobile */}
         <button

@@ -1,9 +1,18 @@
+"use client";
 import { PricingTable } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
+import { motion } from "framer-motion";
 
 export default function Pricing() {
   return (
-    <section className="relative min-h-screen bg-gradient-to-br from-[#19324a] via-[#1a365d] to-[#2d3748] overflow-hidden">
+    <motion.section
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 0.6 }}
+      viewport={{ amount: 0.5, margin: "30px" }}
+      id="pricing"
+      className="relative min-h-screen bg-gradient-to-br from-[#19324a] via-[#1a365d] to-[#2d3748] overflow-hidden"
+    >
       {/* Background decorations */}
       <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
       <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
@@ -117,6 +126,6 @@ export default function Pricing() {
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
