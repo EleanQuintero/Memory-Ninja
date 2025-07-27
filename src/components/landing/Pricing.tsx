@@ -1,9 +1,41 @@
 "use client";
-import { PricingTable } from "@clerk/nextjs";
-import { dark } from "@clerk/themes";
 import { motion } from "framer-motion";
+import PricingCard from "./PricingCard";
 
 export default function Pricing() {
+  // Datos de configuración para las tarjetas
+  const pricingPlans = [
+    {
+      title: "Aprendiz Ninja",
+      description: "Perfecto para comenzar tu camino ninja",
+      price: "Gratis",
+      features: [
+        { text: "Modelo de IA único" },
+        { text: "3 Mazos de estudio" },
+        { text: "Preguntas limitadas al mes" },
+      ],
+      buttonText: "Comenzar con Aprendiz Ninja",
+      buttonHref: "/onboarding",
+      isHighlighted: false,
+    },
+    {
+      title: "Ninja Pro",
+      description: "Desbloquea todo el potencial ninja",
+      price: "$9.99",
+      priceSubtext: "/mes",
+      features: [
+        { text: "Flashcards ilimitadas" },
+        { text: "Organización por temas" },
+        { text: "Guardar progreso en espacio personal" },
+        { text: "Exportación en formato PDF" },
+        { text: "Acceso a todas las funcionalidades" },
+      ],
+      buttonText: "Comenzar con Ninja Pro",
+      buttonHref: "/onboarding",
+      isHighlighted: true,
+      highlightText: "Recomendado",
+    },
+  ];
   return (
     <motion.section
       initial={{ opacity: 0 }}
@@ -21,15 +53,14 @@ export default function Pricing() {
       <div className="relative z-10 flex flex-col w-full justify-center items-center px-6 py-20 md:py-28">
         {/* Header Section */}
         <div className="text-center mb-16 max-w-4xl">
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            Elige tu{" "}
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+            Elige tu plan de{" "}
             <span className="bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
-              Plan Perfecto
+              Memory Ninja
             </span>
           </h2>
-          <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-            Desbloquea todo el potencial de tus flashcards con planes diseñados
-            para cada necesidad
+          <p className="text-lg text-gray-300 mb-8 leading-relaxed">
+            Potencia tu aprendizaje con flashcards generadas por IA
           </p>
           <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-400">
             <span className="flex items-center gap-2">
@@ -47,73 +78,23 @@ export default function Pricing() {
           </div>
         </div>
 
-        {/* Pricing Table Container */}
+        {/* Pricing Cards */}
         <div className="w-full max-w-7xl">
-          <div className="bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 p-8 md:p-12 shadow-2xl">
-            <PricingTable
-              collapseFeatures={false}
-              appearance={{
-                baseTheme: dark,
-                variables: {
-                  colorPrimary: "#3b82f6",
-                  colorBackground: "transparent",
-                  colorText: "#ffffff",
-                  fontFamily: '"Inter", sans-serif',
-                  borderRadius: "12px",
-                },
-                elements: {
-                  pricingTableRoot: {
-                    "& .cl-pricingTable-plan": {
-                      backgroundColor: "rgba(255, 255, 255, 0.03)",
-                      border: "1px solid rgba(255, 255, 255, 0.1)",
-                      borderRadius: "16px",
-                      backdropFilter: "blur(10px)",
-                      transition: "all 0.3s ease",
-                      "&:hover": {
-                        backgroundColor: "rgba(255, 255, 255, 0.05)",
-                        transform: "translateY(-4px)",
-                        boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3)",
-                      },
-                    },
-                    "& .cl-pricingTable-planName": {
-                      fontSize: "1.5rem",
-                      fontWeight: "700",
-                      color: "#ffffff",
-                    },
-                    "& .cl-pricingTable-planPrice": {
-                      fontSize: "2.5rem",
-                      fontWeight: "800",
-                      background:
-                        "linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)",
-                      backgroundClip: "text",
-                      color: "transparent",
-                    },
-                    "& .cl-pricingTable-planFeature": {
-                      color: "#d1d5db",
-                      fontSize: "0.95rem",
-                    },
-                    "& .cl-pricingTable-button": {
-                      backgroundColor: "#3b82f6",
-                      borderRadius: "12px",
-                      fontWeight: "600",
-                      padding: "12px 24px",
-                      transition: "all 0.3s ease",
-                      "&:hover": {
-                        backgroundColor: "#2563eb",
-                        transform: "scale(1.02)",
-                      },
-                    },
-                  },
-                },
-              }}
-              fallback={
-                <div className="text-center py-16">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto mb-4"></div>
-                  <p className="text-gray-300 text-lg">Cargando planes...</p>
-                </div>
-              }
-              newSubscriptionRedirectUrl="/dashboard"
-            />
+          <div className="mt-16 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-10">
+            {pricingPlans.map((plan, index) => (
+              <PricingCard
+                key={index}
+                title={plan.title}
+                description={plan.description}
+                price={plan.price}
+                priceSubtext={plan.priceSubtext}
+                features={plan.features}
+                buttonText={plan.buttonText}
+                buttonHref={plan.buttonHref}
+                isHighlighted={plan.isHighlighted}
+                highlightText={plan.highlightText}
+              />
+            ))}
           </div>
         </div>
 

@@ -22,13 +22,15 @@ export const Header = () => {
         {/* Logo y nombre */}
         <div className="flex items-center gap-2">
           <img
-            src="/memory-ninja-card-logo.png"
+            src="/memory-ninja-icon-2.png"
             alt="Logo MemoryNinja"
             className="h-10 w-10 rounded-lg"
           />
-          <span className="text-white text-xl font-bold tracking-tight select-none">
-            MemoryNinja
-          </span>
+          <Link href="#hero" className="text-white text-xl font-bold">
+            <span className="text-white text-xl font-bold tracking-tight select-none">
+              MemoryNinja
+            </span>
+          </Link>
         </div>
         {/* Navegación desktop */}
         <ul className="hidden md:flex gap-8 text-gray-200 text-base font-medium">
@@ -54,7 +56,17 @@ export const Header = () => {
           </li>
         </ul>
         {/* Botón Comenzar (solo desktop) */}
-        <div className="hidden gap-x-20 md:block">
+        <div className="hidden gap-x-5 md:flex">
+          <Button
+            size={"lg"}
+            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-full shadow-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+            tabIndex={0}
+            aria-label="Comenzar"
+          >
+            <Link href="/onboarding" tabIndex={0} aria-label="Iniciar sesión">
+              Comenzar
+            </Link>
+          </Button>
           <Button
             size={"lg"}
             className="bg-blue-500 hover:bg-blue- 600 text-white font-semibold py-2 px-4 rounded-full shadow-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
@@ -63,14 +75,6 @@ export const Header = () => {
             <Link href="/sign-in" tabIndex={0} aria-label="Iniciar sesión">
               Iniciar sesión
             </Link>
-          </Button>
-          <Button
-            size={"lg"}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-full shadow-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
-            tabIndex={0}
-            aria-label="Comenzar"
-          >
-            Comenzar
           </Button>
         </div>
         {/* Menú hamburguesa en mobile */}
