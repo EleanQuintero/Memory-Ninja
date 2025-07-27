@@ -69,7 +69,7 @@ export const Header = () => {
           </Button>
           <Button
             size={"lg"}
-            className="bg-blue-500 hover:bg-blue- 600 text-white font-semibold py-2 px-4 rounded-full shadow-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full shadow-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
             asChild
           >
             <Link href="/sign-in" tabIndex={0} aria-label="Iniciar sesión">

@@ -1,5 +1,6 @@
 import { Check } from "lucide-react";
 import Link from "next/link";
+import { Button } from "../ui/button";
 
 interface PricingFeature {
   text: string;
@@ -41,8 +42,8 @@ export default function PricingCard({
     : "text-4xl font-extrabold text-white";
 
   const buttonClasses = isHighlighted
-    ? "w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 px-4 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 text-base font-medium hover:scale-[1.02]"
-    : "w-full bg-gray-700 text-white py-3 px-4 rounded-lg hover:bg-gray-600 transition-all duration-300 text-base font-medium hover:scale-[1.02]";
+    ? "w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 hover:scale-[1.02]"
+    : "w-full bg-gray-700 hover:bg-gray-600 hover:scale-[1.02]";
 
   return (
     <div className={cardClasses}>
@@ -73,9 +74,13 @@ export default function PricingCard({
           ))}
         </ul>
         <div className="mt-8">
-          <button className={buttonClasses}>
+          <Button
+            asChild
+            variant={isHighlighted ? "default" : "secondary"}
+            className={buttonClasses}
+          >
             <Link href={buttonHref}>{buttonText}</Link>
-          </button>
+          </Button>
         </div>
       </div>
     </div>
