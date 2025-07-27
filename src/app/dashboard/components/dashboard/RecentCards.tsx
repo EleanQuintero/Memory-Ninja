@@ -1,7 +1,8 @@
-"use client"
-import React from "react"
-import { BookOpen, Clock, Tag } from "lucide-react"
-import { Button } from "@/components/ui/button"
+"use client";
+import React from "react";
+import { BookOpen, Clock, Tag } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export const RecentCards: React.FC = () => {
   // Mock de datos
@@ -46,7 +47,7 @@ export const RecentCards: React.FC = () => {
         </div>
       ),
     },
-  ]
+  ];
   return (
     <div className="space-y-4">
       {cards.map((card, index) => (
@@ -72,9 +73,9 @@ export const RecentCards: React.FC = () => {
           </div>
         </div>
       ))}
-      <Button variant="link" className="w-full py-2 text-sm">
-        Ver todas las tarjetas
+      <Button variant="link" asChild className="w-full py-2 text-sm">
+        <Link href={"/dashboard/flashcards"}>Ver todas las tarjetas</Link>
       </Button>
     </div>
-  )
-} 
+  );
+};

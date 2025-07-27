@@ -17,7 +17,8 @@ export const FlashCardGenerator: React.FC<Props> = ({
   loadingAnswers,
   user,
 }) => {
-  const { handleSubmit, pregunta, handlePreguntaChange, textareaRef } = useForm();
+  const { handleSubmit, pregunta, handlePreguntaChange, textareaRef } =
+    useForm();
   const { error } = useUIState();
 
   return (
@@ -47,8 +48,8 @@ export const FlashCardGenerator: React.FC<Props> = ({
               value={pregunta}
               onChange={handlePreguntaChange}
               rows={4}
-              placeholder="Introduce un tema o concepto para tus flashcards..."
-              aria-label="Introduce un tema o concepto para tus flashcards"
+              placeholder="¿Que flashcard crearemos hoy?"
+              aria-label="Introduce una pregunta para tu flashcard"
               required
             />
           </section>
@@ -57,9 +58,9 @@ export const FlashCardGenerator: React.FC<Props> = ({
             <Button
               type="submit"
               disabled={!user || !user.id || !!error || loadingAnswers}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 hover:cursor-pointer"
               aria-label="Generar Flashcards"
-              variant={"primary"}
+              variant={"ghost"}
             >
               <Send className="w-4 h-4 mr-2" />
               Generar Flashcards
