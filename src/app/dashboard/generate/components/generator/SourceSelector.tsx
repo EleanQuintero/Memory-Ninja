@@ -1,45 +1,44 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { ChevronDownIcon, LayersIcon } from 'lucide-react'
+import React, { useEffect, useState, useRef } from "react";
+import { ChevronDownIcon, Brain } from "lucide-react";
 
-export const SourceSelector: React.FC = ({
-}) => {
+export const SourceSelector: React.FC = ({}) => {
   const [selectedSource, setSelectedSource] = useState("all");
-  const [isOpen, setIsOpen] = useState(false)
-  const dropdownRef = useRef<HTMLDivElement>(null)
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const sources = [
     {
-      id: 'all',
-      name: 'All sources',
+      id: "all",
+      name: "All sources",
     },
     {
-      id: 'textbooks',
-      name: 'Textbooks',
+      id: "basic",
+      name: "	Kōga (甲賀)",
     },
     {
-      id: 'notes',
-      name: 'My notes',
+      id: "Pro",
+      name: "Kurayami (暗闇)",
     },
     {
-      id: 'custom',
-      name: 'Custom data',
+      id: "custom",
+      name: "Custom data",
     },
-  ]
+  ];
   const sourceSelected =
-    sources.find((source) => source.id === selectedSource) || sources[0]
+    sources.find((source) => source.id === selectedSource) || sources[0];
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setIsOpen(false)
+        setIsOpen(false);
       }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
+    };
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
     <div className="relative" ref={dropdownRef}>
       <button
@@ -47,7 +46,7 @@ export const SourceSelector: React.FC = ({
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center space-x-2 text-[#b3bac1] hover:text-white py-2 px-3 rounded-md bg-[#24272b]/40 hover:bg-[#24272b]/70 transition-colors"
       >
-        <LayersIcon className="w-4 h-4" />
+        <Brain className="w-4 h-4" />
         <span className="text-sm">{sourceSelected.name}</span>
         <ChevronDownIcon className="w-4 h-4" />
       </button>
@@ -57,10 +56,14 @@ export const SourceSelector: React.FC = ({
             {sources.map((source) => (
               <button
                 key={source.id}
-                className={`${selectedSource === source.id ? 'bg-[#19324a] text-white' : 'text-[#b3bac1] hover:bg-[#19324a]/50'} block w-full text-left px-4 py-2 text-sm`}
+                className={`${
+                  selectedSource === source.id
+                    ? "bg-[#19324a] text-white"
+                    : "text-[#b3bac1] hover:bg-[#19324a]/50"
+                } block w-full text-left px-4 py-2 text-sm`}
                 onClick={() => {
-                  setSelectedSource(source.id)
-                  setIsOpen(false)
+                  setSelectedSource(source.id);
+                  setIsOpen(false);
                 }}
               >
                 {source.name}
@@ -70,5 +73,5 @@ export const SourceSelector: React.FC = ({
         </div>
       )}
     </div>
-  )
-}
+  );
+};
