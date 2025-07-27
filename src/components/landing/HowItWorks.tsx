@@ -61,8 +61,9 @@ export const HowItWorks = () => {
               Crea tus Flashcards
             </h3>
             <p className="text-gray-300 text-center">
-              Crea flashcards rápidamente o deja que nuestra IA genere tarjetas
-              de estudio personalizadas basadas en tu material de aprendizaje.
+              Crea tus <span>flashcards</span> rapidamente: selecciona un tema
+              que te apasione, envía tu pregunta y deja que la <span>IA</span>{" "}
+              haga la magia.
             </p>
             <div className="mt-6 bg-[#05264f]/50 p-3 rounded-lg">
               <div className="flex items-center text-sm text-gray-300">
@@ -71,7 +72,7 @@ export const HowItWorks = () => {
                   aria-hidden="true"
                   focusable="false"
                 />
-                Generación automática de preguntas
+                Genera respuestas precisas y útiles
               </div>
               <div className="flex items-center text-sm text-gray-300 mt-2">
                 <Check
@@ -79,7 +80,7 @@ export const HowItWorks = () => {
                   aria-hidden="true"
                   focusable="false"
                 />
-                Importación desde documentos
+                Aprende de manera efectiva
               </div>
             </div>
           </div>
@@ -96,8 +97,9 @@ export const HowItWorks = () => {
               Aprende con IA
             </h3>
             <p className="text-gray-300 text-center">
-              Nuestra IA analiza tu progreso y adapta las sesiones de estudio
-              para maximizar tu retención y eficiencia en el aprendizaje.
+              Utiliza inteligencia artificial para estudiar de manera más
+              inteligente. La IA adaptara la respuesta por ti y podras enfocarte
+              en lo que realmente importa: tu aprendizaje.
             </p>
             <div className="mt-6 bg-[#05264f]/50 p-3 rounded-lg">
               <div className="flex items-center text-sm text-gray-300">
@@ -106,7 +108,7 @@ export const HowItWorks = () => {
                   aria-hidden="true"
                   focusable="false"
                 />
-                Algoritmos de repetición espaciada
+                Aprendizaje preciso con IA
               </div>
               <div className="flex items-center text-sm text-gray-300 mt-2">
                 <Check
@@ -114,7 +116,7 @@ export const HowItWorks = () => {
                   aria-hidden="true"
                   focusable="false"
                 />
-                Personalización automática
+                Acceso a información actualizada
               </div>
             </div>
           </div>

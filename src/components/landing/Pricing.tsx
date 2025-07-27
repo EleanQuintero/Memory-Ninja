@@ -1,19 +1,112 @@
-import { PricingTable } from '@clerk/nextjs';
-import { dark } from '@clerk/themes'
+"use client";
+import { motion } from "framer-motion";
+import PricingCard from "./PricingCard";
 
 export default function Pricing() {
+  // Datos de configuración para las tarjetas
+  const pricingPlans = [
+    {
+      title: "Aprendiz Ninja",
+      description: "Perfecto para comenzar tu camino ninja",
+      price: "Gratis",
+      features: [
+        { text: "Modelo de IA único" },
+        { text: "3 Mazos de estudio" },
+        { text: "Preguntas limitadas al mes" },
+      ],
+      buttonText: "Comenzar con Aprendiz Ninja",
+      buttonHref: "/onboarding",
+      isHighlighted: false,
+    },
+    {
+      title: "Ninja Pro",
+      description: "Desbloquea todo el potencial ninja",
+      price: "$9.99",
+      priceSubtext: "/mes",
+      features: [
+        { text: "Flashcards ilimitadas" },
+        { text: "Organización por temas" },
+        { text: "Guardar progreso en espacio personal" },
+        { text: "Exportación en formato PDF" },
+        { text: "Acceso a todas las funcionalidades" },
+      ],
+      buttonText: "Comenzar con Ninja Pro",
+      buttonHref: "/onboarding",
+      isHighlighted: true,
+      highlightText: "Recomendado",
+    },
+  ];
   return (
-    <section className='flex flex-col w-full justify-center items-center p-10 min-h-screen' >
-      <div className='max-w-[90ch]'>
-      <PricingTable
-        appearance={{
-          baseTheme: dark,
-          
-        }}
-        fallback={<div className="text-center py-8">Cargando precios...</div>}
-        newSubscriptionRedirectUrl="/dashboard"
-      />
+    <motion.section
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 0.6 }}
+      viewport={{ amount: 0.5, margin: "30px" }}
+      id="pricing"
+      className="relative min-h-screen bg-gradient-to-br from-[#19324a] via-[#1a365d] to-[#2d3748] overflow-hidden"
+    >
+      {/* Background decorations */}
+      <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
+
+      <div className="relative z-10 flex flex-col w-full justify-center items-center px-6 py-20 md:py-28">
+        {/* Header Section */}
+        <div className="text-center mb-16 max-w-4xl">
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+            Elige tu plan de{" "}
+            <span className="bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
+              Memory Ninja
+            </span>
+          </h2>
+          <p className="text-lg text-gray-300 mb-8 leading-relaxed">
+            Potencia tu aprendizaje con flashcards generadas por IA
+          </p>
+          <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-400">
+            <span className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+              Sin compromiso
+            </span>
+            <span className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+              Cancela cuando quieras
+            </span>
+            <span className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+              Soporte Frecuente
+            </span>
+          </div>
+        </div>
+
+        {/* Pricing Cards */}
+        <div className="w-full max-w-7xl">
+          <div className="mt-16 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-10">
+            {pricingPlans.map((plan, index) => (
+              <PricingCard
+                key={index}
+                title={plan.title}
+                description={plan.description}
+                price={plan.price}
+                priceSubtext={plan.priceSubtext}
+                features={plan.features}
+                buttonText={plan.buttonText}
+                buttonHref={plan.buttonHref}
+                isHighlighted={plan.isHighlighted}
+                highlightText={plan.highlightText}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom trust badges */}
+        <div className="mt-16 text-center">
+          <div className="flex flex-wrap justify-center gap-8 text-sm text-gray-500">
+            <span>✓ Garantía de 30 días</span>
+            <span>✓ Datos seguros</span>
+            <span>✓ Sin configuración compleja</span>
+          </div>
+        </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

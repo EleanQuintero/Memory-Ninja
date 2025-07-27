@@ -6,8 +6,20 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { esES } from "@clerk/localizations";
 
 export const metadata: Metadata = {
-  title: "FlashCard Generator",
-  description: "Generador de tarjetas de estudio con IA",
+  title: "Memory Ninja - Generador de tarjetas de estudio con IA",
+  description:
+    "Crea tarjetas de estudio personalizadas con IA para mejorar tu aprendizaje y retención de información.",
+  keywords: [
+    "tarjetas de estudio",
+    "generador de tarjetas",
+    "IA",
+    "aprendizaje",
+    "educación",
+    "memoria",
+    "estudio",
+    "flashcards",
+    "inteligencia artificial",
+  ],
 };
 
 export default function RootLayout({
@@ -18,10 +30,8 @@ export default function RootLayout({
   return (
     <ClerkProvider localization={esES}>
       <html lang="en" className="dark">
-      <ReactScan />
-        <body className={` ${sfPro.className} antialiased`}>
-          {children}
-        </body>
+        <ReactScan />
+        <body className={` ${sfPro.className} antialiased`}>{children}</body>
       </html>
     </ClerkProvider>
   );

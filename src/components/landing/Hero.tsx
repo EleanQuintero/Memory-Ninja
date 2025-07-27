@@ -14,7 +14,7 @@ import { motion } from "framer-motion";
  */
 export const Hero = () => {
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-hidden" id="hero">
       {/* Fondos decorativos */}
       <div className="absolute top-20 left-10 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-40 right-20 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -98,9 +98,9 @@ export const Hero = () => {
               <div className="absolute -top-10 -left-16 w-32 h-32 bg-blue-600/20 rounded-xl blur-md transform rotate-12 animate-pulse pointer-events-none" />
               <div className="absolute -bottom-8 -right-8 w-40 h-40 bg-purple-500/20 rounded-full blur-lg pointer-events-none" />
               {/* Imagen principal optimizada */}
-              <div className="relative bg-gradient-to-br from-[#0a3060] to-[#19324a] p-1 rounded-2xl shadow-xl">
+              <div className="relative p-1 rounded-2xl shadow-xl">
                 <img
-                  src="/memory-ninja-card-logo.png"
+                  src="/memory-ninja-icon-2.png"
                   alt="MemoryNinja App"
                   width={400}
                   height={400}
@@ -109,7 +109,7 @@ export const Hero = () => {
                 />
               </div>
               {/* Tarjeta flotante superior derecha */}
-              <div className="absolute -top-8 -right-12 bg-[#0a3060]/90 p-3 rounded-lg shadow-lg transform rotate-6 backdrop-blur-sm border border-blue-400/20">
+              <div className="absolute -top-2 -right-12 bg-[#0a3060]/90 p-3 rounded-lg shadow-lg transform rotate-6 backdrop-blur-sm border border-blue-400/20 z-50">
                 <div className="flex items-center">
                   <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
                     {/* Icono de rayo (svg inline) */}
@@ -135,7 +135,7 @@ export const Hero = () => {
                 </div>
               </div>
               {/* Tarjeta flotante inferior izquierda */}
-              <div className="absolute -bottom-10 -left-16 bg-[#0a3060]/90 p-3 rounded-lg shadow-lg transform -rotate-6 backdrop-blur-sm border border-blue-400/20">
+              <div className="absolute -bottom-10 -left-16 bg-[#0a3060]/90 p-3 rounded-lg shadow-lg transform -rotate-6 backdrop-blur-sm border border-blue-400/20 z-50">
                 <div className="flex items-center">
                   <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
                     {/* Icono de tarjetas (svg inline) */}

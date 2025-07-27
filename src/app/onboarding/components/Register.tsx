@@ -1,6 +1,7 @@
 "use client";
 
 import { SignUp } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 import {
   Card,
   CardContent,
@@ -20,7 +21,20 @@ export default function Register() {
       </CardHeader>
       <CardContent>
         <SignUp
+          fallbackRedirectUrl={"/onboarding/subscribe"}
+          oauthFlow="popup"
           appearance={{
+            layout: {
+              animations: true,
+              socialButtonsVariant: "iconButton",
+              socialButtonsPlacement: "bottom",
+            },
+            variables: {
+              colorPrimary: "#6366F1", // Color primario
+              colorText: "#FFFFFF", // Color del texto
+              colorBackground: "#1F2937", // Fondo oscuro
+            },
+            baseTheme: dark,
             elements: {
               formButtonPrimary:
                 "bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700",
@@ -28,7 +42,6 @@ export default function Register() {
               footer: "hidden",
             },
           }}
-          afterSignUpUrl="/onboarding/subscribe"
         />
       </CardContent>
     </Card>
