@@ -13,10 +13,9 @@ async function getCountFlashcardsByTheme() {
             throw new Error("Error al realizar la peticion")
         }
 
-        const data = await response.json()
-        console.log(data)
+        const countSectionData = await response.json()
 
-        return NextResponse.json(data)
+        return NextResponse.json(countSectionData.data)
 
     } catch (error) {
         console.error(error);
