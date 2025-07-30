@@ -5,11 +5,11 @@ import { useQuery } from "@tanstack/react-query"
 
 export const useDashboardStats = () => {
 
-    const { data } = useQuery({
+    const { data, isLoading } = useQuery({
         queryKey: ["countFlashcards"],
         queryFn: async () => await getCountFlashcardsByTheme()
     })
 
 
-    return { data }
+    return { data, isLoading }
 }
