@@ -1,18 +1,18 @@
-"use client"
-import React from "react"
-import {
-  BookOpen,
-  Trophy,
-} from "lucide-react"
-import { StatCard } from "@/app/dashboard/components/dashboard/StatCard"
-import { RecentCards } from "@/app/dashboard/components/dashboard/RecentCards"
-import { TopicDistributionChart } from "@/app/dashboard/components/dashboard/TopicDistributionChart"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { useUserSync } from "../hooks/user-sync/useUserSync"
+"use client";
+import React from "react";
+import { BookOpen, Trophy } from "lucide-react";
+import { StatCard } from "@/app/dashboard/components/dashboard/StatCard";
+import { RecentCards } from "@/app/dashboard/components/dashboard/RecentCards";
+import { TopicDistributionChart } from "@/app/dashboard/components/dashboard/TopicDistributionChart";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useUserSync } from "../hooks/user-sync/useUserSync";
+import { useDashboardStats } from "../hooks/dashboard-stats/useDashboardStats";
 
 const Dashboard: React.FC = () => {
+  const { data, isLoading } = useDashboardStats();
+  console.log("Dashboard Stats Data:", data);
 
-  useUserSync()
+  useUserSync();
 
   // Mock de datos
   const stats = [
@@ -25,12 +25,17 @@ const Dashboard: React.FC = () => {
     },
     {
       title: "Tema con Más Tarjetas",
-      value: "Matemáticas",
+      value: data?.[0]?.theme ?? "Sin datos",
       icon: <Trophy className="text-blue-400" />,
-      change: "65 tarjetas en total",
+      change: data?.[0]?.count ? `+${data[0].count} tarjetas` : "Sin datos",
       chartData: [30, 35, 42, 48, 52, 58, 65],
     },
-  ]
+  ];
+
+  if (isLoading) {
+    return <div className="text-white">Cargando estadísticas...</div>;
+  }
+
   return (
     <section className="flex flex-col w-full md:justify-center items-center p-10">
       {/* Encabezado */}
@@ -51,7 +56,7 @@ const Dashboard: React.FC = () => {
           <CardHeader>
             <CardTitle>Tarjetas por Tema</CardTitle>
           </CardHeader>
-          <CardContent className="w-full" >
+          <CardContent className="w-full">
             <TopicDistributionChart />
           </CardContent>
         </Card>
@@ -65,7 +70,7 @@ const Dashboard: React.FC = () => {
         </Card>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Dashboard 
+export default Dashboard;
