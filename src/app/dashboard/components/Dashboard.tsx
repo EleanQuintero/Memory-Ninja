@@ -9,8 +9,9 @@ import { useUserSync } from "../hooks/user-sync/useUserSync";
 import { useDashboardStats } from "../hooks/dashboard-stats/useDashboardStats";
 
 const Dashboard: React.FC = () => {
-  const { countedFlashcards } = useDashboardStats();
-  const { countedData, isLoading } = countedFlashcards;
+  const { dashboardStats } = useDashboardStats();
+  const { countedFlashcardsData, latestFlashcardsData, isLoading } =
+    dashboardStats;
 
   useUserSync();
 
@@ -25,10 +26,10 @@ const Dashboard: React.FC = () => {
     },
     {
       title: "Tema con Más Tarjetas",
-      value: countedData?.[0]?.theme ?? "Sin datos",
+      value: countedFlashcardsData?.[0]?.theme ?? "Sin datos",
       icon: <Trophy className="text-blue-400" />,
-      change: countedData?.[0]?.count
-        ? `+${countedData[0].count} tarjetas`
+      change: countedFlashcardsData?.[0]?.count
+        ? `+${countedFlashcardsData[0].count} tarjetas`
         : "Sin datos",
       chartData: [30, 35, 42, 48, 52, 58, 65],
     },
@@ -67,7 +68,7 @@ const Dashboard: React.FC = () => {
             <CardTitle>Últimas Tarjetas Creadas</CardTitle>
           </CardHeader>
           <CardContent>
-            <RecentCards />
+            <RecentCards cards={latestFlashcardsData} />
           </CardContent>
         </Card>
       </div>

@@ -1,20 +1,40 @@
-
 import { getCountFlashcardsByTheme } from "@/utils/services/functions/api/dashboard/getCountFlashcardByTheme"
-import { useQuery } from "@tanstack/react-query"
+import { getLatestFlashcardsCreated } from "@/utils/services/functions/api/dashboard/getLastestFlashcardsCreated"
+import { useQueries } from "@tanstack/react-query"
 
 
 export const useDashboardStats = () => {
 
-    const { data, isLoading } = useQuery({
-        queryKey: ["countFlashcards"],
-        queryFn: async () => await getCountFlashcardsByTheme()
+    const queries = useQueries({
+        queries: [
+            {
+                queryKey: ["countFlashcards"],
+                queryFn: async () => await getCountFlashcardsByTheme()
+            },
+            {
+                queryKey: ["latestFlashcards"],
+                queryFn: async () => await getLatestFlashcardsCreated()
+            }
+        ]
     })
 
-    const countedFlashcards = {
-        countedData: data,
-        isLoading: isLoading
+    const [countedFlashcards, latestFlashcards] = queries
+
+    //Loading states 
+    const isLoading = queries.some(query => query.isLoading)
+
+    //Error validation
+    const hasErrors = queries.some(query => query.error)
+
+    //Data export
+    const dashboardStats = {
+        countedFlashcardsData: countedFlashcards.data,
+        latestFlashcardsData: latestFlashcards.data,
+        isLoading,
+        hasErrors,
+        errors: queries.map(query => query.error)
     }
 
 
-    return { countedFlashcards }
+    return { dashboardStats }
 }
