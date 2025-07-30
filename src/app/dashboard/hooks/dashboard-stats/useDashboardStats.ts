@@ -10,6 +10,11 @@ export const useDashboardStats = () => {
         queryFn: async () => await getCountFlashcardsByTheme()
     })
 
+    const countedFlashcards = {
+        countedData: data,
+        isLoading: isLoading
+    }
 
-    return { data, isLoading }
+
+    return { countedFlashcards }
 }

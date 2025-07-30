@@ -9,8 +9,8 @@ import { useUserSync } from "../hooks/user-sync/useUserSync";
 import { useDashboardStats } from "../hooks/dashboard-stats/useDashboardStats";
 
 const Dashboard: React.FC = () => {
-  const { data, isLoading } = useDashboardStats();
-  console.log("Dashboard Stats Data:", data);
+  const { countedFlashcards } = useDashboardStats();
+  const { countedData, isLoading } = countedFlashcards;
 
   useUserSync();
 
@@ -25,9 +25,11 @@ const Dashboard: React.FC = () => {
     },
     {
       title: "Tema con Más Tarjetas",
-      value: data?.[0]?.theme ?? "Sin datos",
+      value: countedData?.[0]?.theme ?? "Sin datos",
       icon: <Trophy className="text-blue-400" />,
-      change: data?.[0]?.count ? `+${data[0].count} tarjetas` : "Sin datos",
+      change: countedData?.[0]?.count
+        ? `+${countedData[0].count} tarjetas`
+        : "Sin datos",
       chartData: [30, 35, 42, 48, 52, 58, 65],
     },
   ];
