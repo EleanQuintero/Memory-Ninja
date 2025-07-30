@@ -3,6 +3,7 @@ import React from "react";
 import { BookOpen, Clock, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { SkeletonCard } from "@/components/fallbacks/SkeletonCard";
 
 interface Card {
   question: string;
@@ -12,38 +13,19 @@ interface Card {
 
 interface RecentCardsProps {
   cards?: Card[];
+  loading?: boolean;
 }
 
-export const RecentCards: React.FC<RecentCardsProps> = ({ cards }) => {
-  // Mock de datos
-  const mocks = [
-    {
-      question: "¿Qué es una función en matemáticas?",
-      theme: "Matemáticas",
-      createdAt: "Hoy, 14:30",
-    },
-    {
-      question: 'What is the past tense of "run"?',
-      theme: "Inglés",
-      createdAt: "Hoy, 12:15",
-    },
-    {
-      question: "¿Qué es un componente en React?",
-      theme: "React",
-      createdAt: "Ayer, 18:45",
-    },
-    {
-      question: "¿Cuándo ocurrió la Revolución Francesa?",
-      theme: "Historia",
-      createdAt: "Hace 2 días",
-    },
-  ];
+export const RecentCards: React.FC<RecentCardsProps> = ({ cards, loading }) => {
+  const cardsToShow = cards;
 
-  const cardsToShow = cards || mocks;
+  if (loading) {
+    return <SkeletonCard />;
+  }
 
   return (
     <div className="space-y-4">
-      {cardsToShow.map((card, index) => (
+      {cardsToShow?.map((card, index) => (
         <div
           key={index}
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition-colors"

@@ -5,15 +5,29 @@ import { useQueries } from "@tanstack/react-query"
 
 export const useDashboardStats = () => {
 
+    const commonQueryOptions = {
+        refetchInterval: 60000, // 30 segundos
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: true,
+        refetchIntervalInBackground: false,
+        staleTime: 60000, // 10 segundos
+        gcTime: 300000, // 5 minutos
+        retry: 3,
+        retryDelay: (attemptIndex: number) => Math.min(1000 * 2 ** attemptIndex, 30000)
+    }
+
+
     const queries = useQueries({
         queries: [
             {
                 queryKey: ["countFlashcards"],
-                queryFn: async () => await getCountFlashcardsByTheme()
+                queryFn: async () => await getCountFlashcardsByTheme(),
+                ...commonQueryOptions
             },
             {
                 queryKey: ["latestFlashcards"],
-                queryFn: async () => await getLatestFlashcardsCreated()
+                queryFn: async () => await getLatestFlashcardsCreated(),
+                ...commonQueryOptions
             }
         ]
     })
