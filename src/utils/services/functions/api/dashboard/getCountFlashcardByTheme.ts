@@ -1,7 +1,15 @@
 export const getCountFlashcardsByTheme = async () => {
 
+
+    const API_ENDPOINT = process.env.NEXT_PUBLIC_CLIENT_GET_COUNT_FLASHCARDS_BY_THEME;
+
+    if (!API_ENDPOINT) {
+        throw new Error("GET_COUNT_FLASHCARDS_BY_THEME no está configurado");
+    }
+
+
     try {
-        const response = await fetch('/api/dashboard/count-flashcards-by-theme')
+        const response = await fetch(API_ENDPOINT)
 
         if (!response.ok) {
             throw new Error("Error al recibir datos")

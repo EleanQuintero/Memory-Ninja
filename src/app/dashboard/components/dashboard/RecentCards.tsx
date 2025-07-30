@@ -17,15 +17,13 @@ interface RecentCardsProps {
 }
 
 export const RecentCards: React.FC<RecentCardsProps> = ({ cards, loading }) => {
-  const cardsToShow = cards;
-
   if (loading) {
     return <SkeletonCard />;
   }
 
   return (
     <div className="space-y-4">
-      {cardsToShow?.map((card, index) => (
+      {cards?.map((card, index) => (
         <div
           key={index}
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition-colors"
