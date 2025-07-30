@@ -6,11 +6,11 @@ import { useQueries } from "@tanstack/react-query"
 export const useDashboardStats = () => {
 
     const commonQueryOptions = {
-        refetchInterval: 60000, // 30 segundos
+        refetchInterval: 60000, // 60 segundos
         refetchOnWindowFocus: false,
         refetchOnReconnect: true,
         refetchIntervalInBackground: false,
-        staleTime: 60000, // 10 segundos
+        staleTime: 60000, // 60 segundos
         gcTime: 300000, // 5 minutos
         retry: 3,
         retryDelay: (attemptIndex: number) => Math.min(1000 * 2 ** attemptIndex, 30000)
