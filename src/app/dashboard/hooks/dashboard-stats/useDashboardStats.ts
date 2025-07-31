@@ -1,5 +1,6 @@
 import { getCountFlashcardsByTheme } from "@/utils/services/functions/api/dashboard/getCountFlashcardByTheme"
 import { getLatestFlashcardsCreated } from "@/utils/services/functions/api/dashboard/getLastestFlashcardsCreated"
+import { getThemeWithMaxFlashcards } from "@/utils/services/functions/api/dashboard/getThemeWithMaxFlashcards"
 import { useQueries } from "@tanstack/react-query"
 
 
@@ -28,11 +29,16 @@ export const useDashboardStats = () => {
                 queryKey: ["latestFlashcards"],
                 queryFn: async () => await getLatestFlashcardsCreated(),
                 ...commonQueryOptions
+            },
+            {
+                queryKey: ["themeWithMaxFlashcards"],
+                queryFn: async () => await getThemeWithMaxFlashcards(),
+                ...commonQueryOptions
             }
         ]
     })
 
-    const [countedFlashcards, latestFlashcards] = queries
+    const [countFlashcards, latestFlashcards, themeWithMaxFlashcards] = queries
 
     //Loading states 
     const isLoading = queries.some(query => query.isLoading)
@@ -42,8 +48,10 @@ export const useDashboardStats = () => {
 
     //Data export
     const dashboardStats = {
-        countedFlashcardsData: countedFlashcards.data,
+        countedFlashcardsData: countFlashcards.data,
         latestFlashcardsData: latestFlashcards.data,
+        themeWithMaxFlashcardsData: themeWithMaxFlashcards.data,
+
         isLoading,
         hasErrors,
         errors: queries.map(query => query.error)

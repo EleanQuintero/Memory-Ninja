@@ -10,10 +10,13 @@ import { Stats } from "./dashboard/Stats";
 
 const Dashboard: React.FC = () => {
   const { dashboardStats } = useDashboardStats();
-  const { countedFlashcardsData, latestFlashcardsData, isLoading } =
-    dashboardStats;
+  const {
+    countedFlashcardsData,
+    latestFlashcardsData,
+    themeWithMaxFlashcardsData,
+    isLoading,
+  } = dashboardStats;
 
-  console.log("countedFlashcardsData", countedFlashcardsData);
   useUserSync();
 
   // Mock de datos
@@ -27,9 +30,9 @@ const Dashboard: React.FC = () => {
     },
     {
       title: "Tema con Más Tarjetas",
-      value: countedFlashcardsData?.[0]?.theme ?? "Sin datos",
+      value: themeWithMaxFlashcardsData?.theme ?? "Sin datos",
       icon: <Trophy className="text-blue-400" />,
-      change: countedFlashcardsData?.[0]?.count
+      change: themeWithMaxFlashcardsData?.count
         ? `+${countedFlashcardsData[0].count} tarjetas`
         : "Sin datos",
       chartData: [30, 35, 42, 48, 52, 58, 65],
