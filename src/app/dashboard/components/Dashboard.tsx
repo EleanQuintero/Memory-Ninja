@@ -10,26 +10,32 @@ import { Stats } from "./dashboard/Stats";
 
 const Dashboard: React.FC = () => {
   const { dashboardStats } = useDashboardStats();
-  const { countedFlashcardsData, latestFlashcardsData, isLoading } =
-    dashboardStats;
+  const {
+    countedFlashcardsData,
+    latestFlashcardsData,
+    themeWithMaxFlashcardsData,
+    maxFlashcardsByUserData,
+    isLoading,
+  } = dashboardStats;
 
+// Removed unnecessary console.log statement
   useUserSync();
 
   // Mock de datos
   const stats = [
     {
       title: "Tarjetas Creadas",
-      value: "248",
+      value: maxFlashcardsByUserData ?? "0",
       icon: <BookOpen className="text-blue-400" />,
       change: "+12% vs semana anterior",
       chartData: [120, 145, 165, 190, 210, 235, 248],
     },
     {
       title: "Tema con Más Tarjetas",
-      value: countedFlashcardsData?.[0]?.theme ?? "Sin datos",
+      value: themeWithMaxFlashcardsData?.theme ?? "Sin datos",
       icon: <Trophy className="text-blue-400" />,
-      change: countedFlashcardsData?.[0]?.count
-        ? `+${countedFlashcardsData[0].count} tarjetas`
+      change: themeWithMaxFlashcardsData?.count
+        ? `+${themeWithMaxFlashcardsData.count} tarjetas`
         : "Sin datos",
       chartData: [30, 35, 42, 48, 52, 58, 65],
     },
@@ -51,7 +57,7 @@ const Dashboard: React.FC = () => {
             <CardTitle>Tarjetas por Tema</CardTitle>
           </CardHeader>
           <CardContent className="w-full">
-            <TopicDistributionChart />
+            <TopicDistributionChart data={countedFlashcardsData} />
           </CardContent>
         </Card>
         <Card>
