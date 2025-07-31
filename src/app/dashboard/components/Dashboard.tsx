@@ -35,7 +35,7 @@ const Dashboard: React.FC = () => {
       value: themeWithMaxFlashcardsData?.theme ?? "Sin datos",
       icon: <Trophy className="text-blue-400" />,
       change: themeWithMaxFlashcardsData?.count
-        ? `+${countedFlashcardsData[0].count} tarjetas`
+        ? `+${themeWithMaxFlashcardsData.count} tarjetas`
         : "Sin datos",
       chartData: [30, 35, 42, 48, 52, 58, 65],
     },
