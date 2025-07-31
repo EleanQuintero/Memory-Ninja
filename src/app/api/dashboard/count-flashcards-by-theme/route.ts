@@ -6,7 +6,6 @@ async function getCountFlashcardsByTheme() {
     try {
         const user = await currentUser()
         const userId = user?.id
-        console.log(userId)
 
         const response = await fetch(`http://localhost:4444/api/dashboard/countByTheme/${userId}`)
         if (!response.ok) {
