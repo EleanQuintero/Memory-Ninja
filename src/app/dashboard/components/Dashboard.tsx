@@ -18,7 +18,7 @@ const Dashboard: React.FC = () => {
     isLoading,
   } = dashboardStats;
 
-  console.log("maxFlashcardsByUserData", maxFlashcardsByUserData);
+// Removed unnecessary console.log statement
   useUserSync();
 
   // Mock de datos
