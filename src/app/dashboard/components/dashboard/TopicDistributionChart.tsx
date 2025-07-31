@@ -1,5 +1,5 @@
-"use client"
-import React from "react"
+"use client";
+import React from "react";
 import {
   BarChart,
   Bar,
@@ -9,18 +9,21 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-} from "recharts"
+} from "recharts";
 
-export const TopicDistributionChart: React.FC = () => {
+interface chartData {
+  theme: string;
+  count: number;
+}
+
+interface TopicDistributionChartProps {
+  data: chartData[];
+}
+
+export const TopicDistributionChart = ({
+  data,
+}: TopicDistributionChartProps) => {
   // Mock de datos
-  const data = [
-    { name: "Matemáticas", tarjetas: 65 },
-    { name: "Inglés", tarjetas: 52 },
-    { name: "React", tarjetas: 48 },
-    { name: "Historia", tarjetas: 43 },
-    { name: "Biología", tarjetas: 25 },
-    { name: "Física", tarjetas: 15 },
-  ]
   return (
     <div className="h-[300px] min-w-0 w-full">
       <ResponsiveContainer width="100%" height="100%">
@@ -29,7 +32,7 @@ export const TopicDistributionChart: React.FC = () => {
           margin={{ top: 5, right: 10, left: 5, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-          <XAxis dataKey="name" stroke="#9ca3af" />
+          <XAxis dataKey="theme" stroke="#9ca3af" />
           <YAxis stroke="#9ca3af" />
           <Tooltip
             contentStyle={{
@@ -41,7 +44,7 @@ export const TopicDistributionChart: React.FC = () => {
           />
           <Legend />
           <Bar
-            dataKey="tarjetas"
+            dataKey="count"
             name="Número de Tarjetas"
             fill="#3b82f6"
             radius={[4, 4, 0, 0]}
@@ -49,5 +52,5 @@ export const TopicDistributionChart: React.FC = () => {
         </BarChart>
       </ResponsiveContainer>
     </div>
-  )
-} 
+  );
+};

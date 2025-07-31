@@ -13,6 +13,7 @@ const Dashboard: React.FC = () => {
   const { countedFlashcardsData, latestFlashcardsData, isLoading } =
     dashboardStats;
 
+  console.log("countedFlashcardsData", countedFlashcardsData);
   useUserSync();
 
   // Mock de datos
@@ -51,7 +52,7 @@ const Dashboard: React.FC = () => {
             <CardTitle>Tarjetas por Tema</CardTitle>
           </CardHeader>
           <CardContent className="w-full">
-            <TopicDistributionChart />
+            <TopicDistributionChart data={countedFlashcardsData} />
           </CardContent>
         </Card>
         <Card>
