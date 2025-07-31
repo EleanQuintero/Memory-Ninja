@@ -13,7 +13,7 @@ export const getThemeWithMaxFlashcards = async () => {
         }
 
         const data = await response.json();
-        return data
+        return data;
 
     } catch (error) {
         if (error instanceof Error) {
