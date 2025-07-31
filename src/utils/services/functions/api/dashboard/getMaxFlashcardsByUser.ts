@@ -1,8 +1,8 @@
-export const getThemeWithMaxFlashcards = async () => {
-    const API_ENDPOINT = process.env.NEXT_PUBLIC_CLIENT_GET_THEME_WITH_MAX_FLASHCARDS;
+export const getMaxFlashcardsByUser = async () => {
+    const API_ENDPOINT = process.env.NEXT_PUBLIC_CLIENT_GET_MAX_FLASHCARDS_BY_USER;
 
     if (!API_ENDPOINT) {
-        throw new Error("CLIENT_GET_THEME_WITH_MAX_FLASHCARDS no está configurado");
+        throw new Error("CLIENT_GET_MAX_FLASHCARDS_BY_USER no está configurado");
     }
 
     try {
@@ -13,7 +13,7 @@ export const getThemeWithMaxFlashcards = async () => {
         }
 
         const data = await response.json();
-        return data
+        return data.count;
 
     } catch (error) {
         if (error instanceof Error) {

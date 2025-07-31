@@ -14,16 +14,18 @@ const Dashboard: React.FC = () => {
     countedFlashcardsData,
     latestFlashcardsData,
     themeWithMaxFlashcardsData,
+    maxFlashcardsByUserData,
     isLoading,
   } = dashboardStats;
 
+  console.log("maxFlashcardsByUserData", maxFlashcardsByUserData);
   useUserSync();
 
   // Mock de datos
   const stats = [
     {
       title: "Tarjetas Creadas",
-      value: "248",
+      value: maxFlashcardsByUserData ?? "0",
       icon: <BookOpen className="text-blue-400" />,
       change: "+12% vs semana anterior",
       chartData: [120, 145, 165, 190, 210, 235, 248],
