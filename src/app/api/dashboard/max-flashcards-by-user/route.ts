@@ -13,8 +13,8 @@ const getMaxFlashcardsByUser = async () => {
         if (!response.ok) {
             throw new Error("Error al realizar la petición");
         }
-        const themeData = await response.json();
-        return NextResponse.json(themeData.data);
+        const data = await response.json();
+        return NextResponse.json(data);
 
     } catch (error) {
         console.error(error);
