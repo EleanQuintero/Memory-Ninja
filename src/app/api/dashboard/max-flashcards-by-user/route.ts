@@ -19,7 +19,7 @@ const getMaxFlashcardsByUser = async () => {
     } catch (error) {
         console.error(error);
         return NextResponse.json(
-            { error: "Error al solicitar el tema con más tarjetas" },
+            { error: "Error al solicitar el máximo de flashcards por usuario" },
             { status: 500 }
         );
     }
