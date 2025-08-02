@@ -1,4 +1,4 @@
-import { rateLimitter } from "@/middleware/rate-limit";
+import { RATE_LIMIT_CONFIGS, rateLimitter } from "@/middleware/rate-limit";
 import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 
@@ -24,4 +24,4 @@ export async function getLastestFlashcardsCreated() {
     }
 }
 
-export const GET = rateLimitter({ fn: getLastestFlashcardsCreated });   
+export const GET = rateLimitter({ fn: getLastestFlashcardsCreated, options: RATE_LIMIT_CONFIGS.DASHBOARD });   

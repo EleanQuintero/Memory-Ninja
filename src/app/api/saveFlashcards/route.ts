@@ -1,4 +1,4 @@
-import { rateLimitter } from "@/middleware/rate-limit";
+import { RATE_LIMIT_CONFIGS, rateLimitter } from "@/middleware/rate-limit";
 import { validateFlashcards } from "@/utils/schemes/flashcards-validation/flashcardsValidation";
 import { NextResponse, NextRequest } from "next/server";
 
@@ -61,4 +61,4 @@ async function saveFlashcards(req: NextRequest) {
   }
 }
 
-export const POST = rateLimitter({ fn: saveFlashcards });
+export const POST = rateLimitter({ fn: saveFlashcards, options: RATE_LIMIT_CONFIGS.WRITE });

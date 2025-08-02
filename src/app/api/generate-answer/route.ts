@@ -1,5 +1,5 @@
 import { AnswerData } from "@/domain/flashcards";
-import { rateLimitter } from "@/middleware/rate-limit";
+import { RATE_LIMIT_CONFIGS, rateLimitter } from "@/middleware/rate-limit";
 import { validateGetAnswers } from "@/utils/schemes/get-answers-validation/getAnswersValidation";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -74,4 +74,4 @@ async function generateAnswer(req: NextRequest) {
   }
 }
 
-export const POST = rateLimitter({ fn: generateAnswer });
+export const POST = rateLimitter({ fn: generateAnswer, options: RATE_LIMIT_CONFIGS.DEFAULT });

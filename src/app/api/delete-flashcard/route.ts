@@ -1,4 +1,4 @@
-import { rateLimitter } from "@/middleware/rate-limit";
+import { RATE_LIMIT_CONFIGS, rateLimitter } from "@/middleware/rate-limit";
 import { NextRequest, NextResponse } from "next/server";
 
 async function deleteFlashcard(req: NextRequest) {
@@ -44,4 +44,4 @@ async function deleteFlashcard(req: NextRequest) {
   }
 }
 
-export const DELETE = rateLimitter({ fn: deleteFlashcard });
+export const DELETE = rateLimitter({ fn: deleteFlashcard, options: RATE_LIMIT_CONFIGS.WRITE });

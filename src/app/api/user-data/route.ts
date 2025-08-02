@@ -1,4 +1,4 @@
-import { rateLimitter } from "@/middleware/rate-limit";
+import { RATE_LIMIT_CONFIGS, rateLimitter } from "@/middleware/rate-limit";
 import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
@@ -49,4 +49,4 @@ async function saveUser() {
     }
 }
 
-export const POST = rateLimitter({ fn: saveUser })
+export const POST = rateLimitter({ fn: saveUser, options: RATE_LIMIT_CONFIGS.AUTH })
