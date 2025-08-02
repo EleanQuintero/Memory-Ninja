@@ -74,4 +74,4 @@ async function generateAnswer(req: NextRequest) {
   }
 }
 
-export const POST = rateLimitter({ fn: generateAnswer, options: RATE_LIMIT_CONFIGS.DEFAULT });
+export const POST = rateLimitter({ fn: generateAnswer, options: RATE_LIMIT_CONFIGS.WRITE });
