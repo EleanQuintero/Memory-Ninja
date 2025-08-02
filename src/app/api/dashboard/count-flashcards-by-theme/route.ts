@@ -1,13 +1,24 @@
 import { RATE_LIMIT_CONFIGS, rateLimitter } from "@/middleware/rate-limit";
 import { NextResponse } from "next/server";
-import { currentUser } from "@clerk/nextjs/server";
+import { currentUser, auth } from "@clerk/nextjs/server";
+
 
 async function getCountFlashcardsByTheme() {
+
+    const { getToken } = await auth()
+    const token = await getToken()
+
     try {
         const user = await currentUser()
         const userId = user?.id
 
-        const response = await fetch(`http://localhost:4444/api/dashboard/countByTheme/${userId}`)
+        const response = await fetch(`http://localhost:4444/api/dashboard/countByTheme/${userId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+        })
         if (!response.ok) {
             throw new Error("Error al realizar la peticion")
         }
