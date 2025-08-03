@@ -1,10 +1,12 @@
 import { RATE_LIMIT_CONFIGS, rateLimitter } from "@/middleware/rate-limit";
+import { getUserToken } from "@/utils/services/auth/getToken";
 import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 
 
 async function saveUser() {
+    const token = await getUserToken()
     const user = await currentUser()
     if (!user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
@@ -30,7 +32,8 @@ async function saveUser() {
         const res = await fetch("http://localhost:4444/api/user/new", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(data)
         })

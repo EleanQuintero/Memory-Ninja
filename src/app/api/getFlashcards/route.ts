@@ -1,9 +1,11 @@
 import { RATE_LIMIT_CONFIGS, rateLimitter } from "@/middleware/rate-limit";
+import { getUserToken } from "@/utils/services/auth/getToken";
 import { NextResponse, NextRequest } from "next/server";
 
 async function getFlashcards(req: NextRequest) {
     try {
 
+        const token = await getUserToken()
         const user_id = req.headers.get('x-user-id');
 
         if (!user_id) {
@@ -11,6 +13,11 @@ async function getFlashcards(req: NextRequest) {
         }
 
         const response = await fetch(`http://localhost:4444/api/user/flashcard/getByID/${user_id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
             signal: AbortSignal.timeout(4000)
         }
         );

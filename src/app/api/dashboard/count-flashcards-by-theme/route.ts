@@ -1,13 +1,12 @@
 import { RATE_LIMIT_CONFIGS, rateLimitter } from "@/middleware/rate-limit";
 import { NextResponse } from "next/server";
-import { currentUser, auth } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
+import { getUserToken } from "@/utils/services/auth/getToken";
 
 
 async function getCountFlashcardsByTheme() {
 
-    const { getToken } = await auth()
-    const token = await getToken()
-
+    const token = await getUserToken()
     try {
         const user = await currentUser()
         const userId = user?.id

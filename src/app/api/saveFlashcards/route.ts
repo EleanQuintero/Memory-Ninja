@@ -1,9 +1,11 @@
 import { RATE_LIMIT_CONFIGS, rateLimitter } from "@/middleware/rate-limit";
 import { validateFlashcards } from "@/utils/schemes/flashcards-validation/flashcardsValidation";
+import { getUserToken } from "@/utils/services/auth/getToken";
 import { NextResponse, NextRequest } from "next/server";
 
 async function saveFlashcards(req: NextRequest) {
   try {
+    const token = await getUserToken()
     const rawData = await req.json();
     console.log("datos en server:", rawData);
 
@@ -24,6 +26,7 @@ async function saveFlashcards(req: NextRequest) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
         },
         signal: AbortSignal.timeout(5000),
         body: JSON.stringify(rawData),
