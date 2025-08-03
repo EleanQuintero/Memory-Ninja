@@ -1,15 +1,26 @@
-import { rateLimitter } from "@/middleware/rate-limit";
+import { RATE_LIMIT_CONFIGS, rateLimitter } from "@/middleware/rate-limit";
 import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
+import { getUserToken } from "@/utils/services/auth/getToken";
+
 
 const getMaxFlashcardsByUser = async () => {
     const API_ENDPOINT = process.env.SERVER_GET_MAX_FLASHCARDS_BY_USER;
 
     try {
+        const token = await getUserToken()
         const user = await currentUser();
         const userId = user?.id;
 
-        const response = await fetch(`${API_ENDPOINT}${userId}`);
+        const response = await fetch(`${API_ENDPOINT}${userId}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
         if (!response.ok) {
             throw new Error("Error al realizar la petición");
         }
@@ -25,4 +36,4 @@ const getMaxFlashcardsByUser = async () => {
     }
 }
 
-export const GET = rateLimitter({ fn: getMaxFlashcardsByUser });
+export const GET = rateLimitter({ fn: getMaxFlashcardsByUser, options: RATE_LIMIT_CONFIGS.DASHBOARD });

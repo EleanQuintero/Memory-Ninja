@@ -1,10 +1,12 @@
 import { AnswerData } from "@/domain/flashcards";
-import { rateLimitter } from "@/middleware/rate-limit";
+import { RATE_LIMIT_CONFIGS, rateLimitter } from "@/middleware/rate-limit";
 import { validateGetAnswers } from "@/utils/schemes/get-answers-validation/getAnswersValidation";
+import { getUserToken } from "@/utils/services/auth/getToken";
 import { NextRequest, NextResponse } from "next/server";
 
 async function generateAnswer(req: NextRequest) {
   try {
+    const token = await getUserToken()
     const rawData = await req.json();
     console.log("Endpoint llamado:", "/api/generate-answer");
     console.log("Datos recibidos:", {
@@ -29,7 +31,10 @@ async function generateAnswer(req: NextRequest) {
 
     const response = await fetch("http://localhost:4444/api/questions/ask", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json"
+        , Authorization: `Bearer ${token}`
+      },
       signal: AbortSignal.timeout(7000),
       body: JSON.stringify({ userLevel, questions, tema: theme }),
     });
@@ -74,4 +79,4 @@ async function generateAnswer(req: NextRequest) {
   }
 }
 
-export const POST = rateLimitter({ fn: generateAnswer });
+export const POST = rateLimitter({ fn: generateAnswer, options: RATE_LIMIT_CONFIGS.WRITE });
