@@ -2,11 +2,27 @@ import { RATE_LIMIT_CONFIGS, rateLimitter } from "@/middleware/rate-limit";
 import { validateFlashcards } from "@/utils/schemes/flashcards-validation/flashcardsValidation";
 import { getUserToken } from "@/utils/services/auth/getToken";
 import { NextResponse, NextRequest } from "next/server";
+import { currentUser } from '@clerk/nextjs/server'
 
 async function saveFlashcards(req: NextRequest) {
+
+  const user = await currentUser();
+  if (!user) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+  const userId = user.id;
+
   try {
     const token = await getUserToken()
-    const rawData = await req.json();
+    const flashcardData = await req.json();
+    const rawData = {
+      user_id: userId,
+      ...flashcardData
+    }
+
     console.log("datos en server:", rawData);
 
     const validationError = validateFlashcards(rawData);

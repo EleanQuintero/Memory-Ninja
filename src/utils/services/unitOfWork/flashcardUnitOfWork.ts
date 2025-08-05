@@ -1,7 +1,7 @@
 import { FlashcardRepository } from "@/infrastructure/flashcardRepository";
 import { useFlashCardsStore } from "@/app/dashboard/flashcards/store/flashCardsStore";
 import { NativeCacheService } from "../cache/nativeCacheService";
-import { AnswerData, flashcard, getAnswersProps } from "@/domain/flashcards";
+import { AnswerData, flashcard, flashcardToSync, getAnswersProps } from "@/domain/flashcards";
 import { UserSessionService } from "../userSession/userSessionService";
 
 export class FlashcardUnitOfWork {
@@ -23,18 +23,9 @@ export class FlashcardUnitOfWork {
     return FlashcardUnitOfWork.instance;
   }
 
-  public async commit(userId: string): Promise<void> {
-    const state = useFlashCardsStore.getState();
-
-    if (!state.isDirty) return; // No hay cambios para sincronizar
-
-    // Obtenemos las nuevas flashcards
-    const newFlashCards = state.getNewFlashcardsForSync(userId);
-
-    if (newFlashCards.flashcard.length === 0) return; // Nada que sincronizar
-
+  public async commit(flashcardsData: flashcardToSync): Promise<void> {
     try {
-      await this.repository.saveFlashcards(newFlashCards);
+      await this.repository.saveFlashcards(flashcardsData);
       state.markAsSynced();
     } catch (error) {
       console.error("Error durante la sincronización:", error);
