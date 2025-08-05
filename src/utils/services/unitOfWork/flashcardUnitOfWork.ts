@@ -3,7 +3,6 @@ import { useFlashCardsStore } from "@/app/dashboard/flashcards/store/flashCardsS
 import { NativeCacheService } from "../cache/nativeCacheService";
 import { AnswerData, flashcard, getAnswersProps } from "@/domain/flashcards";
 import { UserSessionService } from "../userSession/userSessionService";
-import { retryFetchData } from "../functions/process/retryFetchData";
 
 export class FlashcardUnitOfWork {
   private readonly repository: FlashcardRepository;
@@ -22,13 +21,6 @@ export class FlashcardUnitOfWork {
       FlashcardUnitOfWork.instance = new FlashcardUnitOfWork();
     }
     return FlashcardUnitOfWork.instance;
-  }
-
-  private async _fetchAndSyncFlashcards(userId: string): Promise<flashcard[]> {
-    const flashcards = await this.repository.getAllFlashcards(userId);
-    await this.cacheService.setCache(userId, flashcards);
-    useFlashCardsStore.getState().setConsolidatedFlashcards(flashcards);
-    return flashcards;
   }
 
   private async _handleUserChange(newUserId: string): Promise<void> {
@@ -70,24 +62,8 @@ export class FlashcardUnitOfWork {
 
   public async loadUserFlashCards(userId: string): Promise<flashcard[]> {
     await this._handleUserChange(userId);
-
-    // Obtener el estado actual del store
-    const currentState = useFlashCardsStore.getState();
-
-    // Verificar si ya hay flashcards en el estado consolidado
-    if (currentState.consolidatedFlashCards.length > 0) {
-      return currentState.consolidatedFlashCards;
-    }
-
-    // Intentar cargar desde cache primero
-    const cached = await this.cacheService.getCache(userId);
-    if (cached) {
-      useFlashCardsStore.getState().setConsolidatedFlashcards(cached);
-      return cached;
-    }
-
     // Si no hay cache, cargar desde la API
-    const flashcards = await retryFetchData(() => this._fetchAndSyncFlashcards(userId));
+    const flashcards = await this.repository.getAllFlashcards(userId);
     return flashcards;
   }
 
