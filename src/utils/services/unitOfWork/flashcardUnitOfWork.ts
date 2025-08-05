@@ -31,26 +31,6 @@ export class FlashcardUnitOfWork {
     return flashcards;
   }
 
-  private async _firstClean(userId: string): Promise<boolean> {
-    try {
-      const firstInit = sessionStorage.getItem("app_initialized");
-
-      if (!firstInit) {
-        this.cacheService.clearCache(userId);
-        useFlashCardsStore.getState().clearAllData();
-        localStorage.removeItem("flashcards-cache");
-        localStorage.removeItem("flashcard-consolidated");
-        sessionStorage.setItem("app_initialized", "true");
-        return true;
-      } else {
-        return false;
-      }
-    } catch (error) {
-      console.error("Error during first clean:", error);
-      return false;
-    }
-  }
-
   private async _handleUserChange(newUserId: string): Promise<void> {
     if (this.userSessionService.hasUserChanged(newUserId)) {
       const previousUserId = this.userSessionService.getPreviousUserId();
@@ -89,7 +69,6 @@ export class FlashcardUnitOfWork {
   }
 
   public async loadUserFlashCards(userId: string): Promise<flashcard[]> {
-    await this._firstClean(userId);
     await this._handleUserChange(userId);
 
     // Obtener el estado actual del store
