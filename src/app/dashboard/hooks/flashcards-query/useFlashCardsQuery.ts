@@ -19,7 +19,7 @@ export const useFlashCardsQuery = () => {
 
     const { mutate } = useMutation({
         mutationFn: async (flashcardsData: flashcardToSync) => {
-            await flashcardUnitOfWork.commit(flashcardsData);
+            await flashcardUnitOfWork.commitFlashcards(flashcardsData);
         },
 
         onSuccess: () => {

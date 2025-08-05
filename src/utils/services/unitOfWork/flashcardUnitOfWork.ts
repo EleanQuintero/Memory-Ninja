@@ -1,5 +1,4 @@
 import { FlashcardRepository } from "@/infrastructure/flashcardRepository";
-import { useFlashCardsStore } from "@/app/dashboard/flashcards/store/flashCardsStore";
 import { NativeCacheService } from "../cache/nativeCacheService";
 import { AnswerData, flashcard, flashcardToSync, getAnswersProps } from "@/domain/flashcards";
 import { UserSessionService } from "../userSession/userSessionService";
@@ -23,20 +22,25 @@ export class FlashcardUnitOfWork {
     return FlashcardUnitOfWork.instance;
   }
 
-  public async commit(flashcardsData: flashcardToSync): Promise<void> {
+  public async commitFlashcards(flashcardsData: flashcardToSync): Promise<void> {
     try {
       await this.repository.saveFlashcards(flashcardsData);
-      state.markAsSynced();
     } catch (error) {
-      console.error("Error durante la sincronización:", error);
-      state.markAsSynced();
+      console.error("Error durante la sincronización:");
       throw error;
     }
   }
 
   public async loadUserFlashCards(): Promise<flashcard[]> {
-    const flashcards = await this.repository.getAllFlashcards();
-    return flashcards;
+    try {
+      const flashcards = await this.repository.getAllFlashcards();
+      return flashcards;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw new Error("Error desconocido al cargar las flashcards");
+    }
   }
 
   public async getAnswers({ theme, userLevel, questions }: getAnswersProps): Promise<AnswerData> {
