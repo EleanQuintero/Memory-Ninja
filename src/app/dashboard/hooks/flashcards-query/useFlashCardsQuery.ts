@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { flashcardToSync, flashcard } from '@/domain/flashcards';
 import { flashcardUnitOfWork } from '@/utils/services/unitOfWork/flashcardUnitOfWork';
 
-export const useFlashCardsQuery = (user_id: string) => {
+export const useFlashCardsQuery = () => {
 
     const QUERY_KEY = 'flashcards';
 
@@ -10,8 +10,7 @@ export const useFlashCardsQuery = (user_id: string) => {
 
     const { data, isLoading, error, isError } = useQuery<flashcard[], Error>({
         queryKey: [QUERY_KEY],
-        queryFn: async () => await flashcardUnitOfWork.loadUserFlashCards(user_id),
-        enabled: !!user_id,
+        queryFn: async () => await flashcardUnitOfWork.loadUserFlashCards(),
         staleTime: 5 * 60 * 1000, // 5 minutes
         gcTime: 30 * 60 * 1000, // 30 minutes
         refetchOnWindowFocus: false,
@@ -19,7 +18,6 @@ export const useFlashCardsQuery = (user_id: string) => {
         refetchOnMount: 'always',
         retry: 3,
     })
-    console.log(user_id)
     console.log(data)
 
     return { flashcards: data, isLoading, error, isError };

@@ -23,23 +23,6 @@ export class FlashcardUnitOfWork {
     return FlashcardUnitOfWork.instance;
   }
 
-  private async _handleUserChange(newUserId: string): Promise<void> {
-    if (this.userSessionService.hasUserChanged(newUserId)) {
-      const previousUserId = this.userSessionService.getPreviousUserId();
-
-      if (previousUserId) {
-        // Limpiamos el estado del store
-        useFlashCardsStore.getState().clearAllData();
-
-        // Limpiar datos del usuario anterior
-        await this.userSessionService.cleanupPreviousUserData(previousUserId);
-      }
-
-      // Actualizamos sesión del nuevo usuario
-      this.userSessionService.updateUserSession(newUserId);
-    }
-  }
-
   public async commit(userId: string): Promise<void> {
     const state = useFlashCardsStore.getState();
 
@@ -60,10 +43,10 @@ export class FlashcardUnitOfWork {
     }
   }
 
-  public async loadUserFlashCards(userId: string): Promise<flashcard[]> {
-    await this._handleUserChange(userId);
+  public async loadUserFlashCards(): Promise<flashcard[]> {
+    // await this._handleUserChange(userId);
     // Si no hay cache, cargar desde la API
-    const flashcards = await this.repository.getAllFlashcards(userId);
+    const flashcards = await this.repository.getAllFlashcards();
     return flashcards;
   }
 

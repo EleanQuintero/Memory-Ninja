@@ -16,7 +16,6 @@ export default function FlashCardsPage() {
   const [selectedTheme, setSelectedTheme] = useState<string>("");
   const { filteredFlashcards } = useFilterFlashcards({
     themeToFilter: selectedTheme,
-    userID: user_id as string,
   });
 
   // Obtener datos del usuario
@@ -24,7 +23,7 @@ export default function FlashCardsPage() {
     user?.firstName?.slice(0, 5) + " " + user?.lastName?.slice(0, 8);
 
   const { error } = useUIState();
-  const { isLoading } = useFlashCardsQuery(user_id as string);
+  const { isLoading } = useFlashCardsQuery();
 
   // Iniciar sincronización
   useFlashcardSync(user_id as string);

@@ -5,12 +5,11 @@ import { useFlashCardsQuery } from "../../hooks/flashcards-query/useFlashCardsQu
 
 interface Props {
   themeToFilter?: string | null
-  userID: string;
 }
 
-export const useFilterFlashcards = ({ themeToFilter, userID }: Props) => {
+export const useFilterFlashcards = ({ themeToFilter }: Props) => {
 
-  const { flashcards } = useFlashCardsQuery(userID)
+  const { flashcards } = useFlashCardsQuery()
   const allFlashCards = flashcards || [];
 
   const result = useMemo(() => {
