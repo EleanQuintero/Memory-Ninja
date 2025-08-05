@@ -44,8 +44,6 @@ export class FlashcardUnitOfWork {
   }
 
   public async loadUserFlashCards(): Promise<flashcard[]> {
-    // await this._handleUserChange(userId);
-    // Si no hay cache, cargar desde la API
     const flashcards = await this.repository.getAllFlashcards();
     return flashcards;
   }

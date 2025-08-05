@@ -18,8 +18,6 @@ export const useFlashCardsQuery = () => {
         refetchOnMount: 'always',
         retry: 3,
     })
-    console.log(data)
-
     return { flashcards: data, isLoading, error, isError };
 
 
