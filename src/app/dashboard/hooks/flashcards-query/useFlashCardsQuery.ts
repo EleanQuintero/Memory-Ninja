@@ -10,13 +10,17 @@ export const useFlashCardsQuery = (user_id: string) => {
 
     const { data, isLoading, error, isError } = useQuery<flashcard[], Error>({
         queryKey: [QUERY_KEY],
-        queryFn: () => flashcardUnitOfWork.loadUserFlashCards(user_id),
-        staleTime: 1000 * 60 * 5, // 5 minutes
-        gcTime: 1000 * 60 * 30, // 30 minutes
+        queryFn: async () => await flashcardUnitOfWork.loadUserFlashCards(user_id),
+        enabled: !!user_id,
+        staleTime: 5 * 60 * 1000, // 5 minutes
+        gcTime: 30 * 60 * 1000, // 30 minutes
         refetchOnWindowFocus: false,
         refetchOnReconnect: true,
+        refetchOnMount: 'always',
         retry: 3,
     })
+    console.log(user_id)
+    console.log(data)
 
     return { flashcards: data, isLoading, error, isError };
 

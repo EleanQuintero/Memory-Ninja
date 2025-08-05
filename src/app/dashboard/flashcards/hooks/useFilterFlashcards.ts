@@ -1,26 +1,25 @@
-import { useFlashCardsStore } from "@/app/dashboard/flashcards/store/flashCardsStore";
-import { useState, useEffect } from "react";
+import { useMemo } from "react";
 import { flashcard } from "@/domain/flashcards";
+import { useFlashCardsQuery } from "../../hooks/flashcards-query/useFlashCardsQuery";
 
 
 interface Props {
-  themeToFilter?: string | null;
+  themeToFilter?: string | null
+  userID: string;
 }
 
-export const useFilterFlashcards = ({ themeToFilter }: Props) => {
- 
-    const allFlashCards = useFlashCardsStore((state) => state.consolidatedFlashCards);
-    const [filteredFlashcards, setFilteredFlashcards] = useState<flashcard[]>([]);
+export const useFilterFlashcards = ({ themeToFilter, userID }: Props) => {
 
-    useEffect(() => {
-        if (themeToFilter) {
-            setFilteredFlashcards(allFlashCards.filter(card => card.theme === themeToFilter));
-          } 
-         else {
-            // Si no hay filtro, mostrar todas
-      setFilteredFlashcards(allFlashCards);
-        }
-    }, [themeToFilter, allFlashCards]);
+  const { flashcards } = useFlashCardsQuery(userID)
+  const allFlashCards = flashcards || [];
 
-    return { filteredFlashcards };
+  const result = useMemo(() => {
+    const filteredCards = themeToFilter
+      ? allFlashCards.filter((card: flashcard) => card.theme === themeToFilter)
+      : allFlashCards;
+
+    return { filteredFlashcards: filteredCards };
+  }, [themeToFilter, allFlashCards])
+
+  return result;
 }

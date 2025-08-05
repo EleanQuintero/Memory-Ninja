@@ -7,6 +7,7 @@ import { esES } from "@clerk/localizations";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/ui/app-sidebar";
 import SubscriptionFallback from "@/components/fallbacks/subscription";
+import { Provider } from "@/components/provider/Provider";
 
 export const metadata: Metadata = {
   title: "FlashCard Generator",
@@ -18,26 +19,26 @@ export default function DashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <ClerkProvider localization={esES}>
-       <Protect plan={"pro_user"} fallback={<SubscriptionFallback />}>
-       
-      <section className="grid grid-cols-[auto,1fr]">
-        <SidebarProvider>
-          <aside>
-            <AppSidebar />
-          </aside>
-          <main
-            className={` ${sfPro.className} antialiased dark  w-full h-full  bg-gray-100 dark:bg-gradient-to-br from-[#05264f] to-[#19324a] text-gray-900 dark:text-white`}
-          >
-            <div>
-              <SidebarTrigger />
-            </div>
-            {children}
-          </main>
-        </SidebarProvider>
-      </section>
+      <Protect plan={"pro_user"} fallback={<SubscriptionFallback />}>
+        <section className="grid grid-cols-[auto,1fr]">
+          <Provider>
+            <SidebarProvider>
+              <aside>
+                <AppSidebar />
+              </aside>
+              <main
+                className={` ${sfPro.className} antialiased dark  w-full h-full  bg-gray-100 dark:bg-gradient-to-br from-[#05264f] to-[#19324a] text-gray-900 dark:text-white`}
+              >
+                <div>
+                  <SidebarTrigger />
+                </div>
+                {children}
+              </main>
+            </SidebarProvider>
+          </Provider>
+        </section>
       </Protect>
     </ClerkProvider>
   );

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { X } from "lucide-react"
+import { X } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { useDelete } from "../hooks/useDelete";
 
@@ -14,12 +14,16 @@ interface FlashcardProps {
   theme: string;
 }
 
-export default function Flashcard({ question, answer, theme, flashcard_id }: FlashcardProps) {
+export default function Flashcard({
+  question,
+  answer,
+  theme,
+  flashcard_id,
+}: FlashcardProps) {
   const { user } = useUser();
-  const { deleteFlashcard } = useDelete()
- 
+  const { deleteFlashcard } = useDelete();
 
-  const user_id = user?.id; 
+  const user_id = user?.id;
 
   const [isFlipped, setIsFlipped] = useState(false);
 
@@ -28,8 +32,8 @@ export default function Flashcard({ question, answer, theme, flashcard_id }: Fla
   };
 
   const handleDelete = async () => {
-      await deleteFlashcard(user_id as string, flashcard_id)
-  }
+    await deleteFlashcard(user_id as string, flashcard_id);
+  };
 
   return (
     <div className="w-full max-w-md mx-auto p-4">
@@ -43,7 +47,7 @@ export default function Flashcard({ question, answer, theme, flashcard_id }: Fla
           <Card className="absolute w-full h-full backface-hidden bg-gradient-to-br from-slate-900/95 via-slate-700/98 to-black backdrop-blur-xl border-4  border-[#000000] hover:border-[#35495e] transition-colors duration-300 ease-out text-white p-6">
             <div className="flex flex-row">
               <Button
-                variant="custom"
+                variant="default"
                 className="absolute top-2 right-2 group"
                 onClick={handleDelete}
               >
@@ -57,10 +61,7 @@ export default function Flashcard({ question, answer, theme, flashcard_id }: Fla
               <div>
                 <h3 className="text-xl font-extrabold mt-2">{question}</h3>
               </div>
-              <Button
-                onClick={handleFlip}
-                variant={"seeAnswer"}
-              >
+              <Button onClick={handleFlip} variant={"default"}>
                 Ver respuesta
               </Button>
             </div>
@@ -75,11 +76,7 @@ export default function Flashcard({ question, answer, theme, flashcard_id }: Fla
               <div>
                 <p className="mt-4 text-lg">{answer}</p>
               </div>
-              <Button
-                onClick={handleFlip}
-                variant={"seeAnswer"}
-                className=""
-              >
+              <Button onClick={handleFlip} variant={"default"} className="">
                 Ver pregunta
               </Button>
             </div>
