@@ -3,131 +3,74 @@ import { useFlashCardsStore } from "@/app/dashboard/flashcards/store/flashCardsS
 import { NativeCacheService } from "../cache/nativeCacheService";
 import { AnswerData, flashcard, getAnswersProps } from "@/domain/flashcards";
 import { UserSessionService } from "../userSession/userSessionService";
-import { retryFetchData } from "../functions/process/retryFetchData";
 
+export class FlashcardUnitOfWork {
+  private readonly repository: FlashcardRepository;
+  private readonly cacheService: NativeCacheService;
+  private readonly userSessionService: UserSessionService;
+  private static instance: FlashcardUnitOfWork;
 
-const repository = new FlashcardRepository();
-const cacheService = NativeCacheService.getInstance();
-const userSessionService = UserSessionService.getInstance();
+  private constructor() {
+    this.repository = new FlashcardRepository();
+    this.cacheService = NativeCacheService.getInstance();
+    this.userSessionService = UserSessionService.getInstance();
+  }
 
-export const flashcardUnitOfWork = {
-  async _fetchAndSyncFlashcards(user_id: string) {
-    const flashcards = await repository.getAllFlashcards(user_id);
-    await cacheService.setCache(user_id, flashcards);
-    useFlashCardsStore.getState().setConsolidatedFlashcards(flashcards);
-    return flashcards;
-  },
-
-  async _firstClean(user_id: string): Promise<boolean> {
-    try {
-        const firstInit = sessionStorage.getItem("app_initialized")
-    
-        if(!firstInit) {
-            cacheService.clearCache(user_id);
-            useFlashCardsStore.getState().clearAllData();
-            localStorage.removeItem("flashcards-cache");
-            localStorage.removeItem("flashcard-consolidated");
-            sessionStorage.setItem("app_initialized", "true");
-
-            return true
-        } else {
-            return false
-        }
-        
-        
-    } catch (error) {
-        console.error("Error during first clean:", error);
-        return false
+  public static getInstance(): FlashcardUnitOfWork {
+    if (!FlashcardUnitOfWork.instance) {
+      FlashcardUnitOfWork.instance = new FlashcardUnitOfWork();
     }
-  },
+    return FlashcardUnitOfWork.instance;
+  }
 
-  async commit(user_id: string): Promise<void> {
+  public async commit(userId: string): Promise<void> {
     const state = useFlashCardsStore.getState();
 
     if (!state.isDirty) return; // No hay cambios para sincronizar
 
     // Obtenemos las nuevas flashcards
-    const newFlashCards = state.getNewFlashcardsForSync(user_id);
+    const newFlashCards = state.getNewFlashcardsForSync(userId);
 
     if (newFlashCards.flashcard.length === 0) return; // Nada que sincronizar
 
     try {
-      await repository.saveFlashcards(newFlashCards);
+      await this.repository.saveFlashcards(newFlashCards);
       state.markAsSynced();
     } catch (error) {
-      console.error("Error durante la sincronizacion:", error);
+      console.error("Error durante la sincronización:", error);
       state.markAsSynced();
       throw error;
-      // No se marca como sincronizado si falla
     }
-  },
+  }
 
-  async loadUserFlashCards(user_id: string): Promise<flashcard[]> {
-    await this._firstClean(user_id)
-    await this._handleUserChange(user_id);
-    
-    // Obtener el estado actual del store
-    const currentState = useFlashCardsStore.getState();
-
-    // DECISIÓN 1: Verificar si ya hay flashcards en el estado consolidado
-    if (currentState.consolidatedFlashCards.length > 0) {
-      return currentState.consolidatedFlashCards;
-    }
-
-    // DECISIÓN 2: Solo cargar desde cache/API si el estado está vacío
-
-    // Intentar cargar desde cache primero
-    const cached = await cacheService.getCache(user_id);
-    if (cached) {
-      useFlashCardsStore.getState().setConsolidatedFlashcards(cached);
-      return cached;
-    }
-
-    // Si no hay cache, cargar desde la API
-   
-    const flashcards = await retryFetchData(() => this._fetchAndSyncFlashcards(user_id));
+  public async loadUserFlashCards(): Promise<flashcard[]> {
+    const flashcards = await this.repository.getAllFlashcards();
     return flashcards;
-  },
+  }
 
-  async _handleUserChange(newUserId: string): Promise<void> {
-    if (userSessionService.hasUserChanged(newUserId)) {
-      const previousUserId = userSessionService.getPreviousUserId();
-
-      if (previousUserId) {
-        //Limpiamos el estado del store
-        useFlashCardsStore.getState().clearAllData();
-
-        //Limpiar datos del usuario anterior
-        await userSessionService.cleanupPreviousUserData(previousUserId);
-      }
-
-      //Actualizamos sesion del nuevo usuario
-      userSessionService.updateUserSession(newUserId);
-    }
-  },
-
-  async getAnswers ({ theme, userLevel, questions }: getAnswersProps): Promise<AnswerData> {
+  public async getAnswers({ theme, userLevel, questions }: getAnswersProps): Promise<AnswerData> {
     try {
-      const answer = await repository.getModelAnswer({ theme, userLevel, questions });
-      return answer;
+      return await this.repository.getModelAnswer({ theme, userLevel, questions });
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
       }
       throw new Error("Error desconocido al obtener respuestas");
     }
-  },
+  }
 
-  async deleteFlashcard(user_id: string,id: string): Promise<void> {  
+  public async deleteFlashcard(userId: string, id: string): Promise<void> {
     try {
-      const response = await repository.deleteFlashcard(user_id, id );
-      return response
+      return await this.repository.deleteFlashcard(userId, id);
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
       }
       throw new Error("Error desconocido al eliminar flashcard");
     }
-    }
-    }
+  }
+}
+
+// Exportar una instancia para mantener compatibilidad con el código existente
+export const flashcardUnitOfWork = FlashcardUnitOfWork.getInstance();
 

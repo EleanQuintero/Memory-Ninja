@@ -25,8 +25,8 @@ export class FlashcardRepository implements Irepository {
     return saveFlashcards(flashcardsData);
   }
 
-  getAllFlashcards(user_id: string): Promise<flashcard[]> {
-    return getAllFlashcards(user_id);
+  getAllFlashcards(): Promise<flashcard[]> {
+    return getAllFlashcards();
   }
 
   getModelAnswer({
