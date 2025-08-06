@@ -35,11 +35,8 @@ export const useForm = () => {
       // Obtenemos el tema
       const theme = selectedTheme;
 
-      //Enviamos los datos a la API
-      const userLevel = "basic";
-
       // La respuesta ya es el array de respuestas directamente
-      const answers = await getAnswers({ theme, questions, userLevel });
+      const answers = await getAnswers({ theme, questions });
 
       if (!answers) {
         throw new Error("No se recibieron respuestas de la API");

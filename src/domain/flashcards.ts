@@ -11,7 +11,6 @@ export interface flashcardToSync {
 
 export interface getAnswersProps {
   theme: string;
-  userLevel: string;
   questions: string[];
 }
 
