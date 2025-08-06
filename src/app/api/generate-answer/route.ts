@@ -10,7 +10,6 @@ async function generateAnswer(req: NextRequest) {
     const rawData = await req.json();
     console.log("Endpoint llamado:", "/api/generate-answer");
     console.log("Datos recibidos:", {
-      userLevel: rawData.userLevel,
       theme: rawData.theme,
       questionsCount: rawData.questions?.length,
     });
@@ -27,7 +26,7 @@ async function generateAnswer(req: NextRequest) {
       );
     }
 
-    const { userLevel, questions, theme } = rawData;
+    const { questions, theme } = rawData;
 
     const response = await fetch("http://localhost:4444/api/questions/ask", {
       method: "POST",
@@ -36,7 +35,7 @@ async function generateAnswer(req: NextRequest) {
         , Authorization: `Bearer ${token}`
       },
       signal: AbortSignal.timeout(7000),
-      body: JSON.stringify({ userLevel, questions, tema: theme }),
+      body: JSON.stringify({ questions, tema: theme }),
     });
 
     if (!response.ok) {

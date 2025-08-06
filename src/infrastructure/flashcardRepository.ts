@@ -13,7 +13,6 @@ interface Irepository {
   saveFlashcards(flashcardsData: flashcardToSync): Promise<void>;
   getAllFlashcards(user_id: string): Promise<flashcard[]>;
   getModelAnswer({
-    userLevel,
     theme,
     questions,
   }: getAnswersProps): Promise<AnswerData>;
@@ -30,11 +29,10 @@ export class FlashcardRepository implements Irepository {
   }
 
   getModelAnswer({
-    userLevel,
     theme,
     questions,
   }: getAnswersProps): Promise<AnswerData> {
-    return getModelAnswer({ userLevel, theme, questions });
+    return getModelAnswer({ theme, questions });
   }
 
   deleteFlashcard(user_id: string, id: string): Promise<void> {
