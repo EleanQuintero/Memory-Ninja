@@ -1,18 +1,12 @@
 import { FlashcardRepository } from "@/infrastructure/flashcardRepository";
-import { NativeCacheService } from "../cache/nativeCacheService";
 import { AnswerData, flashcard, flashcardToSync, getAnswersProps } from "@/domain/flashcards";
-import { UserSessionService } from "../userSession/userSessionService";
 
 export class FlashcardUnitOfWork {
   private readonly repository: FlashcardRepository;
-  private readonly cacheService: NativeCacheService;
-  private readonly userSessionService: UserSessionService;
   private static instance: FlashcardUnitOfWork;
 
   private constructor() {
     this.repository = new FlashcardRepository();
-    this.cacheService = NativeCacheService.getInstance();
-    this.userSessionService = UserSessionService.getInstance();
   }
 
   public static getInstance(): FlashcardUnitOfWork {

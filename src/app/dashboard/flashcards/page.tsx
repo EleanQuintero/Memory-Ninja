@@ -3,7 +3,6 @@ import { ThemeSelector } from "@/app/dashboard/flashcards/components/ThemeSelect
 import Flashcard from "@/app/dashboard/flashcards/components/flashcard";
 import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
-import { useFlashcardSync } from "@/hooks/useFlashcardSync";
 import LoadingModal from "@/components/fallbacks/LoadingModal";
 import { useUIState } from "@/store/uiState/uiState";
 import { useFilterFlashcards } from "@/app/dashboard/flashcards/hooks/useFilterFlashcards";
@@ -11,7 +10,6 @@ import { useFlashCardsQuery } from "../hooks/flashcards-query/useFlashCardsQuery
 
 export default function FlashCardsPage() {
   const { user } = useUser();
-  const user_id = user?.id;
 
   const [selectedTheme, setSelectedTheme] = useState<string>("");
   const { filteredFlashcards } = useFilterFlashcards({
@@ -24,9 +22,6 @@ export default function FlashCardsPage() {
 
   const { error } = useUIState();
   const { isLoading } = useFlashCardsQuery();
-
-  // Iniciar sincronización
-  useFlashcardSync(user_id as string);
 
   // Manejar estados de carga y error
   if (isLoading) {
