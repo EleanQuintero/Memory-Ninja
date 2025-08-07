@@ -2,7 +2,6 @@ import ThemeSelectorComponent from "../theme-selector/ThemeSelector";
 import { Button } from "../../../../../components/ui/button";
 import { Textarea } from "../../../../../components/ui/textarea";
 import { Send } from "lucide-react";
-import type { UserResource } from "@clerk/types";
 import { SourceSelector } from "./SourceSelector";
 import { useForm } from "@/app/dashboard/generate/hooks/useForm";
 import { useUIState } from "@/store/uiState/uiState";
@@ -10,13 +9,9 @@ import { InfoCards } from "./info-cards";
 
 interface Props {
   loadingAnswers: boolean;
-  user: UserResource | null | undefined;
 }
 
-export const FlashCardGenerator: React.FC<Props> = ({
-  loadingAnswers,
-  user,
-}) => {
+export const FlashCardGenerator: React.FC<Props> = ({ loadingAnswers }) => {
   const { handleSubmit, pregunta, handlePreguntaChange, textareaRef } =
     useForm();
   const { error } = useUIState();
@@ -57,7 +52,7 @@ export const FlashCardGenerator: React.FC<Props> = ({
             <SourceSelector />
             <Button
               type="submit"
-              disabled={!user || !user.id || !!error || loadingAnswers}
+              disabled={!!error || loadingAnswers}
               className="flex items-center gap-2 hover:cursor-pointer"
               aria-label="Generar Flashcards"
               variant={"ghost"}
