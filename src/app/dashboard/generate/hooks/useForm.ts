@@ -52,11 +52,6 @@ export const useForm = () => {
       }
 
       saveFlashcards(flashcardData);
-
-
-
-
-
       resetForm();
     } catch (error) {
       if (error instanceof Error)

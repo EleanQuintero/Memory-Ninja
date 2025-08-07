@@ -1,4 +1,3 @@
-import { useUser } from "@clerk/nextjs";
 import SyncIndicator from "../../../../../components/ui/sync-indicator";
 import { usePing } from "@/hooks/usePing";
 import LoadingModal from "../../../../../components/fallbacks/LoadingModal";
@@ -6,16 +5,12 @@ import { FlashCardGenerator } from "./FlashCardGenerator";
 import { useUIState } from "@/store/uiState/uiState";
 
 export const Generator = () => {
-  const { user, isLoaded } = useUser();
   const { loading } = useUIState();
 
   // Iniciar sincronización
   usePing();
 
-  // Mostrar mensaje de carga si el usuario aún no está listo
-  if (!isLoaded || !user || !user.id) {
-    return <LoadingModal message="Cargando usuario..." isLoading={loading} />;
-  }
+  // Mostrar mensaje de carga al procesar la solicitud
 
   if (loading) {
     return (
@@ -37,8 +32,8 @@ export const Generator = () => {
 
   return (
     <section className="flex flex-row items-center justify-center rounded-lg w-full mt-auto text-xl">
-      <FlashCardGenerator user={user} loadingAnswers={loading} />
-      <SyncIndicator />
+      <FlashCardGenerator loadingAnswers={loading} />
+      <SyncIndicator isPending />
     </section>
   );
 };

@@ -21,14 +21,14 @@ export default function FlashCardsPage() {
     user?.firstName?.slice(0, 5) + " " + user?.lastName?.slice(0, 8);
 
   const { error } = useUIState();
-  const { isLoading } = useFlashCardsQuery();
+  const { flashcardLoading } = useFlashCardsQuery();
 
   // Manejar estados de carga y error
-  if (isLoading) {
+  if (flashcardLoading) {
     return (
       <LoadingModal
         message="Cargando tus flashcards..."
-        isLoading={isLoading}
+        isLoading={flashcardLoading}
       />
     );
   }
