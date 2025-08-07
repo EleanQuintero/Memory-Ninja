@@ -48,9 +48,9 @@ export class FlashcardUnitOfWork {
     }
   }
 
-  public async deleteFlashcard(userId: string, id: string): Promise<void> {
+  public async deleteFlashcard(flashcardID: string): Promise<void> {
     try {
-      return await this.repository.deleteFlashcard(userId, id);
+      return await this.repository.deleteFlashcard(flashcardID);
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);

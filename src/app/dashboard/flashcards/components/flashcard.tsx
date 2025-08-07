@@ -4,11 +4,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { X } from "lucide-react";
-import { useUser } from "@clerk/nextjs";
-import { useDelete } from "../hooks/useDelete";
+import { useFlashCardsQuery } from "../../hooks/flashcards-query/useFlashCardsQuery";
 
 interface FlashcardProps {
-  flashcard_id: string;
+  flashcardID: string;
   question: string;
   answer: string;
   theme: string;
@@ -18,12 +17,9 @@ export default function Flashcard({
   question,
   answer,
   theme,
-  flashcard_id,
+  flashcardID,
 }: FlashcardProps) {
-  const { user } = useUser();
-  const { deleteFlashcard } = useDelete();
-
-  const user_id = user?.id;
+  const { deleteFlashcard } = useFlashCardsQuery();
 
   const [isFlipped, setIsFlipped] = useState(false);
 
@@ -32,7 +28,7 @@ export default function Flashcard({
   };
 
   const handleDelete = async () => {
-    await deleteFlashcard(user_id as string, flashcard_id);
+    deleteFlashcard(flashcardID);
   };
 
   return (

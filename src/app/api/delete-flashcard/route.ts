@@ -1,9 +1,11 @@
 import { RATE_LIMIT_CONFIGS, rateLimitter } from "@/middleware/rate-limit";
 import { getUserToken } from "@/utils/services/auth/getToken";
 import { NextRequest, NextResponse } from "next/server";
+import { currentUser } from "@clerk/nextjs/server";
 
 async function deleteFlashcard(req: NextRequest) {
-  const userID = req.headers.get("x-user-id");
+  const user = await currentUser();
+  const userID = user?.id;
   const id = req.headers.get("x-flashcard-id");
 
   if (!id) {

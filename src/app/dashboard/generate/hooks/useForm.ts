@@ -13,7 +13,7 @@ export const useForm = () => {
   const selectedTheme = useThemeStore((state) => state.selectedTheme);
   const { showError, debouncedSetError } = useErrorMessage();
   const { getAnswers } = useGetAnswers();
-  const { mutate } = useFlashCardsQuery();
+  const { saveFlashcards } = useFlashCardsQuery();
 
   const resetForm = () => {
     setPregunta("");
@@ -51,7 +51,7 @@ export const useForm = () => {
         })),
       }
 
-      mutate(flashcardData);
+      saveFlashcards(flashcardData);
 
 
 
