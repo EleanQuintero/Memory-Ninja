@@ -13,11 +13,10 @@ export const useFlashCardsQuery = () => {
         gcTime: 30 * 60 * 1000, // 30 minutes
         refetchOnWindowFocus: false,
         refetchOnReconnect: true,
-        refetchOnMount: "always",
         retry: 3,
     });
 
-    const { mutate } = useMutation({
+    const { mutate: saveFlashcards } = useMutation({
         mutationFn: async (flashcardsData: flashcardToSync) => {
             await flashcardUnitOfWork.commitFlashcards(flashcardsData);
         },
@@ -27,5 +26,15 @@ export const useFlashCardsQuery = () => {
         },
     });
 
-    return { flashcards: data, isLoading, error, isError, mutate };
+    const { mutate: deleteFlashcard } = useMutation({
+        mutationFn: async (flashcardID: string) => {
+            await flashcardUnitOfWork.deleteFlashcard(flashcardID);
+        },
+
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY] });
+        },
+    });
+
+    return { flashcards: data, isLoading, error, isError, saveFlashcards, deleteFlashcard };
 };

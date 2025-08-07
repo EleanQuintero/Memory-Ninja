@@ -35,7 +35,7 @@ export class FlashcardRepository implements Irepository {
     return getModelAnswer({ theme, questions });
   }
 
-  deleteFlashcard(user_id: string, id: string): Promise<void> {
-    return deleteFlashcard(user_id, id);
+  deleteFlashcard(flashcardID: string): Promise<void> {
+    return deleteFlashcard(flashcardID);
   }
 }

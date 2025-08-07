@@ -1,21 +1,20 @@
 
-export async function deleteFlashcard(user_id: string, id: string): Promise<void>{
+export async function deleteFlashcard(flashcardID: string): Promise<void> {
     try {
         const response = await fetch(`/api/delete-flashcard`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'x-user-id': user_id,
-                'x-flashcard-id': id,
+                'x-flashcard-id': flashcardID,
             }
         });
 
         if (!response.ok) {
             throw new Error("Error al eliminar la flashcard");
         }
-    
-        
-        return  
+
+
+        return
     } catch (error) {
         console.error('Error fetching flashcards:', error)
         throw error
