@@ -6,7 +6,7 @@ export const useFlashCardsQuery = () => {
 
     const queryClient = useQueryClient();
 
-    const { data, isLoading, error, isError } = useQuery<flashcard[], Error>({
+    const { data: flashcards, isLoading: flashcardLoading, error: flashcardError, isError: flashcardIsError } = useQuery<flashcard[], Error>({
         queryKey: [QUERY_KEY],
         queryFn: async () => await flashcardUnitOfWork.loadUserFlashCards(),
         staleTime: 5 * 60 * 1000, // 5 minutes
@@ -16,7 +16,7 @@ export const useFlashCardsQuery = () => {
         retry: 3,
     });
 
-    const { mutate: saveFlashcards } = useMutation({
+    const { mutate: saveFlashcards, isPending: isSavingFlashcards, isError: isErrorSaving, error: savingError } = useMutation({
         mutationFn: async (flashcardsData: flashcardToSync) => {
             await flashcardUnitOfWork.commitFlashcards(flashcardsData);
         },
@@ -26,7 +26,7 @@ export const useFlashCardsQuery = () => {
         },
     });
 
-    const { mutate: deleteFlashcard } = useMutation({
+    const { mutate: deleteFlashcard, isPending: isDeletingFlashcards, isError: isErrorDeleting, error: deletingError } = useMutation({
         mutationFn: async (flashcardID: string) => {
             await flashcardUnitOfWork.deleteFlashcard(flashcardID);
         },
@@ -36,5 +36,5 @@ export const useFlashCardsQuery = () => {
         },
     });
 
-    return { flashcards: data, isLoading, error, isError, saveFlashcards, deleteFlashcard };
+    return { flashcards, flashcardLoading, flashcardError, flashcardIsError, saveFlashcards, deleteFlashcard, isSavingFlashcards, isErrorSaving, savingError, isDeletingFlashcards, isErrorDeleting, deletingError };
 };
