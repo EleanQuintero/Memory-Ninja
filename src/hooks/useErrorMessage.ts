@@ -4,24 +4,24 @@ import { useUIState } from "@/store/uiState/uiState";
 
 
 export const useErrorMessage = () => {
-    const setError = useUIState((state) => state.setError)
+  const setError = useUIState((state) => state.setError)
 
-//TODO: Hacer que verifique si es el primer input
-    const debouncedSetError = useRef(
-        debounce((errorMessage: string | null) => {
-          setError(errorMessage);
-          setTimeout(() => setError(null), 1500)
-        }, 500)
-        
-      ).current;
+  //TODO: Hacer que verifique si es el primer input
+  const debouncedSetError = useRef(
+    debounce((errorMessage: string | null) => {
+      setError(errorMessage);
+      setTimeout(() => setError(null), 3000)
+    }, 500)
 
-      const showError = (errorMessage: string, timeout = 2000) => {
-        setError(errorMessage);
-      setTimeout(() => setError(null), timeout); 
-      } 
+  ).current;
 
-      const clearError = () => setError(null)
+  const showError = (errorMessage: string, timeout = 2000) => {
+    setError(errorMessage);
+    setTimeout(() => setError(null), timeout);
+  }
 
-      return { setError, debouncedSetError, showError, clearError}
+  const clearError = () => setError(null)
+
+  return { setError, debouncedSetError, showError, clearError }
 
 }
