@@ -20,7 +20,6 @@ export const getThemesByUser = async () => {
     }
 
     const themes = await response.json();
-    console.log("Themes fetched successfully:", themes);
     return NextResponse.json(themes.data);
 }
 

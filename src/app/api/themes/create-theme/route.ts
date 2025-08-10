@@ -16,7 +16,7 @@ export const createTheme = async (req: NextRequest) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ themeName }),
+        body: JSON.stringify({ theme_name: themeName }),
     });
 
     if (!response.ok) {
