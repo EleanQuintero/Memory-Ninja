@@ -22,7 +22,7 @@ export const Header = () => {
         {/* Logo y nombre */}
         <div className="flex items-center gap-2">
           <img
-            src="/memory-ninja-icon-2.png"
+            src="/memory-ninja-icon-2.webp"
             alt="Logo MemoryNinja"
             className="h-10 w-10 rounded-lg"
           />

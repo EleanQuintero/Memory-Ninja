@@ -73,7 +73,7 @@ export const Hero = () => {
               {/* Imagen principal optimizada */}
               <div className="relative p-1 rounded-2xl shadow-xl">
                 <img
-                  src="/memory-ninja-icon-2.png"
+                  src="/memory-ninja-icon-2.webp"
                   alt="MemoryNinja App"
                   width={400}
                   height={400}

@@ -42,8 +42,9 @@ export default function Pricing() {
       description: "Perfecto para comenzar tu camino ninja",
       price: "Gratis",
       features: [
-        { text: "Modelo de IA único" },
+        { text: "Único ninja IA" },
         { text: "Preguntas limitadas al mes" },
+        { text: "Flashcards Limitadas" },
       ],
       buttonText: "Comenzar con Aprendiz Ninja",
       buttonHref: "/onboarding",
@@ -56,6 +57,7 @@ export default function Pricing() {
       priceSubtext: "/mes",
       features: [
         { text: "Flashcards ilimitadas" },
+        { text: "Multiples ninjas de IA" },
         { text: "Organización por temas" },
         { text: "Guardar progreso en espacio personal" },
         { text: "Acceso a todas las funcionalidades" },
