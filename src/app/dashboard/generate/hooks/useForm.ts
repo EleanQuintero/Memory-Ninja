@@ -30,19 +30,13 @@ export const useForm = () => {
     try {
       const result = processQuestions({ data });
       const questions = result.questions;
-      console.log(questions);
-
-      // Obtenemos el tema
       const theme = selectedTheme;
-
-      // La respuesta ya es el array de respuestas directamente
       const answers = await getAnswers({ theme, questions });
 
       if (!answers) {
         throw new Error("No se recibieron respuestas de la API");
       }
 
-      //Enviamos los datos al store para mostrar de forma local
       const flashcardData: flashcardToSync = {
         flashcard: questions.map((question, index) => ({
           question,

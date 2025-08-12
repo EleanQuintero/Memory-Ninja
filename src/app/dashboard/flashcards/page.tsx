@@ -17,8 +17,7 @@ export default function FlashCardsPage() {
   });
 
   // Obtener datos del usuario
-  const userName =
-    user?.firstName?.slice(0, 5) + " " + user?.lastName?.slice(0, 8);
+  const userName = user?.username;
 
   const { error } = useUIState();
   const { flashcardLoading } = useFlashCardsQuery();
