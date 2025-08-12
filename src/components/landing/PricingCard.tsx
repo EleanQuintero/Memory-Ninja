@@ -73,15 +73,6 @@ export default function PricingCard({
             </li>
           ))}
         </ul>
-        <div className="mt-8">
-          <Button
-            asChild
-            variant={isHighlighted ? "default" : "secondary"}
-            className={buttonClasses}
-          >
-            <Link href={buttonHref}>{buttonText}</Link>
-          </Button>
-        </div>
       </div>
     </div>
   );

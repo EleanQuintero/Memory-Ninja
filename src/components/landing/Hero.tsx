@@ -54,51 +54,8 @@ export const Hero = () => {
                 size="lg"
                 asChild
               >
-                <Link href="/onboarding">Comenzar ahora</Link>
+                <Link href="#waitlist">Comenzar ahora</Link>
               </Button>
-              {/* Botón secundario (shadcn, variante outline) */}
-              <Button
-                variant="outline"
-                className="border-blue-400/30 bg-transparent hover:bg-blue-800/30 text-white py-3 px-8 rounded-full text-base font-medium z-50 w-full sm:w-auto"
-                aria-label="Ver demostración"
-                size="lg"
-                asChild
-              >
-                <Link href="#how-it-works">Ver demostración</Link>
-              </Button>
-            </div>
-            {/* Avatares y stats */}
-            <div className="mt-8 flex items-center justify-center md:justify-start">
-              <div className="flex -space-x-2">
-                <img
-                  src="https://randomuser.me/api/portraits/women/44.jpg"
-                  alt="Usuario 1"
-                  width={32}
-                  height={32}
-                  className="w-8 h-8 rounded-full border-2 border-[#05264f]"
-                  loading="lazy"
-                />
-                <img
-                  src="https://randomuser.me/api/portraits/men/86.jpg"
-                  alt="Usuario 2"
-                  width={32}
-                  height={32}
-                  className="w-8 h-8 rounded-full border-2 border-[#05264f]"
-                  loading="lazy"
-                />
-                <img
-                  src="https://randomuser.me/api/portraits/women/63.jpg"
-                  alt="Usuario 3"
-                  width={32}
-                  height={32}
-                  className="w-8 h-8 rounded-full border-2 border-[#05264f]"
-                  loading="lazy"
-                />
-              </div>
-              <span className="ml-4 text-sm text-gray-300">
-                <span className="font-bold text-blue-300">500+</span>{" "}
-                estudiantes satisfechos
-              </span>
             </div>
           </div>
           {/* Columna derecha: imagen principal y tarjetas flotantes */}

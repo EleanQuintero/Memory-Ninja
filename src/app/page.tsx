@@ -4,6 +4,7 @@ import { Hero } from "@/components/landing/Hero";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import Pricing from "@/components/landing/Pricing";
 import { Footer } from "@/components/ui/layout/Footer";
+import Waitlist from "@/components/landing/Waitlist";
 
 export default function Home() {
   // Composición de la landing page
@@ -13,6 +14,7 @@ export default function Home() {
       <Hero />
       <HowItWorks />
       <Pricing />
+      <Waitlist />
       <Footer />
     </>
   );

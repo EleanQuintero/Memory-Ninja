@@ -29,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider localization={esES}>
-      <html lang="en" className="dark">
+      <html lang="es" className="dark">
         <ReactScan />
         <body className={` ${sfPro.className} antialiased`}>{children}</body>
       </html>

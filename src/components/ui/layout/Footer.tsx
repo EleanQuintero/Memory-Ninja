@@ -1,5 +1,3 @@
-import { Contact } from "lucide-react";
-
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
   return (
@@ -14,9 +12,7 @@ export const Footer = () => {
           rel="noopener noreferrer"
           className="text-white hover:text-gray-300 transition-colors"
           aria-label="Contact us on Instagram"
-        >
-          <Contact />
-        </a>
+        ></a>
       </div>
     </footer>
   );

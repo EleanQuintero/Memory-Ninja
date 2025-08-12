@@ -55,36 +55,6 @@ export const Header = () => {
             </a>
           </li>
         </ul>
-        {/* Botón Comenzar (solo desktop) */}
-        <div className="hidden gap-x-5 md:flex">
-          <Button
-            size={"lg"}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-full shadow-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
-            tabIndex={0}
-            aria-label="Comenzar"
-          >
-            <Link href="/onboarding" tabIndex={0} aria-label="Iniciar sesión">
-              Comenzar
-            </Link>
-          </Button>
-          <Button
-            size={"lg"}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full shadow-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
-            asChild
-          >
-            <Link href="/sign-in" tabIndex={0} aria-label="Iniciar sesión">
-              Iniciar sesión
-            </Link>
-          </Button>
-        </div>
-        {/* Menú hamburguesa en mobile */}
-        <button
-          className="md:hidden text-white p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-          aria-label="Abrir menú de navegación"
-          tabIndex={0}
-        >
-          <Menu size={28} />
-        </button>
       </nav>
     </header>
   );
