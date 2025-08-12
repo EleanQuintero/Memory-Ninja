@@ -48,6 +48,19 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
+  // Aplicar configuraciones específicas para producción
+  ...(process.env.VERCEL_ENV === 'production' ? {
+    // Optimizaciones para la landing
+    images: {
+      formats: ['image/avif', 'image/webp'],
+      minimumCacheTTL: 3600, // Mayor tiempo de caché
+    },
+    experimental: {
+      // Optimiza CSS
+      optimizeCss: true,
+    },
+  } : {}),
 };
 
 export default nextConfig;

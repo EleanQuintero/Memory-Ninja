@@ -66,7 +66,10 @@ const Waitlist: React.FC = () => {
         <div className="max-w-2xl flex flex-col justify-center items-center mx-auto bg-[#0a3060]/60 backdrop-blur-sm border border-blue-400/20 rounded-2xl shadow-xl shadow-blue-500/10 p-4 sm:p-6 md:p-8">
           {/* Clerk Waitlist embed */}
           <div className="[&_*]:!font-medium">
-            <ClerkWaitlist appearance={appearance} />
+            <ClerkWaitlist
+              appearance={appearance}
+              afterJoinWaitlistUrl="/thank-you"
+            />
           </div>
         </div>
       </div>
