@@ -16,31 +16,40 @@ export const Hero = () => {
   return (
     <section className="relative overflow-hidden" id="hero">
       {/* Fondos decorativos */}
-      <div className="absolute top-20 left-10 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-40 right-20 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-10 left-1/4 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="container mx-auto px-4 pt-20 pb-32 md:pt-32 md:pb-48 relative ">
+      <div
+        className="absolute top-20 left-10 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl pointer-events-none hidden sm:block"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute top-40 right-20 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl pointer-events-none hidden sm:block"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute -bottom-10 left-1/4 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl pointer-events-none hidden sm:block"
+        aria-hidden="true"
+      />
+      <div className="container mx-auto px-4 pt-16 pb-24 md:pt-32 md:pb-48 relative ">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="flex flex-col md:flex-row items-center"
+          className="flex flex-col md:flex-row items-center p-6 sm:p-8 md:p-10 gap-8 md:gap-12"
         >
           {/* Columna izquierda: texto y botones */}
-          <div className="w-full md:w-1/2 mb-16 md:mb-0 relative">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+          <div className="w-full md:w-1/2 mb-10 md:mb-0 relative text-center md:text-left">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
               Potencia Tu Memoria Con{" "}
               <span className="text-blue-400">Inteligencia Artificial</span>
             </h1>
-            <p className="text-lg text-gray-300 mb-8 max-w-lg">
+            <p className="text-base sm:text-lg text-gray-300 mb-8 max-w-lg mx-auto md:mx-0">
               Aprende más rápido y retén información por más tiempo con
               flashcards personalizadas por IA. MemoryNinja analiza tu progreso
               y adapta tu experiencia de aprendizaje en tiempo real.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
               {/* Botón primario (shadcn) */}
               <Button
-                className="rounded-full text-base font-medium shadow-lg hover:scale-105 hover:shadow-blue-400/30 transition-transform z-50"
+                className="rounded-full text-base font-medium shadow-lg hover:scale-105 hover:shadow-blue-400/30 transition-transform z-50 w-full sm:w-auto"
                 aria-label="Comenzar ahora"
                 size="lg"
                 asChild
@@ -50,15 +59,16 @@ export const Hero = () => {
               {/* Botón secundario (shadcn, variante outline) */}
               <Button
                 variant="outline"
-                className="border-blue-400/30 bg-transparent hover:bg-blue-800/30 text-white py-3 px-8 rounded-full text-base font-medium z-50"
+                className="border-blue-400/30 bg-transparent hover:bg-blue-800/30 text-white py-3 px-8 rounded-full text-base font-medium z-50 w-full sm:w-auto"
                 aria-label="Ver demostración"
                 size="lg"
+                asChild
               >
-                Ver demostración
+                <Link href="#how-it-works">Ver demostración</Link>
               </Button>
             </div>
             {/* Avatares y stats */}
-            <div className="mt-8 flex items-center">
+            <div className="mt-8 flex items-center justify-center md:justify-start">
               <div className="flex -space-x-2">
                 <img
                   src="https://randomuser.me/api/portraits/women/44.jpg"
@@ -92,11 +102,17 @@ export const Hero = () => {
             </div>
           </div>
           {/* Columna derecha: imagen principal y tarjetas flotantes */}
-          <div className="w-full md:w-1/2 flex justify-center md:justify-end relative">
+          <div className="w-full md:w-1/2 flex justify-center md:justify-end relative mt-6 md:mt-0">
             <div className="relative">
               {/* Decoraciones flotantes */}
-              <div className="absolute -top-10 -left-16 w-32 h-32 bg-blue-600/20 rounded-xl blur-md transform rotate-12 animate-pulse pointer-events-none" />
-              <div className="absolute -bottom-8 -right-8 w-40 h-40 bg-purple-500/20 rounded-full blur-lg pointer-events-none" />
+              <div
+                className="absolute -top-10 -left-16 w-32 h-32 bg-blue-600/20 rounded-xl blur-md transform rotate-12 animate-pulse pointer-events-none hidden sm:block"
+                aria-hidden="true"
+              />
+              <div
+                className="absolute -bottom-8 -right-8 w-40 h-40 bg-purple-500/20 rounded-full blur-lg pointer-events-none hidden sm:block"
+                aria-hidden="true"
+              />
               {/* Imagen principal optimizada */}
               <div className="relative p-1 rounded-2xl shadow-xl">
                 <img
@@ -104,12 +120,17 @@ export const Hero = () => {
                   alt="MemoryNinja App"
                   width={400}
                   height={400}
-                  className="w-full max-w-md rounded-xl z-10 relative"
+                  className="w-full max-w-[220px] sm:max-w-sm md:max-w-md rounded-xl z-10 relative"
+                  sizes="(min-width: 768px) 400px, 220px"
+                  decoding="async"
                   loading="eager"
                 />
               </div>
               {/* Tarjeta flotante superior derecha */}
-              <div className="absolute -top-2 -right-12 bg-[#0a3060]/90 p-3 rounded-lg shadow-lg transform rotate-6 backdrop-blur-sm border border-blue-400/20 z-50">
+              <div
+                className="absolute -top-2 -right-12 bg-[#0a3060]/90 p-3 rounded-lg shadow-lg transform rotate-6 backdrop-blur-sm border border-blue-400/20 z-50 hidden sm:block"
+                aria-hidden="true"
+              >
                 <div className="flex items-center">
                   <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
                     {/* Icono de rayo (svg inline) */}
@@ -135,7 +156,10 @@ export const Hero = () => {
                 </div>
               </div>
               {/* Tarjeta flotante inferior izquierda */}
-              <div className="absolute -bottom-10 -left-16 bg-[#0a3060]/90 p-3 rounded-lg shadow-lg transform -rotate-6 backdrop-blur-sm border border-blue-400/20 z-50">
+              <div
+                className="absolute -bottom-10 -left-16 bg-[#0a3060]/90 p-3 rounded-lg shadow-lg transform -rotate-6 backdrop-blur-sm border border-blue-400/20 z-50 hidden sm:block"
+                aria-hidden="true"
+              >
                 <div className="flex items-center">
                   <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
                     {/* Icono de tarjetas (svg inline) */}

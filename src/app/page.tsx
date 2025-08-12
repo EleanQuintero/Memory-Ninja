@@ -9,14 +9,10 @@ export default function Home() {
   // Composición de la landing page
   return (
     <>
-      {/* Header sticky y navegación */}
       <Header />
-      {/* Hero principal */}
       <Hero />
-      {/* Sección de cómo funciona */}
       <HowItWorks />
       <Pricing />
-      {/* Footer global */}
       <Footer />
     </>
   );
