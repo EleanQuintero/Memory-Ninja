@@ -1,7 +1,5 @@
-import React from "react";
-import { Menu } from "lucide-react"; // Icono hamburguesa de Lucide
+import React from "react"; // Icono hamburguesa de Lucide
 import Link from "next/link";
-import { Button } from "../ui/button";
 
 /**
  * Header principal de la landing page.
