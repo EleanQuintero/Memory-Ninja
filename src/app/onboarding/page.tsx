@@ -1,5 +1,6 @@
-import Start from "./components/Start";
+import { redirect } from "next/navigation";
 
-export default function OnboardingPage() {
-  return <Start />;
+export default function BlockedOnboardingPage() {
+  redirect("/");
+  return null;
 }
