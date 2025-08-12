@@ -4,14 +4,14 @@ import { redis } from "@/lib/redis";
 import { NextRequest, NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 
-// Definir la interfaz para las opciones de límite de tasa
+// Tipos de configuración
 interface RateLimitOptions {
-  requests: number;  // Número de solicitudes permitidas
-  duration: string;  // Duración del periodo (ej: "60s", "10m", "1h")
-  identifier?: string; // Identificador opcional para distinguir endpoints
+  requests: number;
+  duration: string;
+  identifier?: string;
 }
 
-// Definir las configuraciones predefinidas para diferentes tipos de endpoints
+// Configuraciones predeterminadas
 export const RATE_LIMIT_CONFIGS = {
   DEFAULT: { requests: 5, duration: "60s" },
   DASHBOARD: { requests: 20, duration: "60s" },
@@ -20,31 +20,40 @@ export const RATE_LIMIT_CONFIGS = {
   WRITE: { requests: 10, duration: "60s" }
 };
 
-interface rateLimitterProps {
-  fn: (req: NextRequest, context: unknown) => Promise<NextResponse>;
+// Props del limitador
+interface RateLimiterProps {
+  fn: (
+    req: NextRequest,
+    context: { params?: Record<string, string> }
+  ) => Promise<NextResponse>;
   options?: RateLimitOptions;
 }
 
-// Función para crear una instancia de Ratelimit con las opciones dadas
+// Crear instancia de Ratelimit
 const createRatelimit = (options: RateLimitOptions) => {
   return new Ratelimit({
     redis,
     limiter: Ratelimit.slidingWindow(
       options.requests,
-      options.duration as any // Corregir el tipo para la duración
+      options.duration as any
     ),
     analytics: true,
     timeout: 10000,
   });
 };
 
-export const rateLimitter = ({ fn, options = RATE_LIMIT_CONFIGS.DEFAULT }: rateLimitterProps) => {
-  // Crear una instancia de Ratelimit con las opciones proporcionadas o las predeterminadas
+// Middleware de rate limit
+export const rateLimitter = ({
+  fn,
+  options = RATE_LIMIT_CONFIGS.DEFAULT,
+}: RateLimiterProps) => {
   const ratelimit = createRatelimit(options);
 
-  return async (req: NextRequest, context: unknown) => {
-
-    const user = await currentUser()
+  return async (
+    req: NextRequest,
+    context: { params?: Record<string, string> }
+  ) => {
+    const user = await currentUser();
 
     if (!user || !user.id) {
       return NextResponse.json(
@@ -53,9 +62,10 @@ export const rateLimitter = ({ fn, options = RATE_LIMIT_CONFIGS.DEFAULT }: rateL
       );
     }
 
-    // Incluir el identificador del endpoint en la clave si está definido
-    const endpointIdentifier = options.identifier ? `:${options.identifier}` : '';
-    const userKey = `user:${user.id}${endpointIdentifier}`
+    const endpointIdentifier = options.identifier
+      ? `:${options.identifier}`
+      : "";
+    const userKey = `user:${user.id}${endpointIdentifier}`;
     const { success, limit, reset, remaining } = await ratelimit.limit(userKey);
 
     if (!success) {

@@ -34,4 +34,7 @@ export async function getLastestFlashcardsCreated(req: NextRequest) {
     }
 }
 
-export const GET = rateLimitter({ fn: (req: NextRequest) => getLastestFlashcardsCreated(req), options: RATE_LIMIT_CONFIGS.DASHBOARD });   
+export const GET = rateLimitter({
+    fn: getLastestFlashcardsCreated,
+    options: RATE_LIMIT_CONFIGS.DASHBOARD,
+}); 
