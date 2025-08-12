@@ -56,10 +56,6 @@ const nextConfig: NextConfig = {
       formats: ['image/avif', 'image/webp'],
       minimumCacheTTL: 3600, // Mayor tiempo de caché
     },
-    experimental: {
-      // Optimiza CSS
-      optimizeCss: true,
-    },
   } : {}),
 };
 
