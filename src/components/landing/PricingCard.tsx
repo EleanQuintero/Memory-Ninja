@@ -22,8 +22,6 @@ export default function PricingCard({
   price,
   priceSubtext,
   features,
-  buttonText,
-  buttonHref,
   isHighlighted = false,
   highlightText = "Recomendado",
 }: PricingCardProps) {
