@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Ratelimit } from "@upstash/ratelimit";
 import { redis } from "@/lib/redis";
 import { NextRequest, NextResponse } from "next/server";
