@@ -17,7 +17,7 @@ export const createUserTheme = async (themeName: string) => {
         const data = await response.json();
         return data;
     } catch (error) {
-        console.error('Error creating theme');
+        console.error(`Error creating theme:`, error);
         throw error;
     }
 }
