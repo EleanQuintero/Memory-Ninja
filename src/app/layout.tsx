@@ -29,6 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider localization={esES}>
+      <Analytics />
       <html lang="es" className="dark">
         <body className={` ${sfPro.className} antialiased`}>{children}</body>
       </html>
