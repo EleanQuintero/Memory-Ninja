@@ -4,8 +4,9 @@ import { NextResponse } from 'next/server';
 // Para la rama production-landing, este middleware queda simplificado
 // ya que las redirecciones se manejan en next.config.ts y en las páginas
 export default clerkMiddleware(() => {
-    // En la rama production-landing, simplemente dejamos pasar todo
-    // Las redirecciones están manejadas a nivel de Next.js config y componentes
+    clerkMiddleware({
+        authorizedParties: ['https://memoryninja.es', 'https://www.memoryninja.es'],
+    })
     const res = NextResponse.next();
     res.headers.set('x-mw-mode', 'landing-only');
     return res;

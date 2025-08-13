@@ -99,6 +99,10 @@ export default function RootLayout({
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta name="theme-color" content="#111827" />
           <link rel="manifest" href="/manifest.json" />
+          <meta
+            httpEquiv="Content-Security-Policy"
+            content="frame-ancestors 'self' https://clerk.clerk.app https://*.clerk.accounts.dev;"
+          />
           <SchemaScripts />
         </head>
         <body className={` ${sfPro.className} antialiased`}>{children}</body>
