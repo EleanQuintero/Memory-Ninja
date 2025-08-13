@@ -1,0 +1,17 @@
+{
+  "name": "Memory Ninja - Generador de tarjetas de estudio con IA",
+  "short_name": "Memory Ninja",
+  "description": "Crea tarjetas de estudio personalizadas con inteligencia artificial para mejorar tu aprendizaje",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#111827",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/memory-ninja-icon-2.webp",
+      "sizes": "512x512",
+      "type": "image/webp"
+    }
+  ]
+}

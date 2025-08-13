@@ -54,7 +54,18 @@ const nextConfig: NextConfig = {
     // Optimizaciones para la landing
     images: {
       formats: ['image/avif', 'image/webp'],
-      minimumCacheTTL: 3600, // Mayor tiempo de caché
+      minimumCacheTTL: 86400, // Aumentado a 24 horas para mejor rendimiento
+      deviceSizes: [640, 1080, 1920], // Reducido para optimizar costos
+      imageSizes: [32, 96, 256], // Reducido para optimizar costos
+    },
+    compress: true,
+    poweredByHeader: false,
+    reactStrictMode: true,
+    swcMinify: true,
+    staticPageGenerationTimeout: 120, // Aumentado para evitar timeouts durante la generación
+    i18n: {
+      locales: ['es'],
+      defaultLocale: 'es',
     },
   } : {}),
 };
