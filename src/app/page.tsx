@@ -11,16 +11,13 @@ import {
   generateWebsiteSchema,
 } from "@/lib/schema";
 
-export const metadata: Metadata = {
-  title:
-    "Memory Ninja - Crea tarjetas de estudio con IA | La forma más rápida de aprender",
-  description:
-    "Genera tarjetas de estudio personalizadas con inteligencia artificial. Optimiza tu tiempo de estudio con Memory Ninja, la herramienta definitiva para estudiantes.",
-};
-
-// Agregar metadatos estructurados para SEO
+// Función unificada de metadatos para SEO
 export function generateMetadata(): Metadata {
   return {
+    title:
+      "Memory Ninja - Crea tarjetas de estudio con IA | La forma más rápida de aprender",
+    description:
+      "Genera tarjetas de estudio personalizadas con inteligencia artificial. Optimiza tu tiempo de estudio con Memory Ninja, la herramienta definitiva para estudiantes.",
     other: {
       "organization-schema": JSON.stringify(generateOrganizationSchema()),
       "website-schema": JSON.stringify(generateWebsiteSchema()),
