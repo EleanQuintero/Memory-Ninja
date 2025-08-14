@@ -38,13 +38,13 @@ export const Hero = () => {
           {/* Columna izquierda: texto y botones */}
           <div className="w-full md:w-1/2 mb-10 md:mb-0 relative text-center md:text-left">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-              Potencia Tu Memoria Con{" "}
+              Aprende cualquier cosa más rápido con{" "}
               <span className="text-blue-400">Inteligencia Artificial</span>
             </h1>
             <p className="text-base sm:text-lg text-gray-300 mb-8 max-w-lg mx-auto md:mx-0">
-              Aprende más rápido y retén información por más tiempo con
-              flashcards personalizadas por IA. MemoryNinja analiza tu progreso
-              y adapta tu experiencia de aprendizaje en tiempo real.
+              La herramienta que todo autodidacta necesita para convertir
+              información en conocimiento duradero. Crea tarjetas de estudio
+              personalizadas con IA y optimiza tu aprendizaje.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
               {/* Botón primario (shadcn) */}
@@ -54,7 +54,7 @@ export const Hero = () => {
                 size="lg"
                 asChild
               >
-                <Link href="#waitlist">Comenzar ahora</Link>
+                <Link href="#waitlist">Probar antes que nadie</Link>
               </Button>
             </div>
           </div>

@@ -52,6 +52,16 @@ export const Header = () => {
               Precios
             </a>
           </li>
+          <li>
+            <a
+              href="#faq"
+              className="hover:text-blue-300 transition-colors focus:outline-none focus:text-blue-400"
+              tabIndex={0}
+              aria-label="Preguntas frecuentes"
+            >
+              FAQ
+            </a>
+          </li>
         </ul>
       </nav>
     </header>

@@ -5,11 +5,13 @@ import { HowItWorks } from "@/components/landing/HowItWorks";
 import Pricing from "@/components/landing/Pricing";
 import { Footer } from "@/components/ui/layout/Footer";
 import Waitlist from "@/components/landing/Waitlist";
+import Value from "@/components/landing/Value";
 import type { Metadata } from "next";
 import {
   generateOrganizationSchema,
   generateWebsiteSchema,
 } from "@/lib/schema";
+import FAQ from "@/components/landing/FAQ";
 
 // Función unificada de metadatos para SEO
 export function generateMetadata(): Metadata {
@@ -34,6 +36,9 @@ export default function Home() {
         <section id="hero" aria-label="Introducción a Memory Ninja">
           <Hero />
         </section>
+        <section id="valor" aria-label="El valor de Memory Ninja">
+          <Value />
+        </section>
         <section id="como-funciona" aria-label="Cómo funciona Memory Ninja">
           <HowItWorks />
         </section>
@@ -42,6 +47,9 @@ export default function Home() {
         </section>
         <section id="lista-espera" aria-label="Únete a nuestra lista de espera">
           <Waitlist />
+        </section>
+        <section id="faq" aria-label="Preguntas frecuentes">
+          <FAQ />
         </section>
       </article>
       <Footer />
