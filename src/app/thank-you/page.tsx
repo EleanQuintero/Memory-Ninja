@@ -28,7 +28,7 @@ export default function ThankYouPage() {
             {/* Logo o icono */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/memory-ninja-icon-2.webp"
+              src="https://res.cloudinary.com/dygwnv56x/image/upload/v1755253305/memory-ninja-icon-2_peisgm.webp"
               alt="MemoryNinja Logo"
               className="w-24 h-24 object-contain"
             />
