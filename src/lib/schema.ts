@@ -6,7 +6,7 @@ export function generateOrganizationSchema(): WithContext<Organization> {
         "@type": "Organization",
         name: "Memory Ninja",
         url: "https://www.memoryninja.es",
-        logo: "https://www.memoryninja.es/memory-ninja-icon-2.webp",
+        logo: "https://res.cloudinary.com/dygwnv56x/image/upload/v1755253453/favicon_dim9e8.png",
         description: "Generador de tarjetas de estudio con inteligencia artificial para optimizar el aprendizaje.",
         sameAs: [
             "https://twitter.com/memoryninja_app",

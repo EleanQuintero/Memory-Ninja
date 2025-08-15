@@ -20,7 +20,7 @@ export const Header = () => {
         {/* Logo y nombre */}
         <div className="flex items-center gap-2">
           <img
-            src="/memory-ninja-icon-2.webp"
+            src="https://res.cloudinary.com/dygwnv56x/image/upload/v1755253305/memory-ninja-icon-2_peisgm.webp"
             alt="Logo MemoryNinja"
             className="h-10 w-10 rounded-lg"
           />

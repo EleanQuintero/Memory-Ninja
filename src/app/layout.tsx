@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     siteName: "Memory Ninja",
     images: [
       {
-        url: "/memory-ninja-icon-2.webp",
+        url: "https://res.cloudinary.com/dygwnv56x/image/upload/v1755253453/favicon_dim9e8.png",
         width: 1200,
         height: 630,
         alt: "Memory Ninja - Generador de tarjetas de estudio con IA",
@@ -67,7 +67,9 @@ export const metadata: Metadata = {
     title: "Memory Ninja - Generador de tarjetas de estudio con IA",
     description:
       "Crea tarjetas de estudio personalizadas con inteligencia artificial para mejorar tu aprendizaje y retención de información.",
-    images: ["/memory-ninja-icon-2.webp"],
+    images: [
+      "https://res.cloudinary.com/dygwnv56x/image/upload/v1755253453/favicon_dim9e8.png",
+    ],
   },
   robots: {
     index: true,
