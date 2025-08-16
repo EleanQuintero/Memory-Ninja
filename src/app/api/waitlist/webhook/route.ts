@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
                     },
                     body: JSON.stringify({
                         "from": {
-                            "address": "staff@memoryninja.es",
+                            "address": "noreply@memoryninja.es",
                             "display_name": "Memory Ninja Team"
                         },
                         "to": [
@@ -27,8 +27,13 @@ export async function POST(req: NextRequest) {
                                 "address": email,
                             },
                         ],
+                        "reply_to": {
+                            "address": "support@memoryninja.es",
+                            "display_name": "Equipo Memory Ninja"
+                        },
                         "subject": "Welcome to Memory Ninja Waitlist!",
-                        "template_id": 2825
+                        "template_id": 2825,
+                        "tracking": true
                     }),
                 });
 
