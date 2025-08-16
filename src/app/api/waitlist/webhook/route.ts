@@ -10,8 +10,43 @@ export async function POST(req: NextRequest) {
             const email = evt.data.email_address;
             console.log("Nuevo email en la waitlist:", email);
 
-            // Aquí mandas tu correo con Resend, SendGrid, etc.
+            try {
+                const response = await fetch("https://smtp.maileroo.com/api/v2/emails/template", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${process.env.MAILEROO_SENDING_KEY}`,
+                    },
+                    body: JSON.stringify({
+                        "from": {
+                            "address": "staff@memoryninja.es",
+                            "display_name": "Memory Ninja Team"
+                        },
+                        "to": [
+                            {
+                                "address": email,
+                            },
+                        ],
+                        "subject": "Welcome to Memory Ninja Waitlist!",
+                        "template_id": 2825
+                    }),
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => null);
+                    throw new Error(`Error enviando email: ${response.status} ${errorData ? JSON.stringify(errorData) : ''}`);
+                }
+
+                console.log("Email enviado correctamente a:", email);
+
+            } catch (error) {
+                console.error("Error al enviar el email:", error);
+
+            }
+
+
         }
+        console.log("Webhook processed successfully");
 
         return NextResponse.json({ status: "ok" });
     } catch (err) {
