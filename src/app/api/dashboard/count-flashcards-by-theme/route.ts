@@ -24,6 +24,8 @@ async function getCountFlashcardsByTheme() {
 
         const countSectionData = await response.json()
 
+        console.log(countSectionData)
+
         return NextResponse.json(countSectionData.data)
 
     } catch (error) {
