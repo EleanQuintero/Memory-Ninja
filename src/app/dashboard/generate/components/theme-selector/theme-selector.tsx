@@ -15,8 +15,6 @@ import {
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { motion } from "framer-motion";
-import { useThemeStore } from "@/app/dashboard/generate/components/theme-selector/store/interestThemes";
-import { createUserTheme } from "@/utils/services/functions/api/themes/createUserTheme";
 import { useThemeQuerys } from "@/app/dashboard/hooks/themes-query/useThemeQuerys";
 
 interface ThemeSelectorProps {
@@ -30,8 +28,8 @@ export const ThemeSelector = React.memo(function ThemeSelector({
   minChars = 3,
   maxThemes = 8,
 }: ThemeSelectorProps) {
-  const { selectedTheme, addTheme, setSelectedTheme } = useThemeStore();
-  const { themes, deleteTheme } = useThemeQuerys();
+  const [selectedTheme, setSelectedTheme] = useState<string>("");
+  const { themes, deleteTheme, createTheme } = useThemeQuerys();
   const [newTheme, setNewTheme] = useState("");
   const [error, setError] = useState<string | null>(null);
 
@@ -62,8 +60,7 @@ export const ThemeSelector = React.memo(function ThemeSelector({
       return;
     }
 
-    createUserTheme(formattedTheme); // Send the new theme to the server
-    addTheme(formattedTheme);
+    createTheme(formattedTheme); // Send the new theme to the serve
     setNewTheme("");
     setError(null);
   };

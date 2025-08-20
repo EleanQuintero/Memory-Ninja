@@ -1,4 +1,5 @@
 import { themes } from "@/domain/themes";
+import { createUserTheme } from "@/utils/services/functions/api/themes/createUserTheme";
 import { deleteUserThemes } from "@/utils/services/functions/api/themes/deleteUserTheme";
 import { getUserThemes } from "@/utils/services/functions/api/themes/getUserThemes";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -30,7 +31,17 @@ export const useThemeQuerys = () => {
         },
     });
 
+    const { mutate: createTheme } = useMutation({
+        mutationFn: async (themeName: string) => {
+            await createUserTheme(themeName);
+        },
 
-    return { themes, isLoadingThemes, themesError, themeIsError, deleteTheme };
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY] });
+        },
+    });
+
+
+    return { themes, isLoadingThemes, themesError, themeIsError, deleteTheme, createTheme };
 
 }
