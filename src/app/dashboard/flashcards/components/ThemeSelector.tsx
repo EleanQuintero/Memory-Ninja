@@ -1,4 +1,4 @@
-import { useFlashCardsStore } from "@/app/dashboard/flashcards/store/flashCardsStore";
+import { useThemeQuerys } from "../../hooks/themes-query/useThemeQuerys";
 
 interface Props {
   selectedTheme: string;
@@ -6,14 +6,11 @@ interface Props {
 }
 
 export const ThemeSelector = ({ selectedTheme, onThemeChange }: Props) => {
-  const allFlashCards = useFlashCardsStore(
-    (state) => state.consolidatedFlashCards
-  );
+  const { themes } = useThemeQuerys();
 
-  // Eliminamos duplicados usando Set
-  const uniqueThemes = [
-    ...new Set(allFlashCards.map((flashcard) => flashcard.theme)),
-  ];
+  if (!themes || themes.length === 0) {
+    return <p className="text-gray-500">Cargando temas...</p>;
+  }
 
   return (
     <select
@@ -26,9 +23,9 @@ export const ThemeSelector = ({ selectedTheme, onThemeChange }: Props) => {
       <option className="bg-black" value="">
         Todos los temas
       </option>
-      {uniqueThemes.map((theme, index) => (
-        <option className="bg-black" key={index} value={theme}>
-          {theme}
+      {themes.map((theme, index) => (
+        <option className="bg-black" key={index} value={theme.themeName}>
+          {theme.themeName}
         </option>
       ))}
     </select>

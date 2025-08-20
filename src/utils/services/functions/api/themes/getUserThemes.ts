@@ -1,5 +1,3 @@
-import { themes } from "@/domain/themes"
-
 export const getUserThemes = async () => {
 
     const API_ENDPOINT = process.env.NEXT_PUBLIC_CLIENT_GET_USER_THEMES
