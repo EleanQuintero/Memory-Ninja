@@ -30,13 +30,8 @@ export const ThemeSelector = React.memo(function ThemeSelector({
   minChars = 3,
   maxThemes = 8,
 }: ThemeSelectorProps) {
-  const {
-    selectedTheme,
-    addTheme,
-    removeTheme: removeThemeFromStore,
-    setSelectedTheme,
-  } = useThemeStore();
-  const { themes } = useThemeQuerys();
+  const { selectedTheme, addTheme, setSelectedTheme } = useThemeStore();
+  const { themes, deleteTheme } = useThemeQuerys();
   const [newTheme, setNewTheme] = useState("");
   const [error, setError] = useState<string | null>(null);
 
@@ -73,8 +68,8 @@ export const ThemeSelector = React.memo(function ThemeSelector({
     setError(null);
   };
 
-  const removeTheme = (theme: string) => {
-    removeThemeFromStore(theme);
+  const removeTheme = (themeId: number) => {
+    deleteTheme(themeId);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -170,7 +165,7 @@ export const ThemeSelector = React.memo(function ThemeSelector({
                     variant="default"
                     size="icon"
                     className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity"
-                    onClick={() => removeTheme(theme.themeName)}
+                    onClick={() => removeTheme(theme.themeId)}
                   >
                     <X className="h-4 w-4" />
                     <span className="sr-only">Eliminar {theme.themeName}</span>

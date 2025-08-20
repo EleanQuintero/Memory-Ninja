@@ -9,9 +9,9 @@ export const deleteTheme = async (req: NextRequest) => {
     const token = await getUserToken();
 
     const themeID = await req.json()
-    console.log("Received theme ID to delete:", themeID);
+    console.log("Received theme ID to delete:", themeID.themeID);
 
-    const response = await fetch(`${API_ENDPOINT}${themeID}`,
+    const response = await fetch(`${API_ENDPOINT}${themeID.themeID}`,
         {
             method: "DELETE",
             headers: {
