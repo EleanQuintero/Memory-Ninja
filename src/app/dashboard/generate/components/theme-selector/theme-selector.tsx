@@ -15,8 +15,7 @@ import {
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { motion } from "framer-motion";
-import { useThemeStore } from "@/app/dashboard/generate/components/theme-selector/store/interestThemes";
-import { createUserTheme } from "@/utils/services/functions/api/themes/createUserTheme";
+import { useThemeQuerys } from "@/app/dashboard/hooks/themes-query/useThemeQuerys";
 
 interface ThemeSelectorProps {
   onThemeChange?: (theme: string) => void;
@@ -29,15 +28,14 @@ export const ThemeSelector = React.memo(function ThemeSelector({
   minChars = 3,
   maxThemes = 8,
 }: ThemeSelectorProps) {
-  const {
-    availableThemes,
-    selectedTheme,
-    addTheme,
-    removeTheme: removeThemeFromStore,
-    setSelectedTheme,
-  } = useThemeStore();
+  const [selectedTheme, setSelectedTheme] = useState<string>("");
+  const { themes, deleteTheme, createTheme } = useThemeQuerys();
   const [newTheme, setNewTheme] = useState("");
   const [error, setError] = useState<string | null>(null);
+
+  if (!themes || themes.length === 0) {
+    return <p className="text-gray-500">Cargando temas...</p>;
+  }
 
   const selectTheme = (theme: string) => {
     const newSelectedTheme = selectedTheme === theme ? "" : theme;
@@ -56,30 +54,19 @@ export const ThemeSelector = React.memo(function ThemeSelector({
       return;
     }
 
-    // Check for duplicates
-    if (
-      availableThemes.some(
-        (theme) => theme.toLowerCase() === formattedTheme.toLowerCase()
-      )
-    ) {
-      setError("Este tema ya existe");
-      return;
-    }
-
     // Check maximum themes
-    if (availableThemes.length >= maxThemes) {
+    if (themes.length >= maxThemes) {
       setError(`Puedes añadir un máximo de ${maxThemes} temas`);
       return;
     }
 
-    createUserTheme(formattedTheme); // Send the new theme to the server
-    addTheme(formattedTheme);
+    createTheme(formattedTheme); // Send the new theme to the serve
     setNewTheme("");
     setError(null);
   };
 
-  const removeTheme = (theme: string) => {
-    removeThemeFromStore(theme);
+  const removeTheme = (themeId: number) => {
+    deleteTheme(themeId);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -111,8 +98,7 @@ export const ThemeSelector = React.memo(function ThemeSelector({
               onClick={addNewTheme}
               size="icon"
               disabled={
-                newTheme.trim().length < minChars ||
-                availableThemes.length >= maxThemes
+                newTheme.trim().length < minChars || themes.length >= maxThemes
               }
               aria-label="Add theme"
             >
@@ -127,7 +113,7 @@ export const ThemeSelector = React.memo(function ThemeSelector({
             </Alert>
           )}
 
-          {availableThemes.length >= maxThemes && (
+          {themes.length >= maxThemes && (
             <Alert className="py-2 bg-muted">
               <AlertDescription>
                 Has alcanzado el número máximo de {maxThemes} temas
@@ -138,15 +124,15 @@ export const ThemeSelector = React.memo(function ThemeSelector({
 
         <div>
           <h3 className="text-sm font-medium mb-3">
-            Tus temas de interés ({availableThemes.length}/{maxThemes})
+            Tus temas de interés ({themes.length}/{maxThemes})
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {availableThemes.map((theme) => {
-              const isSelected = selectedTheme === theme;
+            {themes.map((theme) => {
+              const isSelected = selectedTheme === theme.themeName;
 
               return (
                 <motion.div
-                  key={theme}
+                  key={theme.themeId}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.2 }}
@@ -165,21 +151,21 @@ export const ThemeSelector = React.memo(function ThemeSelector({
                           ? "bg-primary border-primary text-primary-foreground"
                           : "bg-[#05264f] border-muted-foreground/30"
                       )}
-                      onClick={() => selectTheme(theme)}
+                      onClick={() => selectTheme(theme.themeName)}
                     >
                       {isSelected && <Check className="h-3 w-3" />}
                     </div>
-                    <span className="text-sm">{theme}</span>
+                    <span className="text-sm">{theme.themeName}</span>
                   </div>
 
                   <Button
-                    variant="primary"
+                    variant="default"
                     size="icon"
                     className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity"
-                    onClick={() => removeTheme(theme)}
+                    onClick={() => removeTheme(theme.themeId)}
                   >
                     <X className="h-4 w-4" />
-                    <span className="sr-only">Eliminar {theme}</span>
+                    <span className="sr-only">Eliminar {theme.themeName}</span>
                   </Button>
                 </motion.div>
               );

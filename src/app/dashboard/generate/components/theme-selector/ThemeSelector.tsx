@@ -36,7 +36,7 @@ export default function ThemeSelectorComponent() {
         <ThemeSelector
           onThemeChange={setSelectedTheme}
           minChars={3}
-          maxThemes={8}
+          maxThemes={10}
         />
       )}
     </section>
