@@ -1,26 +1,42 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useThemeStore } from "@/app/dashboard/generate/components/theme-selector/store/interestThemes";
 import { ThemeSelector } from "./theme-selector";
 import { ThemeSetupModal } from "./theme-setup-modal";
+import { useThemeQuerys } from "@/app/dashboard/hooks/themes-query/useThemeQuerys";
 
 export default function ThemeSelectorComponent() {
-  const {
-    isSetupComplete,
-    setAvailableThemes,
-    setSelectedTheme,
-    setSetupComplete,
-  } = useThemeStore();
-  const [isModalOpen, setIsModalOpen] = useState(!isSetupComplete);
+  const { setSelectedTheme } = useThemeStore();
+  const { createTheme, theme_status, updateStatus, isLoadingStatus } =
+    useThemeQuerys();
+  const [isModalOpen, setIsModalOpen] = useState(false); // Inicialmente no mostramos nada
+
+  // Actualizamos el estado solo cuando theme_status ya está definido
+  useEffect(() => {
+    if (theme_status !== undefined) {
+      setIsModalOpen(!theme_status);
+    }
+  }, [theme_status]);
+
+  console.log(theme_status);
 
   const handleSetupComplete = (themes: string[]) => {
-    setAvailableThemes(themes);
-    setSetupComplete(true);
+    const firstThemes = themes;
+    firstThemes.forEach((theme) => {
+      createTheme(theme);
+    });
+
+    updateStatus();
     setIsModalOpen(false);
     // Set the first theme as selected by default
     if (themes.length > 0) {
       setSelectedTheme(themes[0]);
     }
   };
+
+  // Si estamos cargando, no mostramos nada (o puedes mostrar un indicador de carga)
+  if (isLoadingStatus) {
+    return null; // O return <div>Cargando...</div> si prefieres mostrar algo
+  }
 
   return (
     <section className="container mx-auto py-2">
@@ -32,7 +48,7 @@ export default function ThemeSelectorComponent() {
         minChars={3}
       />
 
-      {isSetupComplete && (
+      {theme_status && (
         <ThemeSelector
           onThemeChange={setSelectedTheme}
           minChars={3}

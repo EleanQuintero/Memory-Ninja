@@ -10,7 +10,7 @@ import { useFlashCardsQuery } from "../../hooks/flashcards-query/useFlashCardsQu
 export const useForm = () => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [pregunta, setPregunta] = useState("");
-  const selectedTheme = useThemeStore((state) => state.selectedTheme);
+  const selectedTheme = useThemeStore((state) => state.selectedTheme); // TODO: cambiar tema seleccionado desde el hook
   const { showError, debouncedSetError } = useErrorMessage();
   const { getAnswers } = useGetAnswers();
   const { saveFlashcards } = useFlashCardsQuery();
@@ -30,7 +30,7 @@ export const useForm = () => {
     try {
       const result = processQuestions({ data });
       const questions = result.questions;
-      const theme = selectedTheme;
+      const theme = selectedTheme; // TODO: cambiar tema seleccionado desde el hook
       const answers = await getAnswers({ theme, questions });
 
       if (!answers) {
