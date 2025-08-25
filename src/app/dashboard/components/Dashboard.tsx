@@ -18,7 +18,7 @@ const Dashboard: React.FC = () => {
     isLoading,
   } = dashboardStats;
 
-// Removed unnecessary console.log statement
+  // Removed unnecessary console.log statement
   useUserSync();
 
   // Mock de datos
@@ -40,6 +40,7 @@ const Dashboard: React.FC = () => {
       chartData: [30, 35, 42, 48, 52, 58, 65],
     },
   ];
+
   return (
     <section className="flex flex-col w-full md:justify-center items-center p-10">
       {/* Encabezado */}
