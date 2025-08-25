@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
-import { useThemeStore } from "@/app/dashboard/generate/components/theme-selector/store/interestThemes";
 import { ThemeSelector } from "./theme-selector";
 import { ThemeSetupModal } from "./theme-setup-modal";
 import { useThemeQuerys } from "@/app/dashboard/hooks/themes-query/useThemeQuerys";
 
 export default function ThemeSelectorComponent() {
-  const { setSelectedTheme } = useThemeStore();
-  const { createTheme, theme_status, updateStatus, isLoadingStatus } =
-    useThemeQuerys();
+  const {
+    createTheme,
+    theme_status,
+    updateStatus,
+    isLoadingStatus,
+    setSelectedTheme,
+  } = useThemeQuerys();
   const [isModalOpen, setIsModalOpen] = useState(false); // Inicialmente no mostramos nada
 
   // Actualizamos el estado solo cuando theme_status ya está definido
@@ -16,8 +19,6 @@ export default function ThemeSelectorComponent() {
       setIsModalOpen(!theme_status);
     }
   }, [theme_status]);
-
-  console.log(theme_status);
 
   const handleSetupComplete = (themes: string[]) => {
     const firstThemes = themes;
