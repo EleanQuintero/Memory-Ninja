@@ -58,7 +58,10 @@ const Dashboard: React.FC = () => {
             <CardTitle>Tarjetas por Tema</CardTitle>
           </CardHeader>
           <CardContent className="w-full">
-            <TopicDistributionChart data={countedFlashcardsData} />
+            <TopicDistributionChart
+              data={countedFlashcardsData}
+              loading={isLoading}
+            />
           </CardContent>
         </Card>
         <Card>
