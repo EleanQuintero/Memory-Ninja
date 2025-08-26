@@ -68,7 +68,7 @@ export default function Flashcard({
             <span className="text-sm font-bold text-electric-blue-400">
               {theme}
             </span>
-            <div className="flex flex-col justify-between h-full pt-10">
+            <div className="flex flex-col justify-between h-full w-full pt-2">
               <div>
                 <p className="mt-4 text-lg">{answer}</p>
               </div>
