@@ -1,13 +1,18 @@
 import { useState, useEffect } from "react";
-import { useThemeStore } from "@/app/dashboard/generate/components/theme-selector/store/interestThemes";
 import { ThemeSelector } from "./theme-selector";
 import { ThemeSetupModal } from "./theme-setup-modal";
 import { useThemeQuerys } from "@/app/dashboard/hooks/themes-query/useThemeQuerys";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 export default function ThemeSelectorComponent() {
-  const { setSelectedTheme } = useThemeStore();
-  const { createTheme, theme_status, updateStatus, isLoadingStatus } =
-    useThemeQuerys();
+  const {
+    createTheme,
+    theme_status,
+    updateStatus,
+    isLoadingStatus,
+    setSelectedTheme,
+  } = useThemeQuerys();
   const [isModalOpen, setIsModalOpen] = useState(false); // Inicialmente no mostramos nada
 
   // Actualizamos el estado solo cuando theme_status ya está definido
@@ -16,8 +21,6 @@ export default function ThemeSelectorComponent() {
       setIsModalOpen(!theme_status);
     }
   }, [theme_status]);
-
-  console.log(theme_status);
 
   const handleSetupComplete = (themes: string[]) => {
     const firstThemes = themes;
@@ -35,7 +38,31 @@ export default function ThemeSelectorComponent() {
 
   // Si estamos cargando, no mostramos nada (o puedes mostrar un indicador de carga)
   if (isLoadingStatus) {
-    return null; // O return <div>Cargando...</div> si prefieres mostrar algo
+    return (
+      <Card>
+        <CardHeader>
+          <Skeleton className="h-6 w-1/2" />
+          <Skeleton className="h-4 w-3/4" />
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="space-y-4">
+            <div className="flex gap-2">
+              <Skeleton className="h-10 flex-1" />
+              <Skeleton className="h-10 w-10" />
+            </div>
+          </div>
+          <div>
+            <Skeleton className="h-5 w-1/4 mb-3" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <Skeleton className="h-12 rounded-md" />
+              <Skeleton className="h-12 rounded-md" />
+              <Skeleton className="h-12 rounded-md" />
+              <Skeleton className="h-12 rounded-md" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
   }
 
   return (

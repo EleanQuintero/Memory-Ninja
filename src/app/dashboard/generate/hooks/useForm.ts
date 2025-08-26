@@ -1,4 +1,3 @@
-import { useThemeStore } from "@/app/dashboard/generate/components/theme-selector/store/interestThemes";
 import { processQuestions } from "@/utils/services/functions/process/processQuestion";
 import { FormEvent, useRef, useState } from "react";
 import { useErrorMessage } from "../../../../hooks/useErrorMessage";
@@ -6,14 +5,15 @@ import { useGetAnswers } from "./useGetAnswers";
 import { validatePregunta } from "@/utils/schemes/form-question-validation/formValidation";
 import { flashcardToSync } from "@/domain/flashcards";
 import { useFlashCardsQuery } from "../../hooks/flashcards-query/useFlashCardsQuery";
+import { useThemeQuerys } from "../../hooks/themes-query/useThemeQuerys";
 
 export const useForm = () => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [pregunta, setPregunta] = useState("");
-  const selectedTheme = useThemeStore((state) => state.selectedTheme); // TODO: cambiar tema seleccionado desde el hook
   const { showError, debouncedSetError } = useErrorMessage();
   const { getAnswers } = useGetAnswers();
   const { saveFlashcards } = useFlashCardsQuery();
+  const { selectedTheme } = useThemeQuerys()
 
   const resetForm = () => {
     setPregunta("");
@@ -30,7 +30,7 @@ export const useForm = () => {
     try {
       const result = processQuestions({ data });
       const questions = result.questions;
-      const theme = selectedTheme; // TODO: cambiar tema seleccionado desde el hook
+      const theme = selectedTheme;
       const answers = await getAnswers({ theme, questions });
 
       if (!answers) {

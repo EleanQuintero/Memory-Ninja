@@ -1,4 +1,5 @@
 "use client";
+import { RecentCardsSkeleton } from "@/components/fallbacks/RecentCardSkeleton";
 import React from "react";
 import {
   BarChart,
@@ -18,12 +19,17 @@ interface chartData {
 
 interface TopicDistributionChartProps {
   data: chartData[];
+  loading?: boolean;
 }
 
 export const TopicDistributionChart = ({
   data,
+  loading,
 }: TopicDistributionChartProps) => {
-  // Mock de datos
+  if (loading) {
+    return <RecentCardsSkeleton />;
+  }
+
   return (
     <div className="h-[300px] min-w-0 w-full">
       <ResponsiveContainer width="100%" height="100%">

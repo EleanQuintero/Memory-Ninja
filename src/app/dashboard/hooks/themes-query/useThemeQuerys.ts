@@ -5,6 +5,7 @@ import { getThemeStatus } from "@/utils/services/functions/api/themes/getThemeSt
 import { getUserThemes } from "@/utils/services/functions/api/themes/getUserThemes";
 import { updateThemeStatus } from "@/utils/services/functions/api/themes/updateThemeStatus";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useThemeStore } from "../../generate/components/theme-selector/store/interestThemes";
 
 
 
@@ -12,6 +13,8 @@ export const useThemeQuerys = () => {
     const QUERY_KEY = "themes"
 
     const queryClient = useQueryClient();
+
+    const { selectedTheme, setSelectedTheme } = useThemeStore()
 
     const { data: themes, isLoading: isLoadingThemes, error: themesError, isError: themeIsError } = useQuery<themes[], Error>({
         queryKey: [QUERY_KEY],
@@ -67,6 +70,6 @@ export const useThemeQuerys = () => {
     });
 
 
-    return { themes, isLoadingThemes, themesError, themeIsError, deleteTheme, createTheme, theme_status, updateStatus, isLoadingStatus };
+    return { themes, isLoadingThemes, themesError, themeIsError, deleteTheme, createTheme, theme_status, updateStatus, isLoadingStatus, selectedTheme, setSelectedTheme };
 
 }
