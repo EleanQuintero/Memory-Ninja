@@ -69,9 +69,7 @@ export default function Flashcard({
               {theme}
             </span>
             <div className="flex flex-col justify-between h-full w-full pt-2">
-              <div>
-                <p className="mt-4 text-lg">{answer}</p>
-              </div>
+              <p className="m-auto gap-3 text-lg">{answer}</p>
               <Button onClick={handleFlip} variant={"default"} className="">
                 Ver pregunta
               </Button>

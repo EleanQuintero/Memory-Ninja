@@ -71,7 +71,7 @@ export default function FlashCardsPage() {
       </div>
 
       <div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:m-auto lg:justify-center lg:items-center gap-6">
           {filteredFlashcards.map((data) => (
             <Flashcard
               flashcardID={data.flashcard_id as string}

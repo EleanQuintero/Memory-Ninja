@@ -9,11 +9,11 @@ import { flashcardUnitOfWork } from "@/utils/services/unitOfWork/flashcardUnitOf
 export const useGetAnswers = () => {
   const { setLoading } = useUIState();
 
-  const getAnswers = async ({ theme, userLevel, questions }: getAnswersProps) => {
+  const getAnswers = async ({ theme, questions }: getAnswersProps) => {
     setLoading(true);
     try {
       const modelAnswers = await retryFetchData(() =>
-        flashcardUnitOfWork.getAnswers({ theme, userLevel, questions })
+        flashcardUnitOfWork.getAnswers({ theme, questions })
       );
       setLoading(false);
       return Array.isArray(modelAnswers) ? modelAnswers : [];
