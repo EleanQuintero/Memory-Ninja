@@ -1,5 +1,7 @@
+import { useDashboardStats } from "../../hooks/dashboard-stats/useDashboardStats";
 import { StatCard } from "./StatCard";
 import { SkeletonCard } from "@/components/fallbacks/SkeletonCard";
+import { BookOpen, Trophy } from "lucide-react";
 
 interface Stats {
   title: string;
@@ -10,11 +12,33 @@ interface Stats {
 }
 
 interface StatsProps {
-  stats: Stats[];
   isLoading?: boolean;
 }
 
-export const Stats = ({ stats, isLoading }: StatsProps) => {
+export const Stats = ({ isLoading }: StatsProps) => {
+  const { dashboardStats } = useDashboardStats();
+
+  const { themeWithMaxFlashcardsData, maxFlashcardsByUserData } =
+    dashboardStats;
+  const stats = [
+    {
+      title: "Tarjetas Creadas",
+      value: maxFlashcardsByUserData ?? "0",
+      icon: <BookOpen className="text-blue-400" />,
+      change: "+12% vs semana anterior",
+      chartData: [120, 145, 165, 190, 210, 235, 248],
+    },
+    {
+      title: "Tema con Más Tarjetas",
+      value: themeWithMaxFlashcardsData?.theme ?? "Sin datos",
+      icon: <Trophy className="text-blue-400" />,
+      change: themeWithMaxFlashcardsData?.count
+        ? `+${themeWithMaxFlashcardsData.count} tarjetas`
+        : "Sin datos",
+      chartData: [30, 35, 42, 48, 52, 58, 65],
+    },
+  ];
+
   if (isLoading) {
     return <SkeletonCard />;
   }
