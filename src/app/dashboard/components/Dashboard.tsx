@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { BookOpen, Trophy } from "lucide-react";
 import { RecentCards } from "@/app/dashboard/components/dashboard/RecentCards";
 import { TopicDistributionChart } from "@/app/dashboard/components/dashboard/TopicDistributionChart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,36 +9,11 @@ import { Stats } from "./dashboard/Stats";
 
 const Dashboard: React.FC = () => {
   const { dashboardStats } = useDashboardStats();
-  const {
-    countedFlashcardsData,
-    latestFlashcardsData,
-    themeWithMaxFlashcardsData,
-    maxFlashcardsByUserData,
-    isLoading,
-  } = dashboardStats;
+  const { countedFlashcardsData, latestFlashcardsData, isLoading } =
+    dashboardStats;
 
-// Removed unnecessary console.log statement
   useUserSync();
 
-  // Mock de datos
-  const stats = [
-    {
-      title: "Tarjetas Creadas",
-      value: maxFlashcardsByUserData ?? "0",
-      icon: <BookOpen className="text-blue-400" />,
-      change: "+12% vs semana anterior",
-      chartData: [120, 145, 165, 190, 210, 235, 248],
-    },
-    {
-      title: "Tema con Más Tarjetas",
-      value: themeWithMaxFlashcardsData?.theme ?? "Sin datos",
-      icon: <Trophy className="text-blue-400" />,
-      change: themeWithMaxFlashcardsData?.count
-        ? `+${themeWithMaxFlashcardsData.count} tarjetas`
-        : "Sin datos",
-      chartData: [30, 35, 42, 48, 52, 58, 65],
-    },
-  ];
   return (
     <section className="flex flex-col w-full md:justify-center items-center p-10">
       {/* Encabezado */}
@@ -49,7 +23,7 @@ const Dashboard: React.FC = () => {
         </h1>
       </div>
       {/* Estadísticas */}
-      <Stats stats={stats} isLoading={isLoading} />
+      <Stats isLoading={isLoading} />
       {/* Gráficos y tabla */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full max-w-full overflow-x-hidden md:max-w-7xl">
         <Card className="lg:col-span-2">
@@ -57,7 +31,10 @@ const Dashboard: React.FC = () => {
             <CardTitle>Tarjetas por Tema</CardTitle>
           </CardHeader>
           <CardContent className="w-full">
-            <TopicDistributionChart data={countedFlashcardsData} />
+            <TopicDistributionChart
+              data={countedFlashcardsData}
+              loading={isLoading}
+            />
           </CardContent>
         </Card>
         <Card>

@@ -3,7 +3,7 @@ import React from "react";
 import { BookOpen, Clock, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { SkeletonCard } from "@/components/fallbacks/SkeletonCard";
+import { RecentCardsSkeleton } from "@/components/fallbacks/RecentCardSkeleton";
 
 interface Card {
   question: string;
@@ -18,7 +18,11 @@ interface RecentCardsProps {
 
 export const RecentCards: React.FC<RecentCardsProps> = ({ cards, loading }) => {
   if (loading) {
-    return <SkeletonCard />;
+    return (
+      <div className="p-3">
+        <RecentCardsSkeleton />
+      </div>
+    );
   }
 
   return (

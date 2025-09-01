@@ -17,7 +17,7 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { motion, AnimatePresence } from "framer-motion";
-import { useThemeStore } from "@/app/dashboard/generate/components/theme-selector/store/interestThemes";
+import { useThemeQuerys } from "@/app/dashboard/hooks/themes-query/useThemeQuerys";
 
 interface ThemeSetupModalProps {
   isOpen: boolean;
@@ -34,10 +34,11 @@ export function ThemeSetupModal({
   maxThemes = 8,
   minChars = 3,
 }: ThemeSetupModalProps) {
-  const { availableThemes, addTheme, removeTheme } = useThemeStore();
   const [newTheme, setNewTheme] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isClosing, setIsClosing] = useState(false);
+  const { themes, createTheme, deleteTheme } = useThemeQuerys();
+  const availableThemes = themes || [];
 
   // Reset closing state when modal opens
   useEffect(() => {
@@ -59,8 +60,9 @@ export function ThemeSetupModal({
 
     // Check for duplicates
     if (
-      availableThemes.some(
-        (theme) => theme.toLowerCase() === formattedTheme.toLowerCase()
+      availableThemes?.some(
+        (theme) =>
+          theme.themeName.toLowerCase() === formattedTheme.toLowerCase()
       )
     ) {
       setError("Este tema ya ha sido añadido");
@@ -68,18 +70,18 @@ export function ThemeSetupModal({
     }
 
     // Check maximum themes
-    if (availableThemes.length >= maxThemes) {
+    if (availableThemes?.length >= maxThemes) {
       setError(`Puedes añadir un máximo de ${maxThemes} temas`);
       return;
     }
 
-    addTheme(formattedTheme);
+    createTheme(formattedTheme);
     setNewTheme("");
     setError(null);
   };
 
-  const handleRemoveTheme = (theme: string) => {
-    removeTheme(theme);
+  const handleRemoveTheme = (themeId: number) => {
+    deleteTheme(themeId);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -100,12 +102,15 @@ export function ThemeSetupModal({
 
     // Delay completion to allow animation to finish
     setTimeout(() => {
-      onComplete(availableThemes);
+      onComplete([...availableThemes.map((t) => t.themeName)]);
     }, 300); // Match this with the animation duration
   };
 
   // Calculate progress percentage
-  const progressPercentage = Math.min(100, (availableThemes.length / minThemes) * 100);
+  const progressPercentage = Math.min(
+    100,
+    (availableThemes.length / minThemes) * 100
+  );
 
   return (
     <Dialog
@@ -165,19 +170,21 @@ export function ThemeSetupModal({
                 <div className="flex flex-wrap gap-2 min-h-24 p-3 border rounded-md bg-muted/30">
                   {availableThemes.map((theme) => (
                     <Badge
-                      key={theme}
+                      key={theme.themeName}
                       variant="secondary"
                       className="flex items-center gap-1 py-1.5 pl-3 pr-2 text-sm"
                     >
-                      {theme}
+                      {theme.themeName}
                       <Button
                         variant="ghost"
                         size="icon"
                         className="h-5 w-5 p-0 hover:bg-secondary-foreground/20 rounded-full"
-                        onClick={() => handleRemoveTheme(theme)}
+                        onClick={() => handleRemoveTheme(theme.themeId)}
                       >
                         <X className="h-3 w-3" />
-                        <span className="sr-only">Remove {theme}</span>
+                        <span className="sr-only">
+                          Remove {theme.themeName}
+                        </span>
                       </Button>
                     </Badge>
                   ))}

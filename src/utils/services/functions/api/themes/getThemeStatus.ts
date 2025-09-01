@@ -1,6 +1,7 @@
-export const getUserThemes = async () => {
 
-    const API_ENDPOINT = process.env.NEXT_PUBLIC_CLIENT_GET_USER_THEMES
+export const getThemeStatus = async () => {
+
+    const API_ENDPOINT = process.env.NEXT_PUBLIC_CLIENT_GET_THEME_STATUS
 
     try {
 
@@ -12,15 +13,16 @@ export const getUserThemes = async () => {
         })
 
         if (!response.ok) {
-            throw new Error("Error al obtener los temas ")
+            throw new Error("Error al obtener el estado del tema ")
         }
 
         const data = await response.json()
 
-        return data
+        return data.theme_status
 
     } catch (error) {
-        console.error("Error al obtener los temas de usuario, intente de nuevo")
+        console.error("Error al obtener el estado del tema, intente de nuevo")
     }
 
 }
+
