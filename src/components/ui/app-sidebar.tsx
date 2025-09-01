@@ -9,9 +9,7 @@ import {
 } from "@/components/ui/sidebar";
 
 import { UserButton } from "@clerk/nextjs";
-import {  Home,  Search, CirclePlus, CreditCard } from "lucide-react";
-
-
+import { Home, Search, CirclePlus, CreditCard } from "lucide-react";
 
 // Menu items.
 import Link from "next/link";
@@ -19,33 +17,35 @@ import Link from "next/link";
 export function AppSidebar() {
   const items = [
     {
-        title: "Home",
-        url: "/dashboard",
-        icon: Home,
+      title: "Home",
+      url: "/dashboard",
+      icon: Home,
     },
     {
-        title: "Flashcards",
-        url: "/dashboard/flashcards",
-        icon: CreditCard,
+      title: "Flashcards",
+      url: "/dashboard/flashcards",
+      icon: CreditCard,
     },
     {
-        title: "Generate",
-        url: "/dashboard/generate",
-        icon: CirclePlus,
+      title: "Generate",
+      url: "/dashboard/generate",
+      icon: CirclePlus,
     },
     {
-        title: "Search",
-        url: "#",
-        icon: Search,
+      title: "Search",
+      url: "#",
+      icon: Search,
     },
-];
+  ];
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              <UserButton />
+              <div className="flex flex-row justify-center items-center">
+                <UserButton />
+              </div>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>

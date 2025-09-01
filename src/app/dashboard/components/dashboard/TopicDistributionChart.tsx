@@ -22,6 +22,33 @@ interface TopicDistributionChartProps {
   loading?: boolean;
 }
 
+// custom tick renderer for XAxis to rotate labels
+
+type TickProps = {
+  x: number;
+  y: number;
+  payload: { value: string };
+};
+
+function RenderCustomizedAxisTick(props: TickProps) {
+  const { x, y, payload } = props;
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text
+        x={0}
+        y={0}
+        dy={16}
+        textAnchor="end"
+        fill="#9ca3af"
+        transform="rotate(-35)"
+        style={{ fontSize: 12 }}
+      >
+        {payload.value}
+      </text>
+    </g>
+  );
+}
+
 export const TopicDistributionChart = ({
   data,
   loading,
@@ -35,10 +62,20 @@ export const TopicDistributionChart = ({
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={data}
-          margin={{ top: 5, right: 10, left: 5, bottom: 5 }}
+          // increase bottom margin to make room for X labels and legend
+          margin={{ top: 8, right: 10, left: 8, bottom: 70 }}
+          // control category gap so bars don't become too thin when many items
+          barCategoryGap="20%"
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-          <XAxis dataKey="theme" stroke="#9ca3af" />
+          {/* custom tick renderer to allow rotation without TypeScript errors */}
+          <XAxis
+            dataKey="theme"
+            stroke="#9ca3af"
+            interval={0} // show all labels
+            tickMargin={12}
+            tick={RenderCustomizedAxisTick}
+          />
           <YAxis stroke="#9ca3af" />
           <Tooltip
             contentStyle={{
@@ -48,12 +85,19 @@ export const TopicDistributionChart = ({
               color: "#f3f4f6",
             }}
           />
-          <Legend />
           <Bar
             dataKey="count"
             name="Número de Tarjetas"
             fill="#3b82f6"
-            radius={[4, 4, 0, 0]}
+            radius={[6, 6, 0, 0]}
+            maxBarSize={56}
+            barSize={40}
+            className=""
+          />
+          <Legend
+            verticalAlign="bottom"
+            align="center"
+            wrapperStyle={{ paddingTop: 8 }}
           />
         </BarChart>
       </ResponsiveContainer>
