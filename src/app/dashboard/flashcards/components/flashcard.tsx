@@ -40,10 +40,10 @@ export default function Flashcard({
           }`}
         >
           {/* Front side - Question */}
-          <Card className="absolute w-full h-full backface-hidden bg-gradient-to-br from-slate-900/95 via-slate-700/98 to-black backdrop-blur-xl border-4  border-[#000000] hover:border-[#35495e] transition-colors duration-300 ease-out text-white p-6">
+          <Card className="absolute w-full h-full backface-hidden bg-gradient-to-br from-slate-900/95 via-slate-700/98 to-black backdrop-blur-xl border-4  border-[#000000] hover:border-[#19324a] transition-colors duration-300 ease-out text-white p-6">
             <div className="flex flex-row">
               <Button
-                variant="default"
+                variant="transparent"
                 className="absolute top-2 right-2 group"
                 onClick={handleDelete}
               >
@@ -57,7 +57,7 @@ export default function Flashcard({
               <div>
                 <h3 className="text-xl font-extrabold mt-2">{question}</h3>
               </div>
-              <Button onClick={handleFlip} variant={"default"}>
+              <Button onClick={handleFlip} variant={"memoryNinja"}>
                 Ver respuesta
               </Button>
             </div>
@@ -70,7 +70,7 @@ export default function Flashcard({
             </span>
             <div className="flex flex-col justify-between h-full w-full pt-2">
               <p className="m-auto gap-3 text-lg">{answer}</p>
-              <Button onClick={handleFlip} variant={"default"} className="">
+              <Button onClick={handleFlip} variant={"memoryNinja"} className="">
                 Ver pregunta
               </Button>
             </div>
