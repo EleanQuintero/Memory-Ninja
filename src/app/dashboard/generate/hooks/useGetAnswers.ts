@@ -1,22 +1,20 @@
 import { getAnswersProps } from "@/domain/flashcards";
 import { useUIState } from "@/store/uiState/uiState";
-import { retryFetchData } from "@/utils/services/functions/process/retryFetchData";
-import { flashcardUnitOfWork } from "@/utils/services/unitOfWork/flashcardUnitOfWork";
+import { useFlashCardsQuery } from "../../hooks/flashcards-query/useFlashCardsQuery";
 
 
 
 
 export const useGetAnswers = () => {
   const { setLoading } = useUIState();
+  const { getAnswer } = useFlashCardsQuery();
 
-  const getAnswers = async ({ theme, questions }: getAnswersProps) => {
+  const getAnswers = async ({ theme, questions, model }: getAnswersProps) => {
     setLoading(true);
     try {
-      const modelAnswers = await retryFetchData(() =>
-        flashcardUnitOfWork.getAnswers({ theme, questions })
-      );
+      const modelAnswers = getAnswer({ theme, questions, model });
       setLoading(false);
-      return Array.isArray(modelAnswers) ? modelAnswers : [];
+      return modelAnswers;
     } catch (error) {
       setLoading(false);
       if (error instanceof Error) {

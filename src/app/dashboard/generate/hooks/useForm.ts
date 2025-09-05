@@ -32,11 +32,13 @@ export const useForm = () => {
     try {
       const result = processQuestions({ data });
       const questions = result.questions;
-      const theme = selectedTheme;
-      const answers = await getAnswers({ theme, questions });
       const model = source
+      const theme = selectedTheme;
+      const answers = await getAnswers({ theme, questions, model });
 
-      console.log("Modelo seleccionado:", model);
+      console.log(answers);
+
+
 
       if (!answers) {
         throw new Error("No se recibieron respuestas de la API");
@@ -49,6 +51,8 @@ export const useForm = () => {
           theme,
         })),
       }
+
+
 
       saveFlashcards(flashcardData);
       resetForm();

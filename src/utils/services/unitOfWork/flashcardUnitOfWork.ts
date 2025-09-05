@@ -37,9 +37,9 @@ export class FlashcardUnitOfWork {
     }
   }
 
-  public async getAnswers({ theme, questions }: getAnswersProps): Promise<AnswerData> {
+  public async getAnswers({ theme, questions, model }: getAnswersProps): Promise<AnswerData> {
     try {
-      return await this.repository.getModelAnswer({ theme, questions });
+      return await this.repository.getModelAnswer({ theme, questions, model });
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
