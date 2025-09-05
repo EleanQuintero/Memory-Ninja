@@ -36,10 +36,6 @@ export const useForm = () => {
       const theme = selectedTheme;
       const answers = await getAnswers({ theme, questions, model });
 
-      console.log(answers);
-
-
-
       if (!answers) {
         throw new Error("No se recibieron respuestas de la API");
       }
