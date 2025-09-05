@@ -11,16 +11,12 @@ export const SourceSelector: React.FC = ({}) => {
       name: "All sources",
     },
     {
-      id: "basic",
+      id: "Basic",
       name: "	Kōga (甲賀)",
     },
     {
       id: "Pro",
       name: "Kurayami (暗闇)",
-    },
-    {
-      id: "custom",
-      name: "Custom data",
     },
   ];
   const sourceSelected =

@@ -43,7 +43,7 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              <div className="flex flex-row justify-center items-center">
+              <div className="flex flex-row ml-2.5">
                 <UserButton />
               </div>
               {items.map((item) => (
