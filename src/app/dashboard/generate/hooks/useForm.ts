@@ -6,6 +6,7 @@ import { validatePregunta } from "@/utils/schemes/form-question-validation/formV
 import { flashcardToSync } from "@/domain/flashcards";
 import { useFlashCardsQuery } from "../../hooks/flashcards-query/useFlashCardsQuery";
 import { useThemeQuerys } from "../../hooks/themes-query/useThemeQuerys";
+import { useSourceStore } from "../store/sourceStore";
 
 export const useForm = () => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -14,6 +15,7 @@ export const useForm = () => {
   const { getAnswers } = useGetAnswers();
   const { saveFlashcards } = useFlashCardsQuery();
   const { selectedTheme } = useThemeQuerys()
+  const { source } = useSourceStore();
 
   const resetForm = () => {
     setPregunta("");
@@ -32,6 +34,9 @@ export const useForm = () => {
       const questions = result.questions;
       const theme = selectedTheme;
       const answers = await getAnswers({ theme, questions });
+      const model = source
+
+      console.log("Modelo seleccionado:", model);
 
       if (!answers) {
         throw new Error("No se recibieron respuestas de la API");

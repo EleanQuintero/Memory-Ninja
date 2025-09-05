@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import { ChevronDownIcon, Brain } from "lucide-react";
+import { useSourceStore } from "../../store/sourceStore";
 
 export const SourceSelector: React.FC = ({}) => {
   const [selectedSource, setSelectedSource] = useState("all");
   const [isOpen, setIsOpen] = useState(false);
+  const { setSource } = useSourceStore();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const sources = [
     {
@@ -21,6 +23,13 @@ export const SourceSelector: React.FC = ({}) => {
   ];
   const sourceSelected =
     sources.find((source) => source.id === selectedSource) || sources[0];
+
+  function handleClick(source: { id: string; name: string }) {
+    setSelectedSource(source.id);
+    setSource(source.name);
+    setIsOpen(false);
+  }
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -57,10 +66,7 @@ export const SourceSelector: React.FC = ({}) => {
                     ? "bg-[#19324a] text-white"
                     : "text-[#b3bac1] hover:bg-[#19324a]/50"
                 } block w-full text-left px-4 py-2 text-sm`}
-                onClick={() => {
-                  setSelectedSource(source.id);
-                  setIsOpen(false);
-                }}
+                onClick={() => handleClick(source)}
               >
                 {source.name}
               </button>
