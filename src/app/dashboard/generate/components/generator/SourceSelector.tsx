@@ -14,7 +14,7 @@ export const SourceSelector: React.FC = ({}) => {
     },
     {
       id: "Basic",
-      name: "	Kōga (甲賀)",
+      name: "Kōga (甲賀)",
     },
     {
       id: "Pro",
