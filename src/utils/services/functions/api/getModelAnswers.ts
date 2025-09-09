@@ -1,6 +1,6 @@
 import { AnswerData, getAnswersProps } from "@/domain/flashcards";
 
-export const getModelAnswer = async ({ questions, theme, }: getAnswersProps): Promise<AnswerData> => {
+export const getModelAnswer = async ({ questions, theme, model }: getAnswersProps): Promise<AnswerData> => {
 
     try {
         const response = await fetch('/api/generate-answer', {
@@ -8,7 +8,7 @@ export const getModelAnswer = async ({ questions, theme, }: getAnswersProps): Pr
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ theme, questions })
+            body: JSON.stringify({ theme, questions, model })
         })
 
         if (!response.ok) {

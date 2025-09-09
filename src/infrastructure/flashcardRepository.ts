@@ -31,8 +31,9 @@ export class FlashcardRepository implements Irepository {
   getModelAnswer({
     theme,
     questions,
+    model
   }: getAnswersProps): Promise<AnswerData> {
-    return getModelAnswer({ theme, questions });
+    return getModelAnswer({ theme, questions, model });
   }
 
   deleteFlashcard(flashcardID: string): Promise<void> {

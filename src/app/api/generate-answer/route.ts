@@ -12,6 +12,7 @@ async function generateAnswer(req: NextRequest) {
     console.log("Datos recibidos:", {
       theme: rawData.theme,
       questionsCount: rawData.questions?.length,
+      model: rawData.model,
     });
 
     const validationError = validateGetAnswers(rawData);
@@ -26,7 +27,7 @@ async function generateAnswer(req: NextRequest) {
       );
     }
 
-    const { questions, theme } = rawData;
+    const { questions, theme, model } = rawData;
 
     const response = await fetch("http://localhost:4444/api/questions/ask", {
       method: "POST",
@@ -34,8 +35,8 @@ async function generateAnswer(req: NextRequest) {
         "Content-Type": "application/json"
         , Authorization: `Bearer ${token}`
       },
-      signal: AbortSignal.timeout(7000),
-      body: JSON.stringify({ questions, tema: theme }),
+      signal: AbortSignal.timeout(14000),
+      body: JSON.stringify({ questions, tema: theme, model }),
     });
 
     if (!response.ok) {

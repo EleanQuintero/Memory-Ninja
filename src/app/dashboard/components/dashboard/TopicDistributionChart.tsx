@@ -8,7 +8,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 
@@ -94,13 +93,19 @@ export const TopicDistributionChart = ({
             barSize={40}
             className=""
           />
-          <Legend
-            verticalAlign="bottom"
-            align="center"
-            wrapperStyle={{ paddingTop: 8 }}
-          />
         </BarChart>
       </ResponsiveContainer>
+      {/* Custom legend placed outside the Recharts canvas to avoid overlap with X axis labels */}
+      <div className="flex justify-center items-center pt-3">
+        <div className="flex items-center text-sm text-sky-400">
+          <span
+            className="inline-block w-3 h-3 mr-2 rounded-sm"
+            style={{ backgroundColor: "#3b82f6" }}
+            aria-hidden
+          />
+          <span className="select-none">Número de Tarjetas</span>
+        </div>
+      </div>
     </div>
   );
 };

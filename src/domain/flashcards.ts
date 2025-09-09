@@ -12,6 +12,7 @@ export interface flashcardToSync {
 export interface getAnswersProps {
   theme: string;
   questions: string[];
+  model: string
 }
 
 export interface AnswerData {
