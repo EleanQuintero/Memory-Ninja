@@ -35,7 +35,7 @@ async function generateAnswer(req: NextRequest) {
         "Content-Type": "application/json"
         , Authorization: `Bearer ${token}`
       },
-      signal: AbortSignal.timeout(7000),
+      signal: AbortSignal.timeout(14000),
       body: JSON.stringify({ questions, tema: theme, model }),
     });
 
