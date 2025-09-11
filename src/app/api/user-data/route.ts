@@ -11,14 +11,17 @@ async function saveUser() {
     if (!user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
     }
-
     try {
 
         const features = user.privateMetadata?.feature
-        let userRole
-        if (features === "pro_user") {
+        let userRole: number
+        if (features === "kurayami") {
             userRole = 1;
+        } else {
+            userRole = 2;
         }
+
+
 
         const data = {
             id: user.id,
@@ -28,6 +31,8 @@ async function saveUser() {
             email: user.emailAddresses[0].emailAddress,
             role: userRole
         }
+
+        console.log("Guardando usuario:", data);
 
         const res = await fetch("http://localhost:4444/api/user/new", {
             method: "POST",
@@ -52,4 +57,4 @@ async function saveUser() {
     }
 }
 
-export const POST = rateLimitter({ fn: saveUser, options: RATE_LIMIT_CONFIGS.AUTH })
+export const POST = rateLimitter({ fn: saveUser, options: RATE_LIMIT_CONFIGS.WRITE })

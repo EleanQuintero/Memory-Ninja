@@ -1,12 +1,18 @@
 import React, { useEffect, useState, useRef } from "react";
 import { ChevronDownIcon, Brain } from "lucide-react";
 import { useSourceStore } from "../../store/sourceStore";
+import { useAuth } from "@clerk/nextjs";
 
-export const SourceSelector: React.FC = ({}) => {
+export const SourceSelector: React.FC = () => {
   const [selectedSource, setSelectedSource] = useState("all");
   const [isOpen, setIsOpen] = useState(false);
   const { setSource } = useSourceStore();
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const { has } = useAuth();
+
+  const hasKurayami = has ? has({ feature: "kurayami" }) : false;
+
   const sources = [
     {
       id: "all",
@@ -25,6 +31,13 @@ export const SourceSelector: React.FC = ({}) => {
     sources.find((source) => source.id === selectedSource) || sources[0];
 
   function handleClick(source: { id: string; name: string }) {
+    const isDisabled = source.id === "Pro" && !hasKurayami;
+
+    if (isDisabled) {
+      alert("You need to upgrade to paid plan to select this source.");
+      return;
+    }
+
     setSelectedSource(source.id);
     setSource(source.name);
     setIsOpen(false);
