@@ -8,6 +8,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/ui/app-sidebar";
 import SubscriptionFallback from "@/components/fallbacks/subscription";
 import { Provider } from "@/components/provider/Provider";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "FlashCard Generator",
@@ -35,6 +36,7 @@ export default function DashboardLayout({
               </div>
               {children}
             </main>
+            <Toaster />
           </SidebarProvider>
         </Provider>
       </section>
