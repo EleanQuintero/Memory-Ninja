@@ -6,6 +6,8 @@ import { SourceSelector } from "./SourceSelector";
 import { useForm } from "@/app/dashboard/generate/hooks/useForm";
 import { useUIState } from "@/store/uiState/uiState";
 import { InfoCards } from "./info-cards";
+import { SourceModelIcon } from "./SourceModel";
+import { models } from "@/utils/consts/ninjaModels";
 
 interface Props {
   loadingAnswers: boolean;
@@ -49,7 +51,11 @@ export const FlashCardGenerator: React.FC<Props> = ({ loadingAnswers }) => {
             />
           </section>
           <section className="border-t border-[#4a525a]/20 p-3 flex flex-col md:flex-row items-center justify-between gap-3">
-            <SourceSelector />
+            <div className="flex items-center gap-1">
+              <SourceSelector />
+              <SourceModelIcon model={models} />
+            </div>
+
             <Button
               type="submit"
               disabled={!!error || loadingAnswers}
