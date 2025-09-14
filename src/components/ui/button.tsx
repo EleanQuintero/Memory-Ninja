@@ -25,11 +25,14 @@ const buttonVariants = cva(
         transparent:
           "bg-electric-blue-500 text-white focus-visible:ring-electric-blue-300",
         onboarding: "bg-[#8b5cf6] text-white hover:bg-[#7c3aed] shadow-md",
+        CTA: "bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold shadow-lg",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
         sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
         lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
+        xl: "h-11 rounded-md px-8 has-[>svg]:px-6",
+        xl2: "h-12 rounded-md px-10 has-[>svg]:px-8",
         icon: "size-9",
       },
     },
