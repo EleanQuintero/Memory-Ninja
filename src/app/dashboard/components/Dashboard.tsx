@@ -1,11 +1,11 @@
 "use client";
-import React from "react";
 import { RecentCards } from "@/app/dashboard/components/dashboard/RecentCards";
 import { TopicDistributionChart } from "@/app/dashboard/components/dashboard/TopicDistributionChart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useUserSync } from "../hooks/user-sync/useUserSync";
 import { useDashboardStats } from "../hooks/dashboard-stats/useDashboardStats";
 import { Stats } from "./dashboard/Stats";
+import WithoutData from "./dashboard/WithoutData";
 
 const Dashboard: React.FC = () => {
   const { dashboardStats } = useDashboardStats();
@@ -13,6 +13,10 @@ const Dashboard: React.FC = () => {
     dashboardStats;
 
   useUserSync();
+
+  if (dashboardStats.maxFlashcardsByUserData === 0) {
+    return <WithoutData />;
+  }
 
   return (
     <section className="flex flex-col w-full md:justify-center items-center p-10">
