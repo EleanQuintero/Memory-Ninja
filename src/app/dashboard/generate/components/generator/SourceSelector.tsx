@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { ChevronDownIcon, Brain } from "lucide-react";
 import { useSourceStore } from "../../store/sourceStore";
 import { useAuth } from "@clerk/nextjs";
+import { toast } from "sonner";
+import { sources } from "@/utils/consts/ninjaModels";
 
 export const SourceSelector: React.FC = () => {
   const [selectedSource, setSelectedSource] = useState("all");
@@ -13,20 +15,6 @@ export const SourceSelector: React.FC = () => {
 
   const hasKurayami = has ? has({ feature: "kurayami" }) : false;
 
-  const sources = [
-    {
-      id: "all",
-      name: "All sources",
-    },
-    {
-      id: "Basic",
-      name: "Kōga (甲賀)",
-    },
-    {
-      id: "Pro",
-      name: "Kurayami (暗闇)",
-    },
-  ];
   const sourceSelected =
     sources.find((source) => source.id === selectedSource) || sources[0];
 
@@ -34,7 +22,14 @@ export const SourceSelector: React.FC = () => {
     const isDisabled = source.id === "Pro" && !hasKurayami;
 
     if (isDisabled) {
-      alert("You need to upgrade to paid plan to select this source.");
+      toast("Actualiza a un plan superior para usar a Kurayami", {
+        description: "El acceso a Kurayami está restringido.",
+        action: {
+          label: "Undo",
+          onClick: () => toast("Recibido!"),
+        },
+        className: "bg-red-500 text-white",
+      });
       return;
     }
 
@@ -74,6 +69,7 @@ export const SourceSelector: React.FC = () => {
             {sources.map((source) => (
               <button
                 key={source.id}
+                type="button"
                 className={`${
                   selectedSource === source.id
                     ? "bg-[#19324a] text-white"
