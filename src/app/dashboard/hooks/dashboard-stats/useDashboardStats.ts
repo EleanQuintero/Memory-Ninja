@@ -58,7 +58,6 @@ export const useDashboardStats = () => {
         latestFlashcardsData: latestFlashcards.data,
         themeWithMaxFlashcardsData: themeWithMaxFlashcards.data,
         maxFlashcardsByUserData: maxFlashcardsByUser.data,
-
         isLoading,
         hasErrors,
         errors: queries.map(query => query.error)
