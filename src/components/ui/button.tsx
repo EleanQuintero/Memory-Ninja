@@ -24,6 +24,7 @@ const buttonVariants = cva(
           "bg-electric-blue-500 text-white hover:bg-[#05264f] focus-visible:ring-electric-blue-300",
         transparent:
           "bg-electric-blue-500 text-white focus-visible:ring-electric-blue-300",
+        onboarding: "bg-[#8b5cf6] text-white hover:bg-[#7c3aed] shadow-md",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

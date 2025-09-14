@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -57,6 +58,13 @@ export default function Subscribe() {
           }}
           newSubscriptionRedirectUrl="/onboarding/finished"
         />
+        <div className="flex flex-row items-end justify-end">
+          <Button variant="onboarding" size={"sm"} className="mt-4">
+            <a className="text-xs" href="/onboarding/finished">
+              Continuar con el plan gratuito
+            </a>
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );
