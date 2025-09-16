@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import { Line, LineChart, ResponsiveContainer } from "recharts";
 import { Card, CardContent } from "@/components/ui/card";
 

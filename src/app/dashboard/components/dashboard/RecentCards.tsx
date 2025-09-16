@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import { BookOpen, Clock, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";

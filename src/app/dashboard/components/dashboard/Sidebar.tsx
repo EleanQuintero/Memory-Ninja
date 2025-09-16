@@ -1,5 +1,4 @@
-"use client"
-import React from "react"
+"use client";
 import {
   Home,
   BookOpen,
@@ -9,8 +8,8 @@ import {
   LogOut,
   PlusCircle,
   Users,
-} from "lucide-react"
-import { cn } from "@/utils/services/functions/helpers/cnFunction"
+} from "lucide-react";
+import { cn } from "@/utils/services/functions/helpers/cnFunction";
 
 export const Sidebar: React.FC = () => {
   const menuItems = [
@@ -19,12 +18,12 @@ export const Sidebar: React.FC = () => {
     { icon: <PlusCircle size={20} />, label: "Crear Mazo" },
     { icon: <TrendingUp size={20} />, label: "Estadísticas" },
     { icon: <Users size={20} />, label: "Comunidad" },
-  ]
+  ];
   const bottomItems = [
     { icon: <Settings size={20} />, label: "Ajustes" },
     { icon: <HelpCircle size={20} />, label: "Ayuda" },
     { icon: <LogOut size={20} />, label: "Cerrar Sesión" },
-  ]
+  ];
   return (
     <aside className="w-64 bg-gray-800 border-r border-gray-700 h-full flex flex-col">
       {/* Perfil de usuario */}
@@ -50,7 +49,7 @@ export const Sidebar: React.FC = () => {
                   "flex items-center gap-3 px-3 py-2 rounded-lg",
                   item.active
                     ? "bg-blue-600 text-white"
-                    : "text-gray-400 hover:bg-gray-700 hover:text-white",
+                    : "text-gray-400 hover:bg-gray-700 hover:text-white"
                 )}
                 tabIndex={0}
                 aria-label={item.label}
@@ -81,5 +80,5 @@ export const Sidebar: React.FC = () => {
         </ul>
       </div>
     </aside>
-  )
-} 
+  );
+};

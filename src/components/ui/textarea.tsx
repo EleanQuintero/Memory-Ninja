@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { cn } from "@/utils/services/functions/helpers/cnFunction";
 
 function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {

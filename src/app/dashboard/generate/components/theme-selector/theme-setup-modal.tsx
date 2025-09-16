@@ -1,6 +1,4 @@
 "use client";
-
-import type React from "react";
 import { useState, useEffect } from "react";
 import { Plus, X, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";

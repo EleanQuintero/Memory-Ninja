@@ -1,6 +1,4 @@
 "use client";
-
-import React from "react";
 import { useState } from "react";
 import { Plus, X, Check, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -23,7 +21,7 @@ interface ThemeSelectorProps {
   maxThemes?: number;
 }
 
-export const ThemeSelector = React.memo(function ThemeSelector({
+export function ThemeSelector({
   onThemeChange,
   minChars = 3,
   maxThemes = 8,
@@ -181,4 +179,4 @@ export const ThemeSelector = React.memo(function ThemeSelector({
       </CardContent>
     </Card>
   );
-});
+}

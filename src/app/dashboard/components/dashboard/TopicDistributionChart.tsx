@@ -1,6 +1,5 @@
 "use client";
 import { RecentCardsSkeleton } from "@/components/fallbacks/RecentCardSkeleton";
-import React from "react";
 import {
   BarChart,
   Bar,

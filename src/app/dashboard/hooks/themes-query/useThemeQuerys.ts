@@ -8,9 +8,9 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useThemeStore } from "../../generate/components/theme-selector/store/interestThemes";
 
 
+const QUERY_KEY = "themes"
 
 export const useThemeQuerys = () => {
-    const QUERY_KEY = "themes"
 
     const queryClient = useQueryClient();
 

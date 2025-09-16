@@ -1,8 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { flashcardToSync, flashcard, getAnswersProps } from "@/domain/flashcards";
 import { flashcardUnitOfWork } from "@/utils/services/unitOfWork/flashcardUnitOfWork";
+
+const QUERY_KEY = "flashcards";
+
 export const useFlashCardsQuery = () => {
-    const QUERY_KEY = "flashcards";
 
     const queryClient = useQueryClient();
 
@@ -26,11 +28,7 @@ export const useFlashCardsQuery = () => {
         onError: (error: Error) => {
             throw new Error(error.message);
         },
-
-
     })
-
-
 
     const { mutate: saveFlashcards, isPending: isSavingFlashcards, isError: isErrorSaving, error: savingError } = useMutation({
         mutationFn: async (flashcardsData: flashcardToSync) => {

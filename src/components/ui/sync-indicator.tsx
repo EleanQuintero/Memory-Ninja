@@ -1,6 +1,4 @@
 import { cn } from "@/utils/services/functions/helpers/cnFunction";
-import React from "react";
-
 interface props {
   isPending: boolean;
 }
@@ -26,4 +24,4 @@ const SyncIndicator = ({ isPending }: props) => {
   );
 };
 
-export default React.memo(SyncIndicator);
+export default SyncIndicator;
