@@ -196,7 +196,79 @@ export const scaleVariants: Variants = {
     }
 };
 
+export const statsContainerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.15,
+            delayChildren: 0.1
+        }
+    }
+};
 
+export const statsCardVariants: Variants = {
+    hidden: {
+        opacity: 0,
+        y: 20,
+        scale: 0.95
+    },
+    visible: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: {
+            type: "spring",
+            stiffness: 120,
+            damping: 20,
+            duration: 0.6
+        }
+    },
+    hover: {
+        y: -3,
+        scale: 1.02,
+        boxShadow: "0 8px 25px rgba(59, 130, 246, 0.15)",
+        transition: {
+            type: "spring",
+            stiffness: 400,
+            damping: 25
+        }
+    }
+};
+
+export const statsNumberVariants: Variants = {
+    hidden: {
+        scale: 0,
+        opacity: 0
+    },
+    visible: {
+        scale: 1,
+        opacity: 1,
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 20,
+            delay: 0.3
+        }
+    }
+};
+
+export const statsIconVariants: Variants = {
+    hidden: {
+        rotate: -90,
+        scale: 0
+    },
+    visible: {
+        rotate: 0,
+        scale: 1,
+        transition: {
+            type: "spring",
+            stiffness: 200,
+            damping: 15,
+            delay: 0.2
+        }
+    }
+};
 
 
 
