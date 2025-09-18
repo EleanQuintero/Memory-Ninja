@@ -6,6 +6,12 @@ import { useUserSync } from "../hooks/user-sync/useUserSync";
 import { useDashboardStats } from "../hooks/dashboard-stats/useDashboardStats";
 import { Stats } from "./dashboard/Stats";
 import WithoutData from "./dashboard/WithoutData";
+import { motion } from "framer-motion";
+import {
+  containerVariants,
+  fadeInUpVariants,
+  dashboardCardVariants,
+} from "@/animations/utils";
 
 const Dashboard: React.FC = () => {
   const { dashboardStats } = useDashboardStats();
@@ -19,38 +25,70 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <section className="flex flex-col w-full md:justify-center items-center p-10">
+    <motion.section
+      className="flex flex-col w-full md:justify-center items-center p-10"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
       {/* Encabezado */}
-      <div className="flex flex-col justify-center items-center mb-8">
-        <h1 className="text-2xl text-center font-bold text-white">
+      <motion.div
+        className="flex flex-col justify-center items-center mb-8"
+        variants={fadeInUpVariants}
+      >
+        <motion.h1
+          className="text-2xl text-center font-bold text-white"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{
+            delay: 0.3,
+            type: "spring",
+            stiffness: 150,
+            damping: 20,
+          }}
+        >
           Bienvenido a tu Espacio de MemoryNinja 🥷🏻
-        </h1>
-      </div>
-      {/* Estadísticas */}
-      <Stats isLoading={isLoading} />
+        </motion.h1>
+      </motion.div>
+      <motion.div variants={fadeInUpVariants}>
+        {/* Estadísticas */}
+        <Stats isLoading={isLoading} />
+      </motion.div>
+
       {/* Gráficos y tabla */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full max-w-full overflow-x-hidden md:max-w-7xl">
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle>Tarjetas por Tema</CardTitle>
-          </CardHeader>
-          <CardContent className="w-full">
-            <TopicDistributionChart
-              data={countedFlashcardsData}
-              loading={isLoading}
-            />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Últimas Tarjetas Creadas</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <RecentCards cards={latestFlashcardsData} loading={isLoading} />
-          </CardContent>
-        </Card>
-      </div>
-    </section>
+      <motion.div
+        className="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full max-w-full overflow-x-hidden md:max-w-7xl"
+        variants={containerVariants}
+      >
+        <motion.div
+          variants={dashboardCardVariants}
+          whileHover="hover"
+          className="lg:col-span-2"
+        >
+          <Card>
+            <CardHeader>
+              <CardTitle>Tarjetas por Tema</CardTitle>
+            </CardHeader>
+            <CardContent className="w-full">
+              <TopicDistributionChart
+                data={countedFlashcardsData}
+                loading={isLoading}
+              />
+            </CardContent>
+          </Card>
+        </motion.div>
+        <motion.div variants={dashboardCardVariants} whileHover="hover">
+          <Card>
+            <CardHeader>
+              <CardTitle>Últimas Tarjetas Creadas</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <RecentCards cards={latestFlashcardsData} loading={isLoading} />
+            </CardContent>
+          </Card>
+        </motion.div>
+      </motion.div>
+    </motion.section>
   );
 };
 
