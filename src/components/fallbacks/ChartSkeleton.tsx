@@ -72,3 +72,48 @@ export function ChartSkeleton() {
     </Card>
   );
 }
+
+/**
+ * Skeleton simplificado para TopicDistributionChart
+ * Sin Card wrapper, solo el contenido del chart
+ * Compatible con SSR/CSR y animaciones Framer Motion
+ */
+export function TopicDistributionSkeleton() {
+  // Alturas predefinidas para evitar Math.random() y problemas de SSR
+  const barHeights = [
+    "h-24", // 60%
+    "h-32", // 80%
+    "h-20", // 50%
+    "h-28", // 70%
+    "h-22", // 55%
+  ];
+
+  return (
+    <div className="w-full h-full flex flex-col justify-between p-4">
+      {/* Área del gráfico */}
+      <div className="flex-1 flex items-end justify-between gap-2 mb-4">
+        {barHeights.map((height, i) => (
+          <div
+            key={`chart-bar-${i}`}
+            className="w-full flex flex-col items-center"
+          >
+            {/* Barra del gráfico */}
+            <Skeleton
+              className={`w-full ${height} rounded-t-md mb-2 bg-blue-500/20`}
+            />
+            {/* Label del eje X */}
+            <Skeleton className="w-8 h-3 bg-gray-600/40" />
+          </div>
+        ))}
+      </div>
+
+      {/* Legend skeleton */}
+      <div className="flex justify-center items-center pt-3">
+        <div className="flex items-center gap-2">
+          <Skeleton className="w-3 h-3 rounded-sm bg-blue-500/40" />
+          <Skeleton className="w-32 h-4 bg-gray-600/40" />
+        </div>
+      </div>
+    </div>
+  );
+}

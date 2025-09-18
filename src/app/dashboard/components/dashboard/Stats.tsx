@@ -2,6 +2,8 @@ import { useDashboardStats } from "../../hooks/dashboard-stats/useDashboardStats
 import { StatCard } from "./StatCard";
 import { SkeletonCard } from "@/components/fallbacks/SkeletonCard";
 import { BookOpen, Trophy } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { statsContainerVariants, statsCardVariants } from "@/animations/utils";
 
 interface Stats {
   title: string;
@@ -44,10 +46,48 @@ export const Stats = ({ isLoading }: StatsProps) => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full max-w-full overflow-x-hidden md:max-w-7xl ">
-      {stats.map((stat, index) => (
-        <StatCard key={index} {...stat} />
-      ))}
-    </div>
+    <AnimatePresence mode="wait">
+      {isLoading ? (
+        <motion.div
+          key="loading"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full max-w-full overflow-x-hidden md:max-w-7xl"
+        >
+          {[1, 2].map((index) => (
+            <motion.div
+              key={`skeleton-${index}`}
+              variants={statsCardVariants}
+              initial="hidden"
+              animate="visible"
+              custom={index}
+            >
+              <SkeletonCard />
+            </motion.div>
+          ))}
+        </motion.div>
+      ) : (
+        <motion.div
+          key="loaded"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full max-w-full overflow-x-hidden md:max-w-7xl "
+          variants={statsContainerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {stats.map((stat, index) => (
+            <motion.div
+              key={`${stat.title}-${index}`}
+              variants={statsCardVariants}
+              whileHover="hover"
+              custom={index}
+            >
+              <StatCard key={index} {...stat} />
+            </motion.div>
+          ))}
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
