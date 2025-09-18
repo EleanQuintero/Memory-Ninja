@@ -50,7 +50,10 @@ const Dashboard: React.FC = () => {
           Bienvenido a tu Espacio de MemoryNinja 🥷🏻
         </motion.h1>
       </motion.div>
-      <motion.div variants={fadeInUpVariants}>
+      <motion.div
+        variants={fadeInUpVariants}
+        className="w-full max-w-full overflow-x-hidden md:max-w-7xl"
+      >
         {/* Estadísticas */}
         <Stats isLoading={isLoading} />
       </motion.div>
