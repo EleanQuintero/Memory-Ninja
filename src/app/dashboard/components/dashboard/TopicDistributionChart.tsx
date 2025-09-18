@@ -1,5 +1,4 @@
 "use client";
-import { RecentCardsSkeleton } from "@/components/fallbacks/RecentCardSkeleton";
 import {
   BarChart,
   Bar,
@@ -15,6 +14,7 @@ import {
   scaleVariants,
   fadeInUpVariants,
 } from "@/animations/utils";
+import { TopicDistributionSkeleton } from "@/components/fallbacks/ChartSkeleton";
 
 interface chartData {
   theme: string;
@@ -68,7 +68,7 @@ export const TopicDistributionChart = ({
           exit="hidden"
           className="h-[300px] min-w-0 w-full"
         >
-          <RecentCardsSkeleton />
+          <TopicDistributionSkeleton />
         </motion.div>
       ) : (
         <motion.div
@@ -132,7 +132,7 @@ export const TopicDistributionChart = ({
                 className="inline-block w-3 h-3 mr-2 rounded-sm"
                 style={{ backgroundColor: "#3b82f6" }}
                 aria-hidden="true"
-                initial={{ rotate: 0 }}
+                initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{
                   delay: 0.3,
@@ -146,7 +146,6 @@ export const TopicDistributionChart = ({
           </motion.div>
         </motion.div>
       )}
-      ;
     </AnimatePresence>
   );
 };
