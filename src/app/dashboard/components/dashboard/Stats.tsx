@@ -88,11 +88,6 @@ export const Stats = ({ isLoading }: StatsProps) => {
           ))}
         </motion.div>
       )}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full max-w-full overflow-x-hidden md:max-w-7xl ">
-        {stats.map((stat, index) => (
-          <StatCard key={index} {...stat} />
-        ))}
-      </div>
     </AnimatePresence>
   );
 };
