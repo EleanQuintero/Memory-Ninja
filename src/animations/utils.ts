@@ -318,6 +318,16 @@ export const flashcardContainerVariants: Variants = {
 
 /*Variantes para flip*/
 export const flashcardFlipVariants: Variants = {
+    hover: {
+        y: -8,
+        scale: 1.02,
+        boxShadow: "0 20px 40px rgba(59, 130, 246, 0.4)",
+        transition: {
+            type: "spring",
+            stiffness: 400,
+            damping: 25,
+        }
+    },
     front: {
         rotateY: 0,
         transition: {

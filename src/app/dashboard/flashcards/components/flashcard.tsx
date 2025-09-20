@@ -93,6 +93,7 @@ export default function Flashcard({
             animate={isFlipped ? "back" : "front"}
             onClick={handleFlip}
             onKeyDown={handleKeyDown}
+            whileHover="hover"
             tabIndex={0}
             role="button"
             aria-label={`Flashcard: ${question}`}
