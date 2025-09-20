@@ -364,12 +364,10 @@ export const flashcardContentVariants: Variants = {
 export const flashcardButtonVariants: Variants = {
     idle: {
         scale: 1,
-        rotate: 0,
-        backgroundColor: "rgba(107, 114, 128, 0.1)"
+        rotate: 0
     },
     hover: {
         scale: 1.05,
-        boxShadow: "0 6px 20px rgba(59, 130, 246, 0.5)",
         y: -2,
         transition: {
             type: "spring",
@@ -383,14 +381,6 @@ export const flashcardButtonVariants: Variants = {
         transition: {
             duration: 0.1,
         }
-    },
-    deleting: {
-        scale: 0.8,
-        rotate: 180,
-        backgroundColor: "rgba(239, 68, 68, 0.4)",
-        transition: {
-            duration: 0.3,
-        }
     }
 }
 
@@ -399,13 +389,11 @@ export const flashcardButtonVariants: Variants = {
 export const deleteButtonVariants: Variants = {
     idle: {
         scale: 1,
-        rotate: 0,
-        backgroundColor: "rgba(107, 114, 128, 0.1)"
+        rotate: 0
     },
     hover: {
         scale: 1.1,
         rotate: 90,
-        backgroundColor: "rgba(239, 68, 68, 0.2)",
         transition: {
             type: "spring",
             stiffness: 300,
@@ -421,7 +409,7 @@ export const deleteButtonVariants: Variants = {
     deleting: {
         scale: 0.8,
         rotate: 180,
-        backgroundColor: "rgba(239, 68, 68, 0.4)",
+        opacity: 0.6,
         transition: {
             duration: 0.3,
         }
