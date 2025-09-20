@@ -271,6 +271,204 @@ export const statsIconVariants: Variants = {
 };
 
 
+/*Flashcards Variants Animations*/
+
+/*Container variants*/
+
+export const flashcardContainerVariants: Variants = {
+    hidden: {
+        opacity: 0,
+        y: 30,
+        scale: 0.9,
+        rotateX: -10
+    },
+    visible: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        rotateX: 0,
+        transition: {
+            type: "spring",
+            stiffness: 150,
+            damping: 20,
+            duration: 0.6,
+        }
+    },
+    hover: {
+        y: -8,
+        scale: 1.02,
+        boxShadow: "0 20px 40px rgba(59, 130, 246, 0.4)",
+        transition: {
+            type: "spring",
+            stiffness: 400,
+            damping: 25,
+        }
+    },
+    exit: {
+        opacity: 0,
+        y: -20,
+        scale: 0.8,
+        rotateX: -15,
+        transition: {
+            ease: "easeIn",
+            duration: 0.4
+        }
+    }
+};
+
+/*Variantes para flip*/
+export const flashcardFlipVariants: Variants = {
+    hover: {
+        y: -8,
+        scale: 1.02,
+        boxShadow: "0 20px 40px rgba(59, 130, 246, 0.4)",
+        transition: {
+            type: "spring",
+            stiffness: 400,
+            damping: 25,
+        }
+    },
+    front: {
+        rotateY: 0,
+        transition: {
+            duration: 0.8,
+            type: "spring",
+            stiffness: 180,
+            damping: 22,
+        }
+    },
+    back: {
+        rotateY: 180,
+        transition: {
+            duration: 0.8,
+            type: "spring",
+            stiffness: 180,
+            damping: 22,
+        }
+    }
+};
+
+/* Flashcards Content Variants*/
+
+export const flashcardContentVariants: Variants = {
+    hidden: {
+        opacity: 0,
+        y: 10,
+        scale: 0.95
+    },
+    visible: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: {
+            delay: 0.15,
+            duration: 0.4,
+            ease: "easeOut"
+        }
+    }
+}
+
+
+/*Botones y feedback visual en interacciones*/
+
+export const flashcardButtonVariants: Variants = {
+    idle: {
+        scale: 1,
+        rotate: 0
+    },
+    hover: {
+        scale: 1.05,
+        y: -2,
+        transition: {
+            type: "spring",
+            stiffness: 400,
+            damping: 25,
+        }
+    },
+    tap: {
+        scale: 0.98,
+        y: 0,
+        transition: {
+            duration: 0.1,
+        }
+    }
+}
+
+
+/*Variantes para el boton de eliminar*/
+export const deleteButtonVariants: Variants = {
+    idle: {
+        scale: 1,
+        rotate: 0
+    },
+    hover: {
+        scale: 1.1,
+        rotate: 90,
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 20,
+        }
+    },
+    tap: {
+        scale: 0.9,
+        transition: {
+            duration: 0.1,
+        }
+    },
+    deleting: {
+        scale: 0.8,
+        rotate: 180,
+        opacity: 0.6,
+        transition: {
+            duration: 0.3,
+        }
+    }
+}
+
+/*variantes para la etiqueta de tema de flashcard*/
+
+export const flashcardThemeVariants: Variants = {
+    hidden: {
+        opacity: 0,
+        x: -20,
+        scale: 0.8
+    },
+    visible: {
+        opacity: 1,
+        x: 0,
+        scale: 1,
+        transition: {
+            type: "spring",
+            stiffness: 200,
+            damping: 20,
+        }
+    }
+}
+
+/*Variantes para el texto de pregunta/respuesta */
+export const flashcardTextVariants: Variants = {
+    hidden: {
+        opacity: 0,
+        y: 20,
+        scale: 0.95
+    },
+    visible: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: {
+            ease: "easeOut",
+            duration: 0.5,
+            delay: 0.3,
+        }
+    }
+}
+
+
+
+
+
 
 
 
