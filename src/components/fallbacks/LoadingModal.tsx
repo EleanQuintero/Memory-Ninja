@@ -1,57 +1,59 @@
-"use client"
+"use client";
 
-import { motion, AnimatePresence } from "framer-motion"
-import { useEffect, useState } from "react"
-import { createPortal } from "react-dom"
-import { X } from "lucide-react"
+import { motion, AnimatePresence } from "motion/react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { X } from "lucide-react";
 
 export interface LoadingModalTheme {
-  backdrop?: string
-  container?: string
-  spinner?: string
-  spinnerAccent?: string
-  message?: string
-  dots?: string
-  glow?: string
+  backdrop?: string;
+  container?: string;
+  spinner?: string;
+  spinnerAccent?: string;
+  message?: string;
+  dots?: string;
+  glow?: string;
 }
 
 export interface LoadingModalProps {
-  isLoading: boolean
-  message?: string
-  theme?: LoadingModalTheme
-  size?: "sm" | "md" | "lg"
-  spinnerType?: "ring" | "default"
-  showClose?: boolean
-  blur?: boolean
-  onClose?: () => void
+  isLoading: boolean;
+  message?: string;
+  theme?: LoadingModalTheme;
+  size?: "sm" | "md" | "lg";
+  spinnerType?: "ring" | "default";
+  showClose?: boolean;
+  blur?: boolean;
+  onClose?: () => void;
 }
 
 const defaultTheme: LoadingModalTheme = {
   backdrop: "bg-black/50 backdrop-blur-md",
-  container: "bg-gradient-to-br from-slate-900 via-blue-900/20 to-slate-800 border-slate-700/50",
+  container:
+    "bg-gradient-to-br from-slate-900 via-blue-900/20 to-slate-800 border-slate-700/50",
   spinner: "border-slate-600/30 border-t-blue-400 border-r-slate-400",
   spinnerAccent: "from-blue-500/20 to-slate-400/20",
   message: "from-blue-200 via-slate-200 to-blue-200",
   dots: "from-blue-400 to-slate-400",
   glow: "from-transparent via-blue-400/10 to-transparent",
-}
+};
 
 const sizeClasses = {
   sm: "p-6 w-64",
   md: "p-8 w-80",
   lg: "p-10 w-96",
-}
+};
 
 const LoadingSpinner = ({
   type,
   theme,
   size,
 }: {
-  type: "ring" | "default"
-  theme: LoadingModalTheme
-  size: "sm" | "md" | "lg"
+  type: "ring" | "default";
+  theme: LoadingModalTheme;
+  size: "sm" | "md" | "lg";
 }) => {
-  const spinnerSize = size === "sm" ? "w-8 h-8" : size === "md" ? "w-12 h-12" : "w-16 h-16"
+  const spinnerSize =
+    size === "sm" ? "w-8 h-8" : size === "md" ? "w-12 h-12" : "w-16 h-16";
 
   if (type === "default" || type === "ring") {
     return (
@@ -78,11 +80,11 @@ const LoadingSpinner = ({
           className={`absolute inset-2 rounded-full bg-gradient-to-r ${theme.spinnerAccent}`}
         />
       </div>
-    )
+    );
   }
 
-  return null
-}
+  return null;
+};
 
 export default function LoadingModal({
   isLoading,
@@ -94,30 +96,30 @@ export default function LoadingModal({
   blur = true,
   onClose,
 }: LoadingModalProps) {
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState(false);
 
   const mergedTheme: LoadingModalTheme = {
     ...defaultTheme,
     ...theme,
-  }
+  };
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (isLoading) {
-      document.body.style.overflow = "hidden"
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "unset"
+      document.body.style.overflow = "unset";
     }
 
     return () => {
-      document.body.style.overflow = "unset"
-    }
-  }, [isLoading])
+      document.body.style.overflow = "unset";
+    };
+  }, [isLoading]);
 
-  if (!mounted) return null
+  if (!mounted) return null;
 
   const modalContent = (
     <AnimatePresence>
@@ -165,7 +167,9 @@ export default function LoadingModal({
             onClick={(e) => e.stopPropagation()}
           >
             {/* Metallic glow effect */}
-            <div className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${mergedTheme.glow} animate-pulse`} />
+            <div
+              className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${mergedTheme.glow} animate-pulse`}
+            />
 
             {/* Close button */}
             {showClose && onClose && (
@@ -181,7 +185,11 @@ export default function LoadingModal({
             {/* Content */}
             <div className="relative flex flex-col items-center justify-center space-y-6 h-full">
               {/* Loading spinner */}
-              <LoadingSpinner type={spinnerType} theme={mergedTheme} size={size} />
+              <LoadingSpinner
+                type={spinnerType}
+                theme={mergedTheme}
+                size={size}
+              />
 
               {/* Message */}
               <motion.p
@@ -192,7 +200,13 @@ export default function LoadingModal({
                   font-medium text-center
                   bg-gradient-to-r ${mergedTheme.message}
                   bg-clip-text text-transparent
-                  ${size === "sm" ? "text-sm" : size === "lg" ? "text-xl" : "text-lg"}
+                  ${
+                    size === "sm"
+                      ? "text-sm"
+                      : size === "lg"
+                      ? "text-xl"
+                      : "text-lg"
+                  }
                 `}
               >
                 {message}
@@ -222,7 +236,7 @@ export default function LoadingModal({
         </motion.div>
       )}
     </AnimatePresence>
-  )
+  );
 
-  return createPortal(modalContent, document.body)
+  return createPortal(modalContent, document.body);
 }
