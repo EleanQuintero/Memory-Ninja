@@ -1,4 +1,4 @@
-import { Variants } from "framer-motion"
+import { Variants } from "motion/react"
 
 
 /*Variantes para contenedores*/
@@ -761,6 +761,99 @@ export const buttonVariantsMap = {
  * Tipos TypeScript para el mapeo de variants
  */
 export type ButtonVariantType = keyof typeof buttonVariantsMap;
+
+
+export const headerVariants = {
+    hidden: { y: -100, opacity: 0 },
+    visible: {
+        y: 0,
+        opacity: 1,
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 30,
+            staggerChildren: 0.1
+        }
+    }
+};
+
+export const menuItemVariants = {
+    hidden: { x: -20, opacity: 0 },
+    visible: {
+        x: 0,
+        opacity: 1,
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 30
+        }
+    }
+};
+
+export const sidebarVariants = {
+    expanded: {
+        width: "16rem",
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 30,
+            staggerChildren: 0.05
+        }
+    },
+    collapsed: {
+        width: "3rem",
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 30,
+            staggerChildren: 0.05,
+            staggerDirection: -1
+        }
+    }
+};
+
+export const sidebarItemVariants = {
+    expanded: {
+        opacity: 1,
+        x: 0,
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 30
+        }
+    },
+    collapsed: {
+        opacity: 0,
+        x: -10,
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 30
+        }
+    }
+};
+
+// Animaciones de entrada para mobile
+export const mobileMenuVariants = {
+    closed: {
+        x: "100%",
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 30
+        }
+    },
+    open: {
+        x: 0,
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 30,
+            staggerChildren: 0.07,
+            delayChildren: 0.1
+        }
+    }
+};
 
 
 

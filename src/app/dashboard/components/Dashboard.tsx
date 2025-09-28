@@ -6,7 +6,7 @@ import { useUserSync } from "../hooks/user-sync/useUserSync";
 import { useDashboardStats } from "../hooks/dashboard-stats/useDashboardStats";
 import { Stats } from "./dashboard/Stats";
 import WithoutData from "./dashboard/WithoutData";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import {
   containerVariants,
   fadeInUpVariants,

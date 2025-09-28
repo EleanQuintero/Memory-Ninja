@@ -2,7 +2,7 @@ import { useDashboardStats } from "../../hooks/dashboard-stats/useDashboardStats
 import { StatCard } from "./StatCard";
 import { SkeletonCard } from "@/components/fallbacks/SkeletonCard";
 import { BookOpen, Trophy } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { statsContainerVariants, statsCardVariants } from "@/animations/utils";
 
 interface Stats {

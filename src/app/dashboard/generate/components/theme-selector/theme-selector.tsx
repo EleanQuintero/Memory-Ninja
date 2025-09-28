@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useThemeQuerys } from "@/app/dashboard/hooks/themes-query/useThemeQuerys";
 
 interface ThemeSelectorProps {

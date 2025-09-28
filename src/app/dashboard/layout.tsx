@@ -9,7 +9,7 @@ import { AppSidebar } from "@/components/ui/app-sidebar";
 import SubscriptionFallback from "@/components/fallbacks/subscription";
 import { Provider } from "@/components/provider/Provider";
 import { Toaster } from "sonner";
-import { LazyMotion, domAnimation } from "framer-motion";
+import { LazyMotion, domAnimation } from "motion/react";
 
 export const metadata: Metadata = {
   title: "FlashCard Generator",

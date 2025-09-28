@@ -1,7 +1,7 @@
 "use client";
 import { Line, LineChart, ResponsiveContainer } from "recharts";
 import { Card, CardContent } from "@/components/ui/card";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { statsIconVariants, statsNumberVariants } from "@/animations/utils";
 
 interface StatCardProps {
