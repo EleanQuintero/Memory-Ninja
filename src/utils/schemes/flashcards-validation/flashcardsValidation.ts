@@ -13,6 +13,6 @@ const flashcardSchema = z.object({
 
 export const validateFlashcards = (value: flashcardToSync) => {
   const result = flashcardSchema.safeParse(value)
-  if (!result.success) { return result.error.errors[0].message }
+  if (!result.success) { return result.error.issues[0].message }
   return null
 }

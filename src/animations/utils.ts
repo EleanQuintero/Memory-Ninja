@@ -1,4 +1,4 @@
-import { Variants } from "framer-motion"
+import { Variants } from "motion/react"
 
 
 /*Variantes para contenedores*/
@@ -464,6 +464,396 @@ export const flashcardTextVariants: Variants = {
         }
     }
 }
+
+/**
+ * Variantes base para botones - Configuración común
+ * Proporciona animaciones suaves y consistentes para todos los tipos de botón
+ */
+export const baseButtonVariants: Variants = {
+    idle: {
+        scale: 1,
+        y: 0,
+        boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)"
+    },
+    disabled: {
+        scale: 0.98,
+        opacity: 0.6,
+        cursor: "not-allowed",
+        transition: {
+            duration: 0.2,
+            ease: "easeOut"
+        }
+    }
+};
+
+/**
+ * Variantes para botones primarios
+ * Animaciones más prominentes para reforzar jerarquía visual
+ */
+export const primaryButtonVariants: Variants = {
+    ...baseButtonVariants,
+    hover: {
+        scale: 1.02,
+        y: -2,
+        boxShadow: "0 8px 25px rgba(59, 130, 246, 0.4)",
+        transition: {
+            type: "spring",
+            stiffness: 400,
+            damping: 25,
+            duration: 0.3
+        }
+    },
+    tap: {
+        scale: 0.98,
+        y: 0,
+        boxShadow: "0 2px 8px rgba(59, 130, 246, 0.3)",
+        transition: {
+            type: "spring",
+            stiffness: 600,
+            damping: 35,
+            duration: 0.1
+        }
+    },
+    loading: {
+        scale: 0.98,
+        opacity: 0.8,
+        transition: {
+            duration: 0.2,
+            ease: "easeInOut"
+        }
+    }
+};
+
+/**
+ * Variantes para botones secundarios
+ * Animaciones moderadas para mantener balance visual
+ */
+export const secondaryButtonVariants: Variants = {
+    ...baseButtonVariants,
+    hover: {
+        scale: 1.01,
+        y: -1,
+        boxShadow: "0 4px 12px rgba(107, 114, 128, 0.3)",
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 30,
+            duration: 0.3
+        }
+    },
+    tap: {
+        scale: 0.99,
+        y: 0,
+        boxShadow: "0 1px 4px rgba(107, 114, 128, 0.2)",
+        transition: {
+            type: "spring",
+            stiffness: 500,
+            damping: 35,
+            duration: 0.1
+        }
+    },
+    loading: {
+        scale: 0.99,
+        opacity: 0.8,
+        transition: {
+            duration: 0.2,
+            ease: "easeInOut"
+        }
+    }
+};
+
+/**
+ * Variantes para botones outline
+ * Animaciones sutiles que complementan el estilo minimalista
+ */
+export const outlineButtonVariants: Variants = {
+    ...baseButtonVariants,
+    idle: {
+        scale: 1,
+        y: 0,
+        borderWidth: "1px",
+        boxShadow: "0 0 0 0 rgba(59, 130, 246, 0)"
+    },
+    hover: {
+        scale: 1.01,
+        y: -1,
+        borderWidth: "2px",
+        boxShadow: "0 0 0 2px rgba(59, 130, 246, 0.1)",
+        transition: {
+            type: "spring",
+            stiffness: 250,
+            damping: 30,
+            duration: 0.25
+        }
+    },
+    tap: {
+        scale: 0.99,
+        y: 0,
+        borderWidth: "1px",
+        boxShadow: "0 0 0 1px rgba(59, 130, 246, 0.2)",
+        transition: {
+            type: "spring",
+            stiffness: 400,
+            damping: 35,
+            duration: 0.1
+        }
+    },
+    loading: {
+        scale: 0.99,
+        opacity: 0.7,
+        borderWidth: "1px",
+        transition: {
+            duration: 0.2,
+            ease: "easeInOut"
+        }
+    }
+};
+
+/**
+ * Variantes para botones ghost
+ * Animaciones minimalistas para no interferir con el contenido
+ */
+export const ghostButtonVariants: Variants = {
+    ...baseButtonVariants,
+    idle: {
+        scale: 1,
+        y: 0,
+        backgroundColor: "rgba(255, 255, 255, 0)",
+        boxShadow: "0 0 0 0 rgba(0, 0, 0, 0)"
+    },
+    hover: {
+        scale: 1.005,
+        y: 0,
+        backgroundColor: "rgba(59, 130, 246, 0.05)",
+        transition: {
+            type: "spring",
+            stiffness: 200,
+            damping: 35,
+            duration: 0.2
+        }
+    },
+    tap: {
+        scale: 0.995,
+        backgroundColor: "rgba(59, 130, 246, 0.1)",
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 40,
+            duration: 0.1
+        }
+    },
+    loading: {
+        scale: 0.995,
+        opacity: 0.7,
+        backgroundColor: "rgba(59, 130, 246, 0.05)",
+        transition: {
+            duration: 0.2,
+            ease: "easeInOut"
+        }
+    }
+};
+
+/**
+ * Variantes para botones destructivos (delete, remove, etc.)
+ * Animaciones que comunican la naturaleza crítica de la acción
+ */
+export const destructiveButtonVariants: Variants = {
+    ...baseButtonVariants,
+    hover: {
+        scale: 1.02,
+        y: -2,
+        boxShadow: "0 6px 20px rgba(239, 68, 68, 0.4)",
+        transition: {
+            type: "spring",
+            stiffness: 350,
+            damping: 25,
+            duration: 0.3
+        }
+    },
+    tap: {
+        scale: 0.98,
+        y: 0,
+        boxShadow: "0 2px 8px rgba(239, 68, 68, 0.3)",
+        transition: {
+            type: "spring",
+            stiffness: 500,
+            damping: 35,
+            duration: 0.1
+        }
+    },
+    loading: {
+        scale: 0.98,
+        opacity: 0.8,
+        transition: {
+            duration: 0.2,
+            ease: "easeInOut"
+        }
+    }
+};
+
+/**
+ * Variantes para iconos dentro de botones
+ * Micro-animaciones que añaden dinamismo sin ser distractivas
+ */
+export const buttonIconVariants: Variants = {
+    idle: {
+        rotate: 0,
+        scale: 1
+    },
+    hover: {
+        rotate: [0, -5, 5, 0],
+        scale: 1.1,
+        transition: {
+            duration: 0.4,
+            ease: "easeInOut"
+        }
+    },
+    tap: {
+        scale: 0.9,
+        transition: {
+            duration: 0.1,
+            ease: "easeOut"
+        }
+    }
+};
+
+/**
+ * Variantes para texto de botones con efecto de loading
+ * Transiciones suaves entre estados de texto
+ */
+export const buttonTextVariants: Variants = {
+    idle: {
+        opacity: 1,
+        y: 0
+    },
+    loading: {
+        opacity: 0,
+        y: -10,
+        transition: {
+            duration: 0.2,
+            ease: "easeOut"
+        }
+    },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.2,
+            ease: "easeIn"
+        }
+    }
+};
+
+/**
+ * Mapeo de tipos de botón a sus variants correspondientes
+ * Facilita la selección dinámica de variants en los componentes
+ */
+export const buttonVariantsMap = {
+    primary: primaryButtonVariants,
+    secondary: secondaryButtonVariants,
+    outline: outlineButtonVariants,
+    ghost: ghostButtonVariants,
+    destructive: destructiveButtonVariants,
+    default: secondaryButtonVariants
+} as const;
+
+/**
+ * Tipos TypeScript para el mapeo de variants
+ */
+export type ButtonVariantType = keyof typeof buttonVariantsMap;
+
+
+export const headerVariants = {
+    hidden: { y: -100, opacity: 0 },
+    visible: {
+        y: 0,
+        opacity: 1,
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 30,
+            staggerChildren: 0.1
+        }
+    }
+};
+
+export const menuItemVariants = {
+    hidden: { x: -20, opacity: 0 },
+    visible: {
+        x: 0,
+        opacity: 1,
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 30
+        }
+    }
+};
+
+export const sidebarVariants = {
+    expanded: {
+        width: "16rem",
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 30,
+            staggerChildren: 0.05
+        }
+    },
+    collapsed: {
+        width: "3rem",
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 30,
+            staggerChildren: 0.05,
+            staggerDirection: -1
+        }
+    }
+};
+
+export const sidebarItemVariants = {
+    expanded: {
+        opacity: 1,
+        x: 0,
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 30
+        }
+    },
+    collapsed: {
+        opacity: 0,
+        x: -10,
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 30
+        }
+    }
+};
+
+// Animaciones de entrada para mobile
+export const mobileMenuVariants = {
+    closed: {
+        x: "100%",
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 30
+        }
+    },
+    open: {
+        x: 0,
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 30,
+            staggerChildren: 0.07,
+            delayChildren: 0.1
+        }
+    }
+};
 
 
 

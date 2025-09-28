@@ -4,7 +4,7 @@ import {
   AnimatePresence,
   useReducedMotion,
   type Variants,
-} from "framer-motion";
+} from "motion/react";
 import { BookOpen, Brain, BarChart2, Check } from "lucide-react";
 
 /**

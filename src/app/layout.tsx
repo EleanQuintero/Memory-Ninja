@@ -1,10 +1,10 @@
 import { ReactScan } from "@/components/scan/ReactScan";
 import type { Metadata } from "next";
-import "./globals.css";
+import "@/app/globals.css";
 import { sfPro } from "@/utils/fonts/sfPro";
 import { ClerkProvider } from "@clerk/nextjs";
 import { esES } from "@clerk/localizations";
-import { LazyMotion, domAnimation } from "framer-motion";
+import { LazyMotion, domAnimation } from "motion/react";
 
 export const metadata: Metadata = {
   title: "Memory Ninja - Generador de tarjetas de estudio con IA",

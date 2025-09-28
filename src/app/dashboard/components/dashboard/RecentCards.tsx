@@ -3,7 +3,7 @@ import { BookOpen, Clock, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { RecentCardsSkeleton } from "@/components/fallbacks/RecentCardSkeleton";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import {
   fadeVariants,
   containerVariants,
