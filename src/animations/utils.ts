@@ -1,4 +1,5 @@
 import { Variants } from "motion/react"
+import { useReducedMotion } from '@/animations/hooks/useReducedMotion';
 
 
 /*Variantes para contenedores*/
@@ -763,8 +764,11 @@ export const buttonVariantsMap = {
 export type ButtonVariantType = keyof typeof buttonVariantsMap;
 
 
-export const headerVariants = {
-    hidden: { y: -100, opacity: 0 },
+export const headerVariants: Variants = {
+    hidden: {
+        y: -100,
+        opacity: 0
+    },
     visible: {
         y: 0,
         opacity: 1,
@@ -772,13 +776,17 @@ export const headerVariants = {
             type: "spring",
             stiffness: 300,
             damping: 30,
-            staggerChildren: 0.1
+            staggerChildren: 0.1,
+            delayChildren: 0.1
         }
     }
 };
 
-export const menuItemVariants = {
-    hidden: { x: -20, opacity: 0 },
+export const menuItemVariants: Variants = {
+    hidden: {
+        x: -20,
+        opacity: 0
+    },
     visible: {
         x: 0,
         opacity: 1,
@@ -790,7 +798,7 @@ export const menuItemVariants = {
     }
 };
 
-export const sidebarVariants = {
+export const sidebarVariants: Variants = {
     expanded: {
         width: "16rem",
         transition: {
@@ -812,7 +820,7 @@ export const sidebarVariants = {
     }
 };
 
-export const sidebarItemVariants = {
+export const sidebarItemVariants: Variants = {
     expanded: {
         opacity: 1,
         x: 0,
@@ -834,7 +842,7 @@ export const sidebarItemVariants = {
 };
 
 // Animaciones de entrada para mobile
-export const mobileMenuVariants = {
+export const mobileMenuVariants: Variants = {
     closed: {
         x: "100%",
         transition: {
@@ -852,6 +860,93 @@ export const mobileMenuVariants = {
             staggerChildren: 0.07,
             delayChildren: 0.1
         }
+    }
+};
+
+/*Accesibilidad*/
+
+export const getAccessibleTransition = (shouldReduceMotion: boolean) => ({
+    type: shouldReduceMotion ? ("tween" as const) : ("spring" as const),
+    duration: shouldReduceMotion ? 0.01 : 0.3,
+    stiffness: shouldReduceMotion ? 0 : 300,
+    damping: shouldReduceMotion ? 0 : 30,
+    ease: shouldReduceMotion ? "linear" as const : "easeOut" as const
+});
+
+export const getAccessibleVariants = (variants: Variants, shouldReduceMotion: boolean): Variants => {
+    if (!shouldReduceMotion) return variants;
+
+    const accessibleVariants: Variants = {};
+
+    Object.keys(variants).forEach(key => {
+        const variant = variants[key];
+
+        if (typeof variant === 'object' && variant !== null && !Array.isArray(variant)) {
+            // Para animaciones de entrada/salida, usar solo opacity
+            if (key === 'hidden') {
+                accessibleVariants[key] = {
+                    opacity: 0,
+                    transition: { duration: 0.01, type: "tween" }
+                };
+            } else if (key === 'visible') {
+                accessibleVariants[key] = {
+                    opacity: 1,
+                    transition: { duration: 0.01, type: "tween" }
+                };
+            } else {
+                // Para otros estados, mantener solo opacity y scale si existe
+                accessibleVariants[key] = {
+                    opacity: variant.opacity ?? 1,
+                    scale: variant.scale ?? 1,
+                    transition: { duration: 0.01, type: "tween" }
+                };
+            }
+        } else {
+            // Si no es un objeto, mantener el valor original
+            accessibleVariants[key] = variant;
+        }
+    });
+
+    return accessibleVariants;
+};
+
+export const useAccessibleVariants = (variants: Variants) => {
+    const shouldReduceMotion = useReducedMotion();
+    return getAccessibleVariants(variants, shouldReduceMotion);
+};
+
+
+/**
+ * Variants accesibles específicos para navegación
+ * Proporcionan fallbacks seguros para usuarios con preferencias de reduced motion
+ */
+export const accessibleHeaderVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            duration: 0.01,
+            type: "tween"
+        }
+    }
+};
+
+export const accessibleSidebarVariants: Variants = {
+    expanded: {
+        opacity: 1,
+        transition: { duration: 0.01, type: "tween" }
+    },
+    collapsed: {
+        opacity: 0.7,
+        transition: { duration: 0.01, type: "tween" }
+    }
+};
+
+export const accessibleMenuItemVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: { duration: 0.01, type: "tween" }
     }
 };
 
