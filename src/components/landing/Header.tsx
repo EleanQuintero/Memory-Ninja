@@ -77,7 +77,7 @@ export const Header = () => {
           variants={currentHeaderVariants}
           className="hidden md:flex gap-8 text-gray-200 text-base font-medium"
         >
-          {navItems.map((item, index) => (
+          {navItems.map((item) => (
             <motion.li key={item.href} variants={currentMenuVariants}>
               <motion.a
                 href={item.href}
