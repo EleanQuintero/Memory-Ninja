@@ -10,6 +10,7 @@ import SubscriptionFallback from "@/components/fallbacks/subscription";
 import { Provider } from "@/components/provider/Provider";
 import { Toaster } from "sonner";
 import { LazyMotion, domAnimation } from "motion/react";
+import { PageTransition } from "@/components/ui/page-transition";
 
 export const metadata: Metadata = {
   title: "FlashCard Generator",
@@ -35,7 +36,9 @@ export default function DashboardLayout({
               <div>
                 <SidebarTrigger />
               </div>
-              <LazyMotion features={domAnimation}>{children}</LazyMotion>
+              <LazyMotion features={domAnimation}>
+                <PageTransition>{children}</PageTransition>
+              </LazyMotion>
             </main>
             <Toaster />
           </SidebarProvider>

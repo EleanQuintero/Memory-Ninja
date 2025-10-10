@@ -950,6 +950,291 @@ export const accessibleMenuItemVariants: Variants = {
     }
 };
 
+/**
+ * ============================================
+ * SIDEBAR & NAVIGATION ANIMATIONS - FASE 4
+ * ============================================
+ * Implementación completa de animaciones para sidebar del dashboard
+ * Incluye: menu items, iconos, UserButton, transiciones y page transitions
+ */
+
+/**
+ * Variants para el contenedor del sidebar menu
+ * Orchestación de animaciones de menu items con stagger
+ */
+export const sidebarMenuContainerVariants: Variants = {
+    hidden: {
+        opacity: 0
+    },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.08,
+            delayChildren: 0.1,
+            when: "beforeChildren"
+        }
+    }
+};
+
+/**
+ * Variants individuales para cada menu item
+ * Entrada desde la izquierda con fade y escala sutil
+ */
+export const sidebarMenuItemVariants: Variants = {
+    hidden: {
+        opacity: 0,
+        x: -15,
+        scale: 0.95
+    },
+    visible: {
+        opacity: 1,
+        x: 0,
+        scale: 1,
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 25,
+            mass: 0.8
+        }
+    }
+};
+
+/**
+ * Variants para iconos de menu
+ * Micro-animaciones en hover para feedback visual
+ */
+export const sidebarIconVariants: Variants = {
+    idle: {
+        scale: 1,
+        rotate: 0
+    },
+    hover: {
+        scale: 1.1,
+        rotate: [0, -8, 8, 0],
+        transition: {
+            duration: 0.4,
+            ease: "easeInOut"
+        }
+    },
+    tap: {
+        scale: 0.95,
+        transition: {
+            duration: 0.1
+        }
+    }
+};
+
+/**
+ * Variants para el UserButton
+ * Entrada especial con bounce effect
+ */
+export const userButtonVariants: Variants = {
+    hidden: {
+        scale: 0,
+        opacity: 0
+    },
+    visible: {
+        scale: 1,
+        opacity: 1,
+        transition: {
+            type: "spring",
+            stiffness: 400,
+            damping: 20,
+            delay: 0.2
+        }
+    }
+};
+
+/**
+ * Variants para el sidebar completo (desktop)
+ * Transiciones suaves entre estados collapsed/expanded
+ */
+export const sidebarContainerVariants: Variants = {
+    expanded: {
+        width: "16rem",
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 30,
+            duration: 0.4
+        }
+    },
+    collapsed: {
+        width: "3rem",
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 30,
+            duration: 0.4
+        }
+    }
+};
+
+/**
+ * Variants para entrada/salida del sidebar mobile
+ * Animación desde el lateral con fade
+ */
+export const sidebarMobileVariants: Variants = {
+    hidden: {
+        x: "-100%",
+        opacity: 0
+    },
+    visible: {
+        x: 0,
+        opacity: 1,
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 30,
+            duration: 0.3
+        }
+    },
+    exit: {
+        x: "-100%",
+        opacity: 0,
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 30,
+            duration: 0.3
+        }
+    }
+};
+
+/**
+ * Variants para el SidebarTrigger (botón toggle)
+ * Rotación del icono según estado + hover/tap feedback
+ */
+export const sidebarTriggerIconVariants: Variants = {
+    expanded: {
+        rotate: 0,
+        transition: {
+            duration: 0.3,
+            ease: "easeInOut"
+        }
+    },
+    collapsed: {
+        rotate: 180,
+        transition: {
+            duration: 0.3,
+            ease: "easeInOut"
+        }
+    }
+};
+
+/**
+ * Variants para texto de menu items en collapsed state
+ * Fade in/out suave con ajuste de ancho
+ */
+export const sidebarMenuTextVariants: Variants = {
+    hidden: {
+        opacity: 0,
+        width: 0,
+        transition: {
+            duration: 0.2,
+            ease: "easeOut"
+        }
+    },
+    visible: {
+        opacity: 1,
+        width: "auto",
+        transition: {
+            duration: 0.2,
+            ease: "easeIn",
+            delay: 0.1
+        }
+    }
+};
+
+/**
+ * ============================================
+ * PAGE TRANSITIONS - NAVIGATION
+ * ============================================
+ * Transiciones entre páginas del dashboard para continuidad visual
+ */
+
+/**
+ * Variants para transiciones de página
+ * Entrada/salida con fade + movimiento vertical sutil
+ */
+export const pageVariants: Variants = {
+    initial: {
+        opacity: 0,
+        y: 20,
+        scale: 0.98
+    },
+    enter: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: {
+            duration: 0.4,
+            ease: [0.4, 0, 0.2, 1], // Material Design easing
+            when: "beforeChildren",
+            staggerChildren: 0.1
+        }
+    },
+    exit: {
+        opacity: 0,
+        y: -20,
+        scale: 0.98,
+        transition: {
+            duration: 0.3,
+            ease: [0.4, 0, 1, 1]
+        }
+    }
+};
+
+/**
+ * Variants para contenido de página
+ * Stagger de elementos internos para entrada progresiva
+ */
+export const pageContentVariants: Variants = {
+    initial: {
+        opacity: 0,
+        y: 10
+    },
+    enter: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.3,
+            ease: "easeOut"
+        }
+    }
+};
+
+/**
+ * Variants accesibles para sidebar
+ * Versión simplificada para usuarios con prefer-reduced-motion
+ */
+export const accessibleSidebarContainerVariants: Variants = {
+    expanded: {
+        opacity: 1,
+        transition: { duration: 0.01, type: "tween" }
+    },
+    collapsed: {
+        opacity: 1,
+        transition: { duration: 0.01, type: "tween" }
+    }
+};
+
+/**
+ * Variants accesibles para page transitions
+ * Solo fade simple sin movimiento
+ */
+export const accessiblePageVariants: Variants = {
+    initial: { opacity: 0 },
+    enter: {
+        opacity: 1,
+        transition: { duration: 0.01, type: "tween" }
+    },
+    exit: {
+        opacity: 0,
+        transition: { duration: 0.01, type: "tween" }
+    }
+};
+
 
 
 
