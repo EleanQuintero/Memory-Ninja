@@ -22,8 +22,19 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { createContext, useCallback, useContext, useState } from "react";
-import React from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  useMemo,
+  ComponentProps,
+  CSSProperties,
+} from "react";
+import { motion, AnimatePresence, LayoutGroup } from "motion/react";
+import { sidebarMobileVariants } from "@/animations/utils";
+import { useReducedMotion } from "@/animations/hooks/useReducedMotion";
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -61,7 +72,7 @@ function SidebarProvider({
   style,
   children,
   ...props
-}: React.ComponentProps<"div"> & {
+}: ComponentProps<"div"> & {
   defaultOpen?: boolean;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -89,12 +100,12 @@ function SidebarProvider({
   );
 
   // Helper to toggle the sidebar.
-  const toggleSidebar = React.useCallback(() => {
+  const toggleSidebar = useCallback(() => {
     return isMobile ? setOpenMobile((open) => !open) : setOpen((open) => !open);
   }, [isMobile, setOpen, setOpenMobile]);
 
   // Adds a keyboard shortcut to toggle the sidebar.
-  React.useEffect(() => {
+  useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (
         event.key === SIDEBAR_KEYBOARD_SHORTCUT &&
@@ -113,7 +124,7 @@ function SidebarProvider({
   // This makes it easier to style the sidebar with Tailwind classes.
   const state = open ? "expanded" : "collapsed";
 
-  const contextValue = React.useMemo<SidebarContextProps>(
+  const contextValue = useMemo<SidebarContextProps>(
     () => ({
       state,
       open,
@@ -136,7 +147,7 @@ function SidebarProvider({
               "--sidebar-width": SIDEBAR_WIDTH,
               "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
               ...style,
-            } as React.CSSProperties
+            } as CSSProperties
           }
           className={cn(
             "group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex min-h-svh w-full",
@@ -158,12 +169,13 @@ function Sidebar({
   className,
   children,
   ...props
-}: React.ComponentProps<"div"> & {
+}: ComponentProps<"div"> & {
   side?: "left" | "right";
   variant?: "sidebar" | "floating" | "inset";
   collapsible?: "offcanvas" | "icon" | "none";
 }) {
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
+  const shouldReduceMotion = useReducedMotion();
 
   if (collapsible === "none") {
     return (
@@ -182,74 +194,99 @@ function Sidebar({
 
   if (isMobile) {
     return (
-      <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
-        <SheetContent
-          data-sidebar="sidebar"
-          data-slot="sidebar"
-          data-mobile="true"
-          className="bg-sidebar text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden"
-          style={
-            {
-              "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
-            } as React.CSSProperties
-          }
-          side={side}
-        >
-          <SheetHeader className="sr-only">
-            <SheetTitle>Sidebar</SheetTitle>
-            <SheetDescription>Displays the mobile sidebar.</SheetDescription>
-          </SheetHeader>
-          <div className="flex h-full w-full flex-col">{children}</div>
-        </SheetContent>
-      </Sheet>
+      <AnimatePresence>
+        {openMobile && (
+          <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
+            <SheetContent
+              data-sidebar="sidebar"
+              data-slot="sidebar"
+              data-mobile="true"
+              className="bg-sidebar text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden"
+              style={
+                {
+                  "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
+                } as CSSProperties
+              }
+              side={side}
+            >
+              <motion.div
+                variants={shouldReduceMotion ? {} : sidebarMobileVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="h-full"
+              >
+                <SheetHeader className="sr-only">
+                  <SheetTitle>Sidebar</SheetTitle>
+                  <SheetDescription>
+                    Displays the mobile sidebar.
+                  </SheetDescription>
+                </SheetHeader>
+                <div className="flex h-full w-full flex-col">{children}</div>
+              </motion.div>
+            </SheetContent>
+          </Sheet>
+        )}
+      </AnimatePresence>
     );
   }
 
   return (
-    <div
-      className="group peer text-sidebar-foreground hidden md:block"
-      data-state={state}
-      data-collapsible={state === "collapsed" ? collapsible : ""}
-      data-variant={variant}
-      data-side={side}
-      data-slot="sidebar"
-    >
-      {/* This is what handles the sidebar gap on desktop */}
-      <div
-        data-slot="sidebar-gap"
-        className={cn(
-          "relative w-(--sidebar-width) bg-transparent transition-[width] duration-200 ease-linear",
-          "group-data-[collapsible=offcanvas]:w-0",
-          "group-data-[side=right]:rotate-180",
-          variant === "floating" || variant === "inset"
-            ? "group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4)))]"
-            : "group-data-[collapsible=icon]:w-(--sidebar-width-icon)"
-        )}
-      />
-      <div
-        data-slot="sidebar-container"
-        className={cn(
-          "fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear md:flex",
-          side === "left"
-            ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]"
-            : "right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",
-          // Adjust the padding for floating and inset variants.
-          variant === "floating" || variant === "inset"
-            ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]"
-            : "group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-r group-data-[side=right]:border-l",
-          className
-        )}
-        {...props}
+    <LayoutGroup>
+      <motion.div
+        className="group peer text-sidebar-foreground hidden md:block"
+        data-state={state}
+        data-collapsible={state === "collapsed" ? collapsible : ""}
+        data-variant={variant}
+        data-side={side}
+        data-slot="sidebar"
+        layout
+        transition={{
+          type: shouldReduceMotion ? "tween" : "spring",
+          duration: shouldReduceMotion ? 0.01 : 0.4,
+          stiffness: 300,
+          damping: 30,
+        }}
       >
+        {/* This is what handles the sidebar gap on desktop */}
+        <motion.div
+          data-slot="sidebar-gap"
+          className={cn(
+            "relative w-(--sidebar-width) bg-transparent transition-[width] duration-200 ease-linear",
+            "group-data-[collapsible=offcanvas]:w-0",
+            "group-data-[side=right]:rotate-180",
+            variant === "floating" || variant === "inset"
+              ? "group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4)))]"
+              : "group-data-[collapsible=icon]:w-(--sidebar-width-icon)"
+          )}
+          layout
+        />
         <div
-          data-sidebar="sidebar"
-          data-slot="sidebar-inner"
-          className="bg-sidebar group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
+          data-slot="sidebar-container"
+          className={cn(
+            "fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear md:flex",
+            side === "left"
+              ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]"
+              : "right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",
+            // Adjust the padding for floating and inset variants.
+            variant === "floating" || variant === "inset"
+              ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]"
+              : "group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-r group-data-[side=right]:border-l",
+            className
+          )}
+          {...props}
         >
-          {children}
+          <motion.div
+            data-sidebar="sidebar"
+            data-slot="sidebar-inner"
+            className="bg-sidebar group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
+            layout
+          >
+            {children}
+          </motion.div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </LayoutGroup>
   );
 }
 
@@ -257,8 +294,9 @@ function SidebarTrigger({
   className,
   onClick,
   ...props
-}: React.ComponentProps<typeof Button>) {
-  const { toggleSidebar } = useSidebar();
+}: ComponentProps<typeof Button>) {
+  const { toggleSidebar, state } = useSidebar();
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <Button
@@ -273,13 +311,28 @@ function SidebarTrigger({
       }}
       {...props}
     >
-      <PanelLeftIcon />
+      <motion.div
+        animate={{
+          rotate: state === "expanded" ? 0 : 180,
+        }}
+        transition={{
+          duration: shouldReduceMotion ? 0.01 : 0.3,
+          ease: "easeInOut",
+        }}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <PanelLeftIcon />
+      </motion.div>
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   );
 }
 
-function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
+function SidebarRail({ className, ...props }: ComponentProps<"button">) {
   const { toggleSidebar } = useSidebar();
 
   return (
@@ -304,7 +357,7 @@ function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
   );
 }
 
-function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
+function SidebarInset({ className, ...props }: ComponentProps<"main">) {
   return (
     <main
       data-slot="sidebar-inset"
@@ -318,10 +371,7 @@ function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
   );
 }
 
-function SidebarInput({
-  className,
-  ...props
-}: React.ComponentProps<typeof Input>) {
+function SidebarInput({ className, ...props }: ComponentProps<typeof Input>) {
   return (
     <Input
       data-slot="sidebar-input"
@@ -332,7 +382,7 @@ function SidebarInput({
   );
 }
 
-function SidebarHeader({ className, ...props }: React.ComponentProps<"div">) {
+function SidebarHeader({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       data-slot="sidebar-header"
@@ -343,7 +393,7 @@ function SidebarHeader({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-function SidebarFooter({ className, ...props }: React.ComponentProps<"div">) {
+function SidebarFooter({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       data-slot="sidebar-footer"
@@ -357,7 +407,7 @@ function SidebarFooter({ className, ...props }: React.ComponentProps<"div">) {
 function SidebarSeparator({
   className,
   ...props
-}: React.ComponentProps<typeof Separator>) {
+}: ComponentProps<typeof Separator>) {
   return (
     <Separator
       data-slot="sidebar-separator"
@@ -368,7 +418,7 @@ function SidebarSeparator({
   );
 }
 
-function SidebarContent({ className, ...props }: React.ComponentProps<"div">) {
+function SidebarContent({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       data-slot="sidebar-content"
@@ -382,7 +432,7 @@ function SidebarContent({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-function SidebarGroup({ className, ...props }: React.ComponentProps<"div">) {
+function SidebarGroup({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       data-slot="sidebar-group"
@@ -397,7 +447,7 @@ function SidebarGroupLabel({
   className,
   asChild = false,
   ...props
-}: React.ComponentProps<"div"> & { asChild?: boolean }) {
+}: ComponentProps<"div"> & { asChild?: boolean }) {
   const Comp = asChild ? Slot : "div";
 
   return (
@@ -418,7 +468,7 @@ function SidebarGroupAction({
   className,
   asChild = false,
   ...props
-}: React.ComponentProps<"button"> & { asChild?: boolean }) {
+}: ComponentProps<"button"> & { asChild?: boolean }) {
   const Comp = asChild ? Slot : "button";
 
   return (
@@ -437,10 +487,7 @@ function SidebarGroupAction({
   );
 }
 
-function SidebarGroupContent({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+function SidebarGroupContent({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       data-slot="sidebar-group-content"
@@ -451,7 +498,7 @@ function SidebarGroupContent({
   );
 }
 
-function SidebarMenu({ className, ...props }: React.ComponentProps<"ul">) {
+function SidebarMenu({ className, ...props }: ComponentProps<"ul">) {
   return (
     <ul
       data-slot="sidebar-menu"
@@ -462,7 +509,7 @@ function SidebarMenu({ className, ...props }: React.ComponentProps<"ul">) {
   );
 }
 
-function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
+function SidebarMenuItem({ className, ...props }: ComponentProps<"li">) {
   return (
     <li
       data-slot="sidebar-menu-item"
@@ -503,10 +550,10 @@ function SidebarMenuButton({
   tooltip,
   className,
   ...props
-}: React.ComponentProps<"button"> & {
+}: ComponentProps<"button"> & {
   asChild?: boolean;
   isActive?: boolean;
-  tooltip?: string | React.ComponentProps<typeof TooltipContent>;
+  tooltip?: string | ComponentProps<typeof TooltipContent>;
 } & VariantProps<typeof sidebarMenuButtonVariants>) {
   const Comp = asChild ? Slot : "button";
   const { isMobile, state } = useSidebar();
@@ -550,7 +597,7 @@ function SidebarMenuAction({
   asChild = false,
   showOnHover = false,
   ...props
-}: React.ComponentProps<"button"> & {
+}: ComponentProps<"button"> & {
   asChild?: boolean;
   showOnHover?: boolean;
 }) {
@@ -577,10 +624,7 @@ function SidebarMenuAction({
   );
 }
 
-function SidebarMenuBadge({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+function SidebarMenuBadge({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       data-slot="sidebar-menu-badge"
@@ -603,11 +647,11 @@ function SidebarMenuSkeleton({
   className,
   showIcon = false,
   ...props
-}: React.ComponentProps<"div"> & {
+}: ComponentProps<"div"> & {
   showIcon?: boolean;
 }) {
   // Random width between 50 to 90%.
-  const width = React.useMemo(() => {
+  const width = useMemo(() => {
     return `${Math.floor(Math.random() * 40) + 50}%`;
   }, []);
 
@@ -630,14 +674,14 @@ function SidebarMenuSkeleton({
         style={
           {
             "--skeleton-width": width,
-          } as React.CSSProperties
+          } as CSSProperties
         }
       />
     </div>
   );
 }
 
-function SidebarMenuSub({ className, ...props }: React.ComponentProps<"ul">) {
+function SidebarMenuSub({ className, ...props }: ComponentProps<"ul">) {
   return (
     <ul
       data-slot="sidebar-menu-sub"
@@ -652,10 +696,7 @@ function SidebarMenuSub({ className, ...props }: React.ComponentProps<"ul">) {
   );
 }
 
-function SidebarMenuSubItem({
-  className,
-  ...props
-}: React.ComponentProps<"li">) {
+function SidebarMenuSubItem({ className, ...props }: ComponentProps<"li">) {
   return (
     <li
       data-slot="sidebar-menu-sub-item"
@@ -672,7 +713,7 @@ function SidebarMenuSubButton({
   isActive = false,
   className,
   ...props
-}: React.ComponentProps<"a"> & {
+}: ComponentProps<"a"> & {
   asChild?: boolean;
   size?: "sm" | "md";
   isActive?: boolean;
