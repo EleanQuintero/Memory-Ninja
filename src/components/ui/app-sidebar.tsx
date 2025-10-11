@@ -22,6 +22,7 @@ import {
   sidebarMenuTextVariants,
 } from "@/animations/utils";
 import { useReducedMotion } from "@/animations/hooks/useReducedMotion";
+import { usePathname } from "next/navigation";
 
 // Menu items.
 import Link from "next/link";
@@ -29,6 +30,7 @@ import Link from "next/link";
 export function AppSidebar() {
   const shouldReduceMotion = useReducedMotion();
   const { state } = useSidebar();
+  const pathname = usePathname();
 
   // Adaptar animaciones según accesibilidad
   const menuContainerVariants = shouldReduceMotion
@@ -86,43 +88,54 @@ export function AppSidebar() {
                 </motion.div>
 
                 {/* Menu Items con stagger */}
-                {items.map((item, index) => (
-                  <motion.div
-                    key={item.title}
-                    variants={menuItemVariants}
-                    custom={index}
-                  >
-                    <SidebarMenuItem>
-                      <SidebarMenuButton asChild>
-                        <Link href={item.url}>
-                          {/* Icono animado */}
-                          <motion.div
-                            variants={iconVariants}
-                            initial="idle"
-                            whileHover="hover"
-                            whileTap="tap"
-                          >
-                            <item.icon />
-                          </motion.div>
+                {items.map((item, index) => {
+                  const isActive = pathname === item.url;
 
-                          {/* Texto con AnimatePresence para collapsed state */}
-                          <AnimatePresence mode="wait">
-                            {state === "expanded" && (
-                              <motion.span
-                                variants={sidebarMenuTextVariants}
-                                initial="hidden"
-                                animate="visible"
-                                exit="hidden"
-                              >
-                                {item.title}
-                              </motion.span>
-                            )}
-                          </AnimatePresence>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  </motion.div>
-                ))}
+                  return (
+                    <motion.div
+                      key={item.title}
+                      variants={menuItemVariants}
+                      custom={index}
+                    >
+                      <SidebarMenuItem>
+                        <SidebarMenuButton asChild isActive={isActive}>
+                          <Link
+                            href={item.url}
+                            className={isActive ? "text-chart-1" : ""}
+                          >
+                            {/* Icono animado */}
+                            <motion.div
+                              variants={iconVariants}
+                              initial="idle"
+                              whileHover="hover"
+                              whileTap="tap"
+                              className={isActive ? "text-chart-1" : ""}
+                            >
+                              <item.icon />
+                            </motion.div>
+
+                            {/* Texto con AnimatePresence para collapsed state */}
+                            <AnimatePresence mode="wait">
+                              {state === "expanded" && (
+                                <motion.span
+                                  variants={sidebarMenuTextVariants}
+                                  initial="hidden"
+                                  animate="visible"
+                                  exit="hidden"
+                                  className={
+                                    isActive ? "text-chart-1 font-semibold" : ""
+                                  }
+                                >
+                                  {item.title}
+                                </motion.span>
+                              )}
+                            </AnimatePresence>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    </motion.div>
+                  );
+                })}
               </SidebarMenu>
             </motion.div>
           </SidebarGroupContent>
