@@ -177,7 +177,10 @@ export default function Value() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 id="value-heading" className="text-3xl sm:text-4xl font-bold text-white mb-6">
+            <h2
+              id="value-heading"
+              className="text-3xl sm:text-4xl font-bold text-white mb-6"
+            >
               La forma <span className="text-blue-400">inteligente</span> de
               crear flashcards
             </h2>
@@ -247,8 +250,7 @@ export default function Value() {
                     viewport={{ once: true, margin: "-50px" }}
                     custom={0.6}
                   >
-                    Tus flashcards caseras no optimizan tu curva de
-                    aprendizaje
+                    Tus flashcards caseras no optimizan tu curva de aprendizaje
                   </motion.li>
                   <motion.li
                     className="text-gray-300 pl-4 border-l-2 border-red-400/30 relative z-10"
@@ -258,8 +260,8 @@ export default function Value() {
                     viewport={{ once: true, margin: "-50px" }}
                     custom={0.7}
                   >
-                    Te frustras porque sabes que hay formas más inteligentes
-                    de estudiar
+                    Te frustras porque sabes que hay formas más inteligentes de
+                    estudiar
                   </motion.li>
                   <motion.li
                     className="text-gray-300 pl-4 border-l-2 border-red-400/30 relative z-10"
@@ -269,8 +271,8 @@ export default function Value() {
                     viewport={{ once: true, margin: "-50px" }}
                     custom={0.8}
                   >
-                    Al final estudias menos porque el proceso de preparación
-                    es tedioso
+                    Al final estudias menos porque el proceso de preparación es
+                    tedioso
                   </motion.li>
                 </ul>
               </div>

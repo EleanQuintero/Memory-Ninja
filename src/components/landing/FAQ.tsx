@@ -95,9 +95,7 @@ const FAQAccordionItem = ({
     ? { hidden: { opacity: 0 }, visible: { opacity: 1 } }
     : faqItemVariants;
 
-  const currentIconVariants = shouldReduceMotion
-    ? {}
-    : iconRotateVariants;
+  const currentIconVariants = shouldReduceMotion ? {} : iconRotateVariants;
 
   return (
     <motion.div
@@ -200,7 +198,11 @@ export const FAQ = () => {
         visible: {
           opacity: 1,
           y: 0,
-          transition: { duration: 0.5, type: "spring" as const, stiffness: 100 },
+          transition: {
+            duration: 0.5,
+            type: "spring" as const,
+            stiffness: 100,
+          },
         },
       };
 
