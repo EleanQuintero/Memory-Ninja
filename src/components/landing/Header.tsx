@@ -25,6 +25,7 @@ export const Header = () => {
   const navItems = [
     { href: "#features", label: "Características" },
     { href: "#pricing", label: "Precios" },
+    { href: "#faq", label: "FAQ" },
   ];
 
   // Adaptar variants según accesibilidad
@@ -56,7 +57,7 @@ export const Header = () => {
           <motion.img
             whileHover={shouldReduceMotion ? {} : { scale: 1.05, rotate: 5 }}
             whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
-            src="/memory-ninja-icon-2.png"
+            src="https://res.cloudinary.com/dygwnv56x/image/upload/v1755253305/memory-ninja-icon-2_peisgm.webp"
             alt="Logo MemoryNinja"
             className="h-10 w-10 rounded-lg"
             transition={{ duration: 0.2 }}

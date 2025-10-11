@@ -42,9 +42,9 @@ export default function Pricing() {
       description: "Perfecto para comenzar tu camino ninja",
       price: "Gratis",
       features: [
-        { text: "Modelo de IA único" },
-        { text: "3 Mazos de estudio" },
+        { text: "Único ninja IA" },
         { text: "Preguntas limitadas al mes" },
+        { text: "Flashcards Limitadas" },
       ],
       buttonText: "Comenzar con Aprendiz Ninja",
       buttonHref: "/onboarding",
@@ -57,9 +57,9 @@ export default function Pricing() {
       priceSubtext: "/mes",
       features: [
         { text: "Flashcards ilimitadas" },
+        { text: "Multiples ninjas de IA" },
         { text: "Organización por temas" },
         { text: "Guardar progreso en espacio personal" },
-        { text: "Exportación en formato PDF" },
         { text: "Acceso a todas las funcionalidades" },
       ],
       buttonText: "Comenzar con Ninja Pro",
@@ -99,10 +99,6 @@ export default function Pricing() {
             <span className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-400 rounded-full"></div>
               Sin compromiso
-            </span>
-            <span className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-              Cancela cuando quieras
             </span>
             <span className="flex items-center gap-2">
               <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
@@ -145,7 +141,6 @@ export default function Pricing() {
         {/* Bottom trust badges */}
         <div className="mt-16 text-center">
           <div className="flex flex-wrap justify-center gap-8 text-sm text-gray-500">
-            <span>✓ Garantía de 30 días</span>
             <span>✓ Datos seguros</span>
             <span>✓ Sin configuración compleja</span>
           </div>
