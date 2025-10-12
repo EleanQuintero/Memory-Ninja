@@ -222,33 +222,62 @@ export const Finish = () => {
                 className="space-y-4"
               >
                 {/* Achievement badges */}
-                <div className="grid grid-cols-3 gap-3">
-                  {[
+                {/* Define static class mappings for badge colors */}
+                {/*
+                  This mapping ensures all Tailwind classes are statically analyzable.
+                */}
+                {(() => {
+                  const colorClassMap = {
+                    green: {
+                      bg: "bg-green-500/10",
+                      border: "border-green-500/30",
+                      icon: "text-green-500",
+                    },
+                    yellow: {
+                      bg: "bg-yellow-500/10",
+                      border: "border-yellow-500/30",
+                      icon: "text-yellow-500",
+                    },
+                    purple: {
+                      bg: "bg-purple-500/10",
+                      border: "border-purple-500/30",
+                      icon: "text-purple-500",
+                    },
+                  };
+                  const badges = [
                     { icon: CheckCircle, label: "Registrado", color: "green" },
                     { icon: Zap, label: "Verificado", color: "yellow" },
                     { icon: Star, label: "Listo", color: "purple" },
-                  ].map((badge, index) => (
-                    <motion.div
-                      key={badge.label}
-                      initial={{ opacity: 0, scale: 0 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{
-                        delay: 0.6 + index * 0.15,
-                        type: "spring",
-                        stiffness: 200,
-                        damping: 15,
-                      }}
-                      className={`flex flex-col items-center gap-2 p-3 rounded-lg bg-${badge.color}-500/10 border border-${badge.color}-500/30`}
-                    >
-                      <badge.icon
-                        className={`w-6 h-6 text-${badge.color}-500`}
-                      />
-                      <span className="text-xs font-medium text-muted-foreground">
-                        {badge.label}
-                      </span>
-                    </motion.div>
-                  ))}
-                </div>
+                  ];
+                  return (
+                    <div className="grid grid-cols-3 gap-3">
+                      {badges.map((badge, index) => {
+                        const colorClasses = colorClassMap[badge.color];
+                        return (
+                          <motion.div
+                            key={badge.label}
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{
+                              delay: 0.6 + index * 0.15,
+                              type: "spring",
+                              stiffness: 200,
+                              damping: 15,
+                            }}
+                            className={`flex flex-col items-center gap-2 p-3 rounded-lg ${colorClasses.bg} border ${colorClasses.border}`}
+                          >
+                            <badge.icon
+                              className={`w-6 h-6 ${colorClasses.icon}`}
+                            />
+                            <span className="text-xs font-medium text-muted-foreground">
+                              {badge.label}
+                            </span>
+                          </motion.div>
+                        );
+                      })}
+                    </div>
+                  );
+                })()}
 
                 <motion.div
                   className="p-4 bg-muted/50 rounded-lg border border-border relative overflow-hidden"
