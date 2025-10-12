@@ -55,9 +55,21 @@ const ProblemItem = ({
       viewport={{ once: true, margin: "-50px" }}
       custom={index}
     >
-      <div className="text-2xl min-w-[30px] mt-1" aria-hidden="true">
+      <motion.div
+        className="text-2xl min-w-[30px] mt-1"
+        aria-hidden="true"
+        whileHover={
+          shouldReduceMotion
+            ? {}
+            : {
+                rotate: -15,
+                scale: 1.2,
+              }
+        }
+        transition={{ duration: 0.2, ease: "easeOut" }}
+      >
         {icon}
-      </div>
+      </motion.div>
       <p className="text-gray-300">{text}</p>
     </motion.div>
   );
@@ -93,9 +105,21 @@ const SolutionItem = ({
       custom={index}
     >
       <div className="flex items-center mb-2">
-        <div className="text-2xl mr-3" aria-hidden="true">
+        <motion.div
+          className="text-2xl mr-3"
+          aria-hidden="true"
+          whileHover={
+            shouldReduceMotion
+              ? {}
+              : {
+                  rotate: 15,
+                  scale: 1.2,
+                }
+          }
+          transition={{ duration: 0.2, ease: "easeOut" }}
+        >
           {icon}
-        </div>
+        </motion.div>
         <h3 className="text-lg font-semibold text-blue-400">{title}</h3>
       </div>
       <p className="text-gray-300 pl-10">{text}</p>
