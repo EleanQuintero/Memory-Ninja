@@ -84,7 +84,9 @@ export default function OnboardingLayout({
         </header>
 
         <section className="flex-1 flex items-center justify-center px-4 py-8 w-full">
-          <div className="w-full max-w-md lg:max-w-lg xl:max-w-xl">{children}</div>
+          <div className="w-full max-w-md lg:max-w-lg xl:max-w-xl">
+            {children}
+          </div>
         </section>
       </div>
     </main>

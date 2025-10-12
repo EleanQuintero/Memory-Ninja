@@ -140,244 +140,246 @@ export const Finish = () => {
           className="relative z-10 w-full"
         >
           <Card className="bg-card/50 backdrop-blur-sm border-border shadow-2xl w-full">
-          <CardHeader className="space-y-4 text-center relative">
-            {/* Success icon with animations */}
-            <motion.div
-              variants={finishSuccessIconVariants}
-              className="flex justify-center mb-2"
-            >
-              <div className="relative">
-                <motion.div
-                  animate={
-                    !shouldReduceMotion
-                      ? {
+            <CardHeader className="space-y-4 text-center relative">
+              {/* Success icon with animations */}
+              <motion.div
+                variants={finishSuccessIconVariants}
+                className="flex justify-center mb-2"
+              >
+                <div className="relative">
+                  <motion.div
+                    animate={
+                      !shouldReduceMotion
+                        ? {
+                            scale: [1, 1.2, 1],
+                            opacity: [0.5, 0.8, 0.5],
+                          }
+                        : {}
+                    }
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                    className="absolute inset-0 bg-green-500/30 rounded-full blur-xl"
+                  />
+                  <CheckCircle className="w-24 h-24 text-green-500 relative z-10" />
+                  {!shouldReduceMotion && (
+                    <>
+                      <motion.div
+                        className="absolute -top-2 -right-2"
+                        animate={{
+                          rotate: [0, 360],
                           scale: [1, 1.2, 1],
-                          opacity: [0.5, 0.8, 0.5],
-                        }
-                      : {}
-                  }
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                  className="absolute inset-0 bg-green-500/30 rounded-full blur-xl"
-                />
-                <CheckCircle className="w-24 h-24 text-green-500 relative z-10" />
-                {!shouldReduceMotion && (
-                  <>
+                        }}
+                        transition={{
+                          duration: 3,
+                          repeat: Infinity,
+                          ease: "linear",
+                        }}
+                      >
+                        <Sparkles className="w-8 h-8 text-yellow-400" />
+                      </motion.div>
+                      <motion.div
+                        className="absolute -bottom-2 -left-2"
+                        animate={{
+                          rotate: [0, -360],
+                          scale: [1.2, 1, 1.2],
+                        }}
+                        transition={{
+                          duration: 2.5,
+                          repeat: Infinity,
+                          ease: "linear",
+                        }}
+                      >
+                        <Star className="w-6 h-6 text-purple-400" />
+                      </motion.div>
+                    </>
+                  )}
+                </div>
+              </motion.div>
+
+              <motion.div variants={onboardingContentVariants}>
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Trophy className="w-6 h-6 text-yellow-500" />
+                  <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+                    ¡Felicidades, Ninja! 🥷
+                  </CardTitle>
+                  <Trophy className="w-6 h-6 text-yellow-500" />
+                </div>
+              </motion.div>
+
+              <motion.div variants={onboardingContentVariants}>
+                <CardDescription className="text-base">
+                  Has completado el proceso de onboarding con éxito
+                </CardDescription>
+              </motion.div>
+            </CardHeader>
+
+            <CardContent className="space-y-6">
+              <motion.div
+                variants={onboardingContentVariants}
+                className="space-y-4"
+              >
+                {/* Achievement badges */}
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { icon: CheckCircle, label: "Registrado", color: "green" },
+                    { icon: Zap, label: "Verificado", color: "yellow" },
+                    { icon: Star, label: "Listo", color: "purple" },
+                  ].map((badge, index) => (
                     <motion.div
-                      className="absolute -top-2 -right-2"
+                      key={badge.label}
+                      initial={{ opacity: 0, scale: 0 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{
+                        delay: 0.6 + index * 0.15,
+                        type: "spring",
+                        stiffness: 200,
+                        damping: 15,
+                      }}
+                      className={`flex flex-col items-center gap-2 p-3 rounded-lg bg-${badge.color}-500/10 border border-${badge.color}-500/30`}
+                    >
+                      <badge.icon
+                        className={`w-6 h-6 text-${badge.color}-500`}
+                      />
+                      <span className="text-xs font-medium text-muted-foreground">
+                        {badge.label}
+                      </span>
+                    </motion.div>
+                  ))}
+                </div>
+
+                <motion.div
+                  className="p-4 bg-muted/50 rounded-lg border border-border relative overflow-hidden"
+                  variants={onboardingContentVariants}
+                >
+                  {!shouldReduceMotion && (
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/10 to-transparent"
                       animate={{
-                        rotate: [0, 360],
-                        scale: [1, 1.2, 1],
+                        x: ["-100%", "200%"],
                       }}
                       transition={{
                         duration: 3,
                         repeat: Infinity,
                         ease: "linear",
+                        repeatDelay: 1,
                       }}
-                    >
-                      <Sparkles className="w-8 h-8 text-yellow-400" />
-                    </motion.div>
-                    <motion.div
-                      className="absolute -bottom-2 -left-2"
-                      animate={{
-                        rotate: [0, -360],
-                        scale: [1.2, 1, 1.2],
-                      }}
-                      transition={{
-                        duration: 2.5,
-                        repeat: Infinity,
-                        ease: "linear",
-                      }}
-                    >
-                      <Star className="w-6 h-6 text-purple-400" />
-                    </motion.div>
-                  </>
-                )}
-              </div>
-            </motion.div>
-
-            <motion.div variants={onboardingContentVariants}>
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <Trophy className="w-6 h-6 text-yellow-500" />
-                <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-                  ¡Felicidades, Ninja! 🥷
-                </CardTitle>
-                <Trophy className="w-6 h-6 text-yellow-500" />
-              </div>
-            </motion.div>
-
-            <motion.div variants={onboardingContentVariants}>
-              <CardDescription className="text-base">
-                Has completado el proceso de onboarding con éxito
-              </CardDescription>
-            </motion.div>
-          </CardHeader>
-
-          <CardContent className="space-y-6">
-            <motion.div
-              variants={onboardingContentVariants}
-              className="space-y-4"
-            >
-              {/* Achievement badges */}
-              <div className="grid grid-cols-3 gap-3">
-                {[
-                  { icon: CheckCircle, label: "Registrado", color: "green" },
-                  { icon: Zap, label: "Verificado", color: "yellow" },
-                  { icon: Star, label: "Listo", color: "purple" },
-                ].map((badge, index) => (
-                  <motion.div
-                    key={badge.label}
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{
-                      delay: 0.6 + index * 0.15,
-                      type: "spring",
-                      stiffness: 200,
-                      damping: 15,
-                    }}
-                    className={`flex flex-col items-center gap-2 p-3 rounded-lg bg-${badge.color}-500/10 border border-${badge.color}-500/30`}
-                  >
-                    <badge.icon className={`w-6 h-6 text-${badge.color}-500`} />
-                    <span className="text-xs font-medium text-muted-foreground">
-                      {badge.label}
-                    </span>
-                  </motion.div>
-                ))}
-              </div>
-
-              <motion.div
-                className="p-4 bg-muted/50 rounded-lg border border-border relative overflow-hidden"
-                variants={onboardingContentVariants}
-              >
-                {!shouldReduceMotion && (
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/10 to-transparent"
-                    animate={{
-                      x: ["-100%", "200%"],
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      ease: "linear",
-                      repeatDelay: 1,
-                    }}
-                  />
-                )}
-                <p className="text-sm text-center text-muted-foreground relative z-10">
-                  Ahora puedes empezar a{" "}
-                  <span className="font-semibold text-foreground">
-                    crear tus flashcards
-                  </span>{" "}
-                  y explorar todas las funcionalidades de{" "}
-                  <span className="font-semibold text-purple-500">
-                    MemoryNinja
-                  </span>{" "}
-                  ⚡
-                </p>
-              </motion.div>
-            </motion.div>
-
-            <motion.div variants={onboardingContentVariants}>
-              <motion.div
-                whileHover={
-                  !shouldReduceMotion
-                    ? {
-                        scale: 1.03,
-                        y: -2,
-                      }
-                    : {}
-                }
-                whileTap={
-                  !shouldReduceMotion
-                    ? {
-                        scale: 0.98,
-                      }
-                    : {}
-                }
-              >
-                <Button
-                  onClick={updateOnboarding}
-                  className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium text-lg py-6 relative group overflow-hidden shadow-lg shadow-purple-500/50"
-                >
-                  {!shouldReduceMotion && (
-                    <>
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                        animate={{
-                          x: ["-100%", "200%"],
-                        }}
-                        transition={{
-                          duration: 2,
-                          repeat: Infinity,
-                          ease: "linear",
-                          repeatDelay: 0.5,
-                        }}
-                      />
-                      <motion.span
-                        className="absolute right-4"
-                        animate={{
-                          x: [0, 5, 0],
-                        }}
-                        transition={{
-                          duration: 1.5,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                        }}
-                      >
-                        →
-                      </motion.span>
-                    </>
+                    />
                   )}
-                  <span className="relative z-10">
-                    Comenzar mi viaje ninja 🚀
-                  </span>
-                </Button>
+                  <p className="text-sm text-center text-muted-foreground relative z-10">
+                    Ahora puedes empezar a{" "}
+                    <span className="font-semibold text-foreground">
+                      crear tus flashcards
+                    </span>{" "}
+                    y explorar todas las funcionalidades de{" "}
+                    <span className="font-semibold text-purple-500">
+                      MemoryNinja
+                    </span>{" "}
+                    ⚡
+                  </p>
+                </motion.div>
               </motion.div>
-            </motion.div>
-          </CardContent>
-        </Card>
-      </motion.div>
 
-      {/* Floating emoji decorations */}
-      {!shouldReduceMotion && (
-        <>
-          {[
-            { emoji: "🎉", x: "10%", delay: 0 },
-            { emoji: "✨", x: "25%", delay: 0.3 },
-            { emoji: "🎊", x: "40%", delay: 0.6 },
-            { emoji: "⭐", x: "60%", delay: 0.9 },
-            { emoji: "💫", x: "75%", delay: 1.2 },
-            { emoji: "🌟", x: "90%", delay: 1.5 },
-          ].map(({ emoji, x, delay }) => (
-            <motion.div
-              key={emoji}
-              className="absolute text-4xl pointer-events-none"
-              style={{ left: x }}
-              initial={{
-                y: "120%",
-                opacity: 0,
-              }}
-              animate={{
-                y: "-20%",
-                opacity: [0, 1, 1, 0],
-                rotate: [0, 360],
-              }}
-              transition={{
-                duration: 5,
-                delay,
-                repeat: Infinity,
-                repeatDelay: 3,
-                ease: "easeOut",
-              }}
-            >
-              {emoji}
-            </motion.div>
-          ))}
-        </>
-      )}
+              <motion.div variants={onboardingContentVariants}>
+                <motion.div
+                  whileHover={
+                    !shouldReduceMotion
+                      ? {
+                          scale: 1.03,
+                          y: -2,
+                        }
+                      : {}
+                  }
+                  whileTap={
+                    !shouldReduceMotion
+                      ? {
+                          scale: 0.98,
+                        }
+                      : {}
+                  }
+                >
+                  <Button
+                    onClick={updateOnboarding}
+                    className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium text-lg py-6 relative group overflow-hidden shadow-lg shadow-purple-500/50"
+                  >
+                    {!shouldReduceMotion && (
+                      <>
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                          animate={{
+                            x: ["-100%", "200%"],
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            ease: "linear",
+                            repeatDelay: 0.5,
+                          }}
+                        />
+                        <motion.span
+                          className="absolute right-4"
+                          animate={{
+                            x: [0, 5, 0],
+                          }}
+                          transition={{
+                            duration: 1.5,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                          }}
+                        >
+                          →
+                        </motion.span>
+                      </>
+                    )}
+                    <span className="relative z-10">
+                      Comenzar mi viaje ninja 🚀
+                    </span>
+                  </Button>
+                </motion.div>
+              </motion.div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Floating emoji decorations */}
+        {!shouldReduceMotion && (
+          <>
+            {[
+              { emoji: "🎉", x: "10%", delay: 0 },
+              { emoji: "✨", x: "25%", delay: 0.3 },
+              { emoji: "🎊", x: "40%", delay: 0.6 },
+              { emoji: "⭐", x: "60%", delay: 0.9 },
+              { emoji: "💫", x: "75%", delay: 1.2 },
+              { emoji: "🌟", x: "90%", delay: 1.5 },
+            ].map(({ emoji, x, delay }) => (
+              <motion.div
+                key={emoji}
+                className="absolute text-4xl pointer-events-none"
+                style={{ left: x }}
+                initial={{
+                  y: "120%",
+                  opacity: 0,
+                }}
+                animate={{
+                  y: "-20%",
+                  opacity: [0, 1, 1, 0],
+                  rotate: [0, 360],
+                }}
+                transition={{
+                  duration: 5,
+                  delay,
+                  repeat: Infinity,
+                  repeatDelay: 3,
+                  ease: "easeOut",
+                }}
+              >
+                {emoji}
+              </motion.div>
+            ))}
+          </>
+        )}
       </div>
     </>
   );
