@@ -1235,6 +1235,186 @@ export const accessiblePageVariants: Variants = {
     }
 };
 
+/**
+ * ============================================
+ * HERO COMPONENT ANIMATIONS - LANDING PAGE
+ * ============================================
+ * Animaciones completas para Hero de landing page
+ * Incluye: orchestación, stagger, floating elements, blobs animados
+ */
+
+/**
+ * Variants para el contenedor principal del Hero
+ * Orchestación de todos los elementos con stagger progresivo
+ */
+export const heroContainerVariants: Variants = {
+    hidden: {
+        opacity: 0
+    },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.15,
+            delayChildren: 0.2,
+            when: "beforeChildren"
+        }
+    }
+};
+
+/**
+ * Variants para items individuales del Hero
+ * Entrada desde abajo con fade y spring physics
+ */
+export const heroItemVariants: Variants = {
+    hidden: {
+        opacity: 0,
+        y: 30
+    },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            type: "spring",
+            stiffness: 100,
+            damping: 20,
+            mass: 0.8
+        }
+    }
+};
+
+/**
+ * Variants para tarjetas flotantes (floating cards)
+ * Entrada con scale, rotate y efecto spring pronunciado
+ */
+export const heroFloatingCardVariants: Variants = {
+    hidden: {
+        opacity: 0,
+        scale: 0.8,
+        rotate: -10
+    },
+    visible: {
+        opacity: 1,
+        scale: 1,
+        rotate: 6,
+        transition: {
+            type: "spring",
+            stiffness: 80,
+            damping: 15,
+            delay: 0.5
+        }
+    }
+};
+
+/**
+ * Variants para tarjeta flotante izquierda (rotación inversa)
+ */
+export const heroFloatingCardLeftVariants: Variants = {
+    hidden: {
+        opacity: 0,
+        scale: 0.8,
+        rotate: 10
+    },
+    visible: {
+        opacity: 1,
+        scale: 1,
+        rotate: -6,
+        transition: {
+            type: "spring",
+            stiffness: 80,
+            damping: 15,
+            delay: 0.6
+        }
+    }
+};
+
+/**
+ * Variants para fondos decorativos (blobs)
+ * Animación continua de pulse y float
+ */
+export const heroBlobVariants: Variants = {
+    hidden: {
+        scale: 0.8,
+        opacity: 0
+    },
+    visible: {
+        scale: 1,
+        opacity: 1,
+        transition: {
+            duration: 1.5,
+            ease: "easeInOut"
+        }
+    }
+};
+
+/**
+ * Animación continua para blobs (pulse effect)
+ * Para usar con animate prop en lugar de variants
+ */
+export const heroBlobPulse = {
+    scale: [1, 1.2, 1],
+    opacity: [0.1, 0.15, 0.1],
+};
+
+/**
+ * Animación continua para segundo blob (con movimiento vertical)
+ */
+export const heroBlobFloat = {
+    scale: [1, 1.15, 1],
+    opacity: [0.1, 0.12, 0.1],
+    y: [0, 20, 0],
+};
+
+/**
+ * Animación continua para tercer blob
+ */
+export const heroBlobRotate = {
+    scale: [1, 1.1, 1],
+    opacity: [0.1, 0.13, 0.1],
+    rotate: [0, 5, 0],
+};
+
+/**
+ * Variants para avatares con entrada secuencial
+ * Usado en combinación con delay custom
+ */
+export const heroAvatarVariants: Variants = {
+    hidden: {
+        opacity: 0,
+        x: -20,
+        scale: 0.8
+    },
+    visible: {
+        opacity: 1,
+        x: 0,
+        scale: 1,
+        transition: {
+            type: "spring",
+            stiffness: 100,
+            damping: 15
+        }
+    }
+};
+
+/**
+ * Variants accesibles para Hero (reduced motion)
+ * Versión simplificada con solo fade
+ */
+export const accessibleHeroContainerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: { duration: 0.3, type: "tween" }
+    }
+};
+
+export const accessibleHeroItemVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: { duration: 0.2, type: "tween" }
+    }
+};
+
 
 
 
