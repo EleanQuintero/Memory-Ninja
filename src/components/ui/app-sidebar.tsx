@@ -84,7 +84,7 @@ export function AppSidebar() {
                   animate="visible"
                   className="flex flex-row ml-2.5 mb-4"
                 >
-                  <UserButton showName={true} />
+                  <UserButton />
                 </motion.div>
 
                 {/* Menu Items con stagger */}

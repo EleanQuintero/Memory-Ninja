@@ -24,7 +24,7 @@ export default function DashboardLayout({
 }>) {
   return (
     <ClerkProvider localization={esES}>
-      <Protect fallback={<SubscriptionFallback />}>
+      <Protect plan={"pro_user"} fallback={<SubscriptionFallback />}>
         <section className="grid grid-cols-[auto,1fr]">
           <Provider>
             <SidebarProvider>
