@@ -4,5 +4,9 @@ import { Protect } from "@clerk/nextjs";
 import Dashboard from "./components/Dashboard";
 
 export default function DashboardPage() {
-  return <Dashboard />;
+  return (
+    <Protect fallback={<SubscriptionFallback />}>
+      <Dashboard />;
+    </Protect>
+  );
 }
