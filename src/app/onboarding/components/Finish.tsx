@@ -243,8 +243,15 @@ export const Finish = () => {
                       border: "border-purple-500/30",
                       icon: "text-purple-500",
                     },
-                  };
-                  const badges = [
+                  } as const;
+
+                  type BadgeColor = keyof typeof colorClassMap;
+
+                  const badges: Array<{
+                    icon: typeof CheckCircle;
+                    label: string;
+                    color: BadgeColor;
+                  }> = [
                     { icon: CheckCircle, label: "Registrado", color: "green" },
                     { icon: Zap, label: "Verificado", color: "yellow" },
                     { icon: Star, label: "Listo", color: "purple" },
