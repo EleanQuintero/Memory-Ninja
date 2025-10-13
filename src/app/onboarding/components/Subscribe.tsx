@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "motion/react";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -146,56 +145,6 @@ export default function Subscribe() {
               }}
               newSubscriptionRedirectUrl="/onboarding/finished"
             />
-          </motion.div>
-
-          <motion.div
-            variants={onboardingContentVariants}
-            className="flex flex-row items-end justify-end"
-          >
-            <motion.div
-              whileHover={
-                !shouldReduceMotion
-                  ? {
-                      scale: 1.05,
-                      x: 5,
-                    }
-                  : {}
-              }
-              whileTap={
-                !shouldReduceMotion
-                  ? {
-                      scale: 0.95,
-                    }
-                  : {}
-              }
-            >
-              <Button
-                variant="onboarding"
-                size={"sm"}
-                className="mt-4 relative group overflow-hidden"
-              >
-                {!shouldReduceMotion && (
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-                    animate={{
-                      x: ["-100%", "200%"],
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      ease: "linear",
-                      repeatDelay: 1,
-                    }}
-                  />
-                )}
-                <a
-                  className="text-xs relative z-10"
-                  href="/onboarding/finished"
-                >
-                  Continuar con el plan gratuito →
-                </a>
-              </Button>
-            </motion.div>
           </motion.div>
         </CardContent>
       </Card>
