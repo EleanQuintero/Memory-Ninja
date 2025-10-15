@@ -59,11 +59,6 @@ export function AppSidebar() {
       url: "/dashboard/generate",
       icon: CirclePlus,
     },
-    {
-      title: "Search",
-      url: "#",
-      icon: Search,
-    },
   ];
 
   return (
