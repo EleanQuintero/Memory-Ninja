@@ -1,15 +1,10 @@
 import SyncIndicator from "../../../../../components/ui/sync-indicator";
-import { usePing } from "@/hooks/usePing";
 import LoadingModal from "../../../../../components/fallbacks/LoadingModal";
 import { FlashCardGenerator } from "./FlashCardGenerator";
 import { useUIState } from "@/store/uiState/uiState";
 
 export const Generator = () => {
   const { loading } = useUIState();
-
-  // Iniciar sincronización
-  usePing();
-
   // Mostrar mensaje de carga al procesar la solicitud
 
   if (loading) {
