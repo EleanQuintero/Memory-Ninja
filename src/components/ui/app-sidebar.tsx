@@ -12,8 +12,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
-import { UserButton } from "@clerk/nextjs";
-import { Home, CirclePlus, CreditCard } from "lucide-react";
+import { UserAvatar, UserButton } from "@clerk/nextjs";
+import { Home, CirclePlus, CreditCard, User } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   sidebarMenuContainerVariants,
@@ -45,6 +45,11 @@ export function AppSidebar() {
 
   const items = [
     {
+      title: "Profile",
+      url: "/dashboard/user-profile",
+      icon: UserAvatar,
+    },
+    {
       title: "Home",
       url: "/dashboard",
       icon: Home,
@@ -72,19 +77,6 @@ export function AppSidebar() {
               animate="visible"
             >
               <SidebarMenu>
-                {/* UserButton con animación especial */}
-                <motion.div
-                  variants={shouldReduceMotion ? {} : userButtonVariants}
-                  initial="hidden"
-                  animate="visible"
-                  className="flex flex-row ml-2.5 mb-4"
-                >
-                  <div className="flex flex-row items-center justify-center gap-3">
-                    <h3>Mi perfil</h3>
-                    <UserButton />
-                  </div>
-                </motion.div>
-
                 {/* Menu Items con stagger */}
                 {items.map((item, index) => {
                   const isActive = pathname === item.url;
