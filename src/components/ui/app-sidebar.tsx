@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 
 import {
   Sidebar,
@@ -12,7 +13,7 @@ import {
 } from "@/components/ui/sidebar";
 
 import { UserButton } from "@clerk/nextjs";
-import { Home, Search, CirclePlus, CreditCard } from "lucide-react";
+import { Home, CirclePlus, CreditCard } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   sidebarMenuContainerVariants,
@@ -25,7 +26,6 @@ import { useReducedMotion } from "@/animations/hooks/useReducedMotion";
 import { usePathname } from "next/navigation";
 
 // Menu items.
-import Link from "next/link";
 
 export function AppSidebar() {
   const shouldReduceMotion = useReducedMotion();
@@ -79,7 +79,10 @@ export function AppSidebar() {
                   animate="visible"
                   className="flex flex-row ml-2.5 mb-4"
                 >
-                  <UserButton />
+                  <div className="flex flex-row items-center justify-center gap-3">
+                    <h3>Mi perfil</h3>
+                    <UserButton />
+                  </div>
                 </motion.div>
 
                 {/* Menu Items con stagger */}
