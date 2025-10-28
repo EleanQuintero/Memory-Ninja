@@ -6,7 +6,7 @@ import Dashboard from "./components/Dashboard";
 export default function DashboardPage() {
   return (
     <Protect plan={"pro_user"} fallback={<SubscriptionFallback />}>
-      <Dashboard />;
+      <Dashboard />
     </Protect>
   );
 }

@@ -32,7 +32,7 @@ export default function DashboardLayout({
                 <AppSidebar />
               </aside>
               <main
-                className={` ${sfPro.className} antialiased dark  w-full h-full  bg-gray-100 dark:bg-gradient-to-br from-[#05264f] to-[#19324a] text-gray-900 dark:text-white`}
+                className={` ${sfPro.className} antialiased dark  w-full h-full  bg-gray-100 dark:bg-linear-to-br from-[#05264f] to-[#19324a] text-gray-900 dark:text-white`}
               >
                 <div>
                   <SidebarTrigger />
