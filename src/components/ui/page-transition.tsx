@@ -37,7 +37,7 @@ export function PageTransition({ children }: PageTransitionProps) {
         initial="initial"
         animate="enter"
         exit="exit"
-        className="h-full"
+        className=""
       >
         {children}
       </motion.div>
