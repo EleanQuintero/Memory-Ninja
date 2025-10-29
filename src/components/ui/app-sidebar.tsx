@@ -68,15 +68,16 @@ export function AppSidebar() {
 
   return (
     <Sidebar>
-      <SidebarContent>
+      <SidebarContent className="flex flex-col items-start justify-start py-20">
         <SidebarGroup>
           <SidebarGroupContent>
             <motion.div
               variants={menuContainerVariants}
               initial="hidden"
               animate="visible"
+              className="flex flex-col items-center justify-center gap-6"
             >
-              <SidebarMenu>
+              <SidebarMenu className="gap-14">
                 {/* Menu Items con stagger */}
                 {items.map((item, index) => {
                   const isActive = pathname === item.url;
@@ -88,7 +89,11 @@ export function AppSidebar() {
                       custom={index}
                     >
                       <SidebarMenuItem>
-                        <SidebarMenuButton asChild isActive={isActive}>
+                        <SidebarMenuButton
+                          asChild
+                          isActive={isActive}
+                          className="h-12 text-base"
+                        >
                           <Link
                             href={item.url}
                             className={isActive ? "text-chart-1" : ""}
@@ -101,7 +106,7 @@ export function AppSidebar() {
                               whileTap="tap"
                               className={isActive ? "text-chart-1" : ""}
                             >
-                              <item.icon />
+                              <item.icon size={22} />
                             </motion.div>
 
                             {/* Texto con AnimatePresence para collapsed state */}
@@ -113,7 +118,9 @@ export function AppSidebar() {
                                   animate="visible"
                                   exit="hidden"
                                   className={
-                                    isActive ? "text-chart-1 font-semibold" : ""
+                                    isActive
+                                      ? "text-chart-1 font-semibold text-base"
+                                      : "text-base"
                                   }
                                 >
                                   {item.title}
