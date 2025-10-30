@@ -78,6 +78,7 @@ export function AppSidebar() {
               className="flex flex-col items-center justify-center gap-6"
             >
               <SidebarMenu className="gap-14">
+                <UserButton />
                 {/* Menu Items con stagger */}
                 {items.map((item, index) => {
                   const isActive = pathname === item.url;
