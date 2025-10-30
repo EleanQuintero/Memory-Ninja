@@ -11,15 +11,17 @@ export const SourceSelector: React.FC = () => {
   const { setSource } = useSourceStore();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const { has } = useAuth();
+  const { has, sessionClaims } = useAuth();
 
   const hasKurayami = has ? has({ feature: "kurayami" }) : false;
+
+  const isAdmin = sessionClaims?.publicMetadata?.isAdmin;
 
   const sourceSelected =
     sources.find((source) => source.id === selectedSource) || sources[0];
 
   function handleClick(source: { id: string; name: string }) {
-    const isDisabled = source.id === "Pro" && !hasKurayami;
+    const isDisabled = source.id === "Pro" && !hasKurayami && !isAdmin;
 
     if (isDisabled) {
       toast("Actualiza a un plan superior para usar a Kurayami", {
