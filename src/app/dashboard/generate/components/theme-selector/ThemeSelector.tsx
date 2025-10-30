@@ -78,7 +78,7 @@ export default function ThemeSelectorComponent() {
       {theme_status && (
         <ThemeSelector
           onThemeChange={setSelectedTheme}
-          minChars={3}
+          minChars={5}
           maxThemes={10}
         />
       )}
