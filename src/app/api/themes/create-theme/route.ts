@@ -21,7 +21,8 @@ export const createTheme = async (req: NextRequest) => {
 
     if (!response.ok) {
         const errorData = await response.json();
-        return NextResponse.json({ error: errorData.message }, { status: response.status });
+        console.error('Error creating theme:', errorData);
+        return NextResponse.json({ error: errorData.details }, { status: response.status });
     }
 
     const data = await response.json();
