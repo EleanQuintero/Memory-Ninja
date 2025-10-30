@@ -88,7 +88,7 @@ export default function Flashcard({
           style={{ perspective: "1200px" }}
         >
           <motion.div
-            className="relative w-[290px] h-[400px] cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg"
+            className="relative w-full max-w-[350px] h-[500px] cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg"
             variants={flashcardFlipVariants}
             animate={isFlipped ? "back" : "front"}
             onClick={handleFlip}
@@ -111,14 +111,14 @@ export default function Flashcard({
                 WebkitBackfaceVisibility: "hidden",
               }}
             >
-              <Card className="w-full h-full bg-gradient-to-br from-slate-900/95 via-slate-700/98 to-black backdrop-blur-xl border-4 border-[#000000] text-white p-6">
+              <Card className="w-full h-full bg-linear-to-br from-slate-900/95 via-slate-700/98 to-black backdrop-blur-xl border-4 border-[#000000] text-white p-8">
                 <motion.div
                   variants={flashcardContentVariants}
                   initial="hidden"
                   animate={!isFlipped ? "visible" : "hidden"}
                   className="h-full flex flex-col"
                 >
-                  <div className="flex flex-row justify-between items-start mb-4">
+                  <div className="flex flex-row justify-between items-start mb-6">
                     <motion.span
                       className="text-sm font-bold text-electric-blue-400"
                       variants={flashcardThemeVariants}
@@ -155,9 +155,9 @@ export default function Flashcard({
                       variants={flashcardTextVariants}
                       initial="hidden"
                       animate="visible"
-                      className="flex-1 flex items-center"
+                      className="flex-1 flex items-center px-4 py-6 overflow-y-auto"
                     >
-                      <h3 className="text-xl font-extrabold text-center w-full leading-relaxed">
+                      <h3 className="text-lg font-extrabold text-center w-full leading-relaxed">
                         {question}
                       </h3>
                     </motion.div>
@@ -192,7 +192,7 @@ export default function Flashcard({
                 transform: "rotateY(180deg)",
               }}
             >
-              <Card className="w-full h-full bg-gradient-to-br from-slate-900/95 via-slate-700/98 to-black backdrop-blur-xl border-4 border-[#000000] text-white p-6">
+              <Card className="w-full h-full bg-linear-to-br from-slate-900/95 via-slate-700/98 to-black backdrop-blur-xl border-4 border-[#000000] text-white p-8">
                 <motion.div
                   variants={flashcardContentVariants}
                   initial="hidden"
@@ -200,7 +200,7 @@ export default function Flashcard({
                   className="h-full flex flex-col"
                 >
                   <motion.span
-                    className="text-sm font-bold text-electric-blue-400 mb-4"
+                    className="text-sm font-bold text-electric-blue-400 mb-6"
                     variants={flashcardThemeVariants}
                     initial="hidden"
                     animate="visible"
@@ -213,9 +213,9 @@ export default function Flashcard({
                       variants={flashcardTextVariants}
                       initial="hidden"
                       animate="visible"
-                      className="flex-1 flex items-center"
+                      className="flex-1 flex items-center px-4 py-6 overflow-y-auto"
                     >
-                      <p className="text-lg text-center w-full leading-relaxed">
+                      <p className="text-base text-center w-full leading-relaxed">
                         {answer}
                       </p>
                     </motion.div>

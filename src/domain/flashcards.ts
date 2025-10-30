@@ -1,12 +1,14 @@
 export interface flashcard {
-  flashcard_id?: string;
+  flashcard_id: string;
   question: string;
   answer: string;
   theme: string;
 }
 
+type flashcardInput = Omit<flashcard, "flashcard_id">;
+
 export interface flashcardToSync {
-  flashcard: flashcard[]
+  flashcard: flashcardInput[]
 }
 
 export interface getAnswersProps {
