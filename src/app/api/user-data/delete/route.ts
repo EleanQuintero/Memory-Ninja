@@ -12,7 +12,9 @@ if (!API_ENDPOINT) {
 export async function POST(req: NextRequest) {
     try {
         // Verificar autenticidad del webhook
-        const evt = (await verifyWebhook(req)) as WebhookEvent;
+        const evt = (await verifyWebhook(req, {
+            signingSecret: process.env.CLERK_WEBHOOK_DELETE_USER_SIGNING_SECRET!,
+        })) as WebhookEvent;
 
         // Early return: ignorar eventos no relevantes
         if (evt.type !== "user.deleted") {

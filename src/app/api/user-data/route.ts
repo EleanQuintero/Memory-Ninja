@@ -1,46 +1,47 @@
-import { RATE_LIMIT_CONFIGS, rateLimitter } from "@/middleware/rate-limit";
-import { getUserToken } from "@/utils/services/auth/getToken";
-import { currentUser } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { WebhookEvent } from "@clerk/nextjs/server";
+import { verifyWebhook } from "@clerk/nextjs/webhooks";
+import { NextRequest, NextResponse } from "next/server";
 
 
 
-async function saveUser() {
-    const token = await getUserToken()
-    const user = await currentUser()
-    if (!user) {
-        return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
-    }
+export async function POST(req: NextRequest) {
     try {
 
-        const features = user.privateMetadata?.feature
-        let userRole: number
-        if (features === "kurayami") {
-            userRole = 1;
-        } else {
-            userRole = 2;
+        // Verificar autenticidad del webhook
+        const evt = (await verifyWebhook(req, {
+            signingSecret: process.env.CLERK_WEBHOOK_CREATE_USER_SIGNING_SECRET!,
+        })) as WebhookEvent;
+
+        // Early return: ignorar eventos no relevantes
+        if (evt.type !== "user.created") {
+            console.log(`Webhook event type ${evt.type} ignored`);
+            return NextResponse.json({ received: true }, { status: 200 });
         }
 
-
-
-        const data = {
-            id: user.id,
-            name: user.firstName,
-            lastName: user.lastName,
-            userName: user.username,
-            email: user.emailAddresses[0].emailAddress,
-            role: userRole
+        // Validar datos del evento
+        const newUser = {
+            id: evt.data.id,
+            name: evt.data.first_name,
+            lastName: evt.data.last_name,
+            email: evt.data.email_addresses?.[0]?.email_address,
+            role: 1
         }
 
-        console.log("Guardando usuario:", data);
+        if (newUser.id === undefined || newUser.email === undefined) {
+            console.error("Missing Data")
+            return NextResponse.json({ error: "missing user information" }, { status: 400 })
+        }
 
-        const res = await fetch("http://localhost:4444/api/user/new", {
+        console.log(`Processing user creation for user ID: ${newUser.id}`);
+
+        console.log("Guardando usuario:", newUser);
+
+        const res = await fetch("http://localhost:4444/api/user/create/new", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(newUser),
         })
 
         if (!res.ok) {
@@ -56,5 +57,3 @@ async function saveUser() {
         return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
     }
 }
-
-export const POST = rateLimitter({ fn: saveUser, options: RATE_LIMIT_CONFIGS.WRITE })
