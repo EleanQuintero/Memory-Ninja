@@ -13,7 +13,7 @@ export const useForm = () => {
   const [pregunta, setPregunta] = useState("");
   const { showError, debouncedSetError } = useErrorMessage();
   const { getAnswers } = useGetAnswers();
-  const { saveFlashcards } = useFlashCardsQuery();
+  const { saveFlashcards, isSavingFlashcards, isErrorSaving, savingError } = useFlashCardsQuery();
   const { selectedTheme } = useThemeQuerys()
   const { source } = useSourceStore();
 
@@ -48,10 +48,14 @@ export const useForm = () => {
         })),
       }
 
-
-
-      saveFlashcards(flashcardData);
-      resetForm();
+      saveFlashcards(flashcardData, {
+        onSuccess: () => {
+          resetForm();
+        },
+        onError: (error) => {
+          showError(`Error al guardar las flashcards: ${error.message}`, 3000);
+        }
+      });
     } catch (error) {
       if (error instanceof Error)
         showError("Error al obtener la respuesta", 2000);
@@ -72,5 +76,13 @@ export const useForm = () => {
     }
   };
 
-  return { handleSubmit, handlePreguntaChange, pregunta, textareaRef };
+  return {
+    handleSubmit,
+    handlePreguntaChange,
+    pregunta,
+    textareaRef,
+    isSavingFlashcards,
+    isErrorSaving,
+    savingError
+  };
 };

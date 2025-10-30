@@ -12,13 +12,10 @@ export const useFilterFlashcards = ({ themeToFilter }: Props) => {
   const { flashcards } = useFlashCardsQuery()
   const allFlashCards = flashcards || [];
 
-  const result = useMemo(() => {
-    const filteredCards = themeToFilter
-      ? allFlashCards.filter((card: flashcard) => card.theme === themeToFilter)
-      : allFlashCards;
 
-    return { filteredFlashcards: filteredCards };
-  }, [themeToFilter, allFlashCards])
+  const filteredCards = themeToFilter
+    ? allFlashCards.filter((card: flashcard) => card.theme === themeToFilter)
+    : allFlashCards;
 
-  return result;
+  return { filteredCards };
 }

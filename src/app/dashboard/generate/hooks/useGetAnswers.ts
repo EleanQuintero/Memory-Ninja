@@ -9,7 +9,7 @@ export const useGetAnswers = () => {
   const getAnswers = async ({ theme, questions, model }: getAnswersProps) => {
     setLoading(true);
     try {
-      const modelAnswers = getAnswer({ theme, questions, model });
+      const modelAnswers = await getAnswer({ theme, questions, model });
       setLoading(false);
       return modelAnswers;
     } catch (error) {
