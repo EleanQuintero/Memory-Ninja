@@ -46,8 +46,9 @@ export const useThemeQuerys = () => {
         },
     });
 
-    const { mutate: deleteTheme } = useMutation({
+    const { mutate: deleteTheme, isPending: isDeleting } = useMutation({
         mutationFn: async (themeID: number) => {
+            await new Promise((resolve) => setTimeout(resolve, 1200));
             await deleteUserThemes(themeID);
         },
 
@@ -59,8 +60,10 @@ export const useThemeQuerys = () => {
 
 
 
-    const { mutate: createTheme } = useMutation({
+    const { mutate: createTheme, error: createThemeError, isError: isCreateThemeError, isPending: isCreatingTheme } = useMutation({
         mutationFn: async (themeName: string) => {
+            // Simulate a delay to show the loading modal
+            await new Promise((resolve) => setTimeout(resolve, 1200));
             await createUserTheme(themeName);
         },
 
@@ -70,6 +73,22 @@ export const useThemeQuerys = () => {
     });
 
 
-    return { themes, isLoadingThemes, themesError, themeIsError, deleteTheme, createTheme, theme_status, updateStatus, isLoadingStatus, selectedTheme, setSelectedTheme };
+    return {
+        themes,
+        isLoadingThemes,
+        themesError,
+        themeIsError,
+        deleteTheme,
+        createTheme,
+        createThemeError,
+        isCreateThemeError,
+        isCreatingTheme,
+        theme_status,
+        updateStatus,
+        isLoadingStatus,
+        selectedTheme,
+        setSelectedTheme,
+        isDeleting,
+    };
 
 }
