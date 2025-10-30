@@ -1,5 +1,3 @@
-export { }
-
 declare global {
     interface CustomJwtSessionClaims {
         publicMetadata?: {
@@ -7,3 +5,5 @@ declare global {
         };
     }
 }
+
+export { };

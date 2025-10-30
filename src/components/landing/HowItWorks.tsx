@@ -5,7 +5,7 @@ import {
   AnimatePresence,
   useReducedMotion,
   type Variants,
-} from "framer-motion";
+} from "motion/react";
 import { BookOpen, Brain, BarChart2, Check } from "lucide-react";
 
 /**
@@ -88,6 +88,8 @@ export const HowItWorks = () => {
             {/* Card 1 */}
             <motion.div
               variants={itemVariants}
+              whileHover={prefersReduced ? {} : { y: -8, scale: 1.02 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
               style={{ willChange: "transform, opacity" }}
               className="bg-gradient-to-br from-[#0a3060] to-[#19324a] rounded-xl p-6 shadow-lg border border-blue-400/20 hover:shadow-blue-500/10 hover:border-blue-400/30 transition-all duration-300 group"
             >
@@ -128,6 +130,8 @@ export const HowItWorks = () => {
             {/* Card 2 */}
             <motion.div
               variants={itemVariants}
+              whileHover={prefersReduced ? {} : { y: -8, scale: 1.02 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
               style={{ willChange: "transform, opacity" }}
               className="bg-gradient-to-br from-[#0a3060] to-[#19324a] rounded-xl p-6 shadow-lg border border-purple-400/20 hover:shadow-purple-500/10 hover:border-purple-400/30 transition-all duration-300 group"
             >
@@ -168,6 +172,8 @@ export const HowItWorks = () => {
             {/* Card 3 */}
             <motion.div
               variants={itemVariants}
+              whileHover={prefersReduced ? {} : { y: -8, scale: 1.02 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
               style={{ willChange: "transform, opacity" }}
               className="bg-gradient-to-br from-[#0a3060] to-[#19324a] rounded-xl p-6 shadow-lg border border-blue-400/20 hover:shadow-blue-500/10 hover:border-blue-400/30 transition-all duration-300 group"
             >

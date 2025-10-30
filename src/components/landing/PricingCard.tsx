@@ -10,8 +10,8 @@ interface PricingCardProps {
   price: string;
   priceSubtext?: string;
   features: PricingFeature[];
-  buttonText: string;
-  buttonHref: string;
+  buttonText?: string;
+  buttonHref?: string;
   isHighlighted?: boolean;
   highlightText?: string;
 }
@@ -22,6 +22,8 @@ export default function PricingCard({
   price,
   priceSubtext,
   features,
+  buttonText,
+  buttonHref,
   isHighlighted = false,
   highlightText = "Recomendado",
 }: PricingCardProps) {

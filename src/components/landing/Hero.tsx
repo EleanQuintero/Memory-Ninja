@@ -1,62 +1,133 @@
 "use client";
 /* eslint-disable @next/next/no-img-element */
-import React from "react";
 import { Button } from "@/components/ui/button";
+import { motion } from "motion/react";
+import { useReducedMotion } from "@/animations/hooks/useReducedMotion";
+import {
+  heroContainerVariants,
+  heroItemVariants,
+  heroFloatingCardVariants,
+  heroFloatingCardLeftVariants,
+  heroBlobPulse,
+  heroBlobFloat,
+  heroBlobRotate,
+  accessibleHeroContainerVariants,
+  accessibleHeroItemVariants,
+} from "@/animations/utils";
 import Link from "next/link";
-import { motion } from "framer-motion";
 
 /**
  * Hero principal de la landing page.
- * - Título grande, subtítulo, botones, avatares y stats.
+ * - Título grande, subtítulo optimizado para waitlist.
  * - Imagen principal optimizada con etiqueta img nativa.
- * - Fondos y decoraciones con Tailwind.
- * - Botones accesibles y consistentes (shadcn).
+ * - Fondos animados y decoraciones con Tailwind.
+ * - Botón único enfocado en la waitlist.
+ * - Animaciones completas con orchestación y stagger
  */
 export const Hero = () => {
+  const shouldReduceMotion = useReducedMotion();
+
+  // Adaptar variants según preferencia de accesibilidad
+  const currentContainerVariants = shouldReduceMotion
+    ? accessibleHeroContainerVariants
+    : heroContainerVariants;
+
+  const currentItemVariants = shouldReduceMotion
+    ? accessibleHeroItemVariants
+    : heroItemVariants;
+
   return (
     <section className="relative overflow-hidden" id="hero">
-      {/* Fondos decorativos */}
-      <div
+      {/* Fondos decorativos animados */}
+      <motion.div
+        animate={shouldReduceMotion ? {} : heroBlobPulse}
+        transition={
+          shouldReduceMotion
+            ? {}
+            : {
+                duration: 8,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }
+        }
         className="absolute top-20 left-10 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl pointer-events-none hidden sm:block"
         aria-hidden="true"
       />
-      <div
+      <motion.div
+        animate={shouldReduceMotion ? {} : heroBlobFloat}
+        transition={
+          shouldReduceMotion
+            ? {}
+            : {
+                duration: 10,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 1,
+              }
+        }
         className="absolute top-40 right-20 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl pointer-events-none hidden sm:block"
         aria-hidden="true"
       />
-      <div
+      <motion.div
+        animate={shouldReduceMotion ? {} : heroBlobRotate}
+        transition={
+          shouldReduceMotion
+            ? {}
+            : {
+                duration: 12,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 2,
+              }
+        }
         className="absolute -bottom-10 left-1/4 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl pointer-events-none hidden sm:block"
         aria-hidden="true"
       />
       <div className="container mx-auto px-4 pt-16 pb-24 md:pt-32 md:pb-48 relative ">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          variants={currentContainerVariants}
+          initial="hidden"
+          animate="visible"
           className="flex flex-col md:flex-row items-center p-6 sm:p-8 md:p-10 gap-8 md:gap-12"
         >
           {/* Columna izquierda: texto y botones */}
           <div className="w-full md:w-1/2 mb-10 md:mb-0 relative text-center md:text-left">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+            <motion.h1
+              variants={currentItemVariants}
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight"
+            >
               Aprende cualquier cosa más rápido con{" "}
               <span className="text-blue-400">Inteligencia Artificial</span>
-            </h1>
-            <p className="text-base sm:text-lg text-gray-300 mb-8 max-w-lg mx-auto md:mx-0">
+            </motion.h1>
+            <motion.p
+              variants={currentItemVariants}
+              className="text-base sm:text-lg text-gray-300 mb-8 max-w-lg mx-auto md:mx-0"
+            >
               La herramienta que todo autodidacta necesita para convertir
               información en conocimiento duradero. Crea tarjetas de estudio
               personalizadas con IA y optimiza tu aprendizaje.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-              {/* Botón primario (shadcn) */}
+            </motion.p>
+            <motion.div
+              variants={currentItemVariants}
+              className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
+            >
+              {/* Botón primario con hover animation - Enfocado en waitlist */}
               <Button
-                className="rounded-full text-base font-medium shadow-lg hover:scale-105 hover:shadow-blue-400/30 transition-transform z-50 w-full sm:w-auto"
-                aria-label="Comenzar ahora"
+                className="rounded-full text-base font-medium shadow-lg hover:shadow-blue-400/30 z-50 w-full sm:w-auto"
+                aria-label="Probar antes que nadie"
                 size="lg"
                 asChild
               >
-                <Link href="#waitlist">Probar antes que nadie</Link>
+                <motion.a
+                  href="#waitlist"
+                  whileHover={shouldReduceMotion ? {} : { scale: 1.05, y: -2 }}
+                  whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                >
+                  Probar antes que nadie
+                </motion.a>
               </Button>
-            </div>
+            </motion.div>
           </div>
           {/* Columna derecha: imagen principal y tarjetas flotantes */}
           <div className="w-full md:w-1/2 flex justify-center md:justify-end relative mt-6 md:mt-0">
@@ -83,8 +154,24 @@ export const Hero = () => {
                   loading="eager"
                 />
               </div>
-              {/* Tarjeta flotante superior derecha */}
-              <div
+              {/* Tarjeta flotante superior derecha con animación */}
+              <motion.div
+                variants={
+                  shouldReduceMotion
+                    ? accessibleHeroItemVariants
+                    : heroFloatingCardVariants
+                }
+                initial="hidden"
+                animate="visible"
+                whileHover={
+                  shouldReduceMotion
+                    ? {}
+                    : {
+                        rotate: 12,
+                        scale: 1.05,
+                        transition: { type: "spring", stiffness: 300 },
+                      }
+                }
                 className="absolute -top-2 -right-12 bg-[#0a3060]/90 p-3 rounded-lg shadow-lg transform rotate-6 backdrop-blur-sm border border-blue-400/20 z-50 hidden sm:block"
                 aria-hidden="true"
               >
@@ -111,9 +198,25 @@ export const Hero = () => {
                     <p className="text-sm font-bold text-white">+28% hoy</p>
                   </div>
                 </div>
-              </div>
-              {/* Tarjeta flotante inferior izquierda */}
-              <div
+              </motion.div>
+              {/* Tarjeta flotante inferior izquierda con animación */}
+              <motion.div
+                variants={
+                  shouldReduceMotion
+                    ? accessibleHeroItemVariants
+                    : heroFloatingCardLeftVariants
+                }
+                initial="hidden"
+                animate="visible"
+                whileHover={
+                  shouldReduceMotion
+                    ? {}
+                    : {
+                        rotate: -12,
+                        scale: 1.05,
+                        transition: { type: "spring", stiffness: 300 },
+                      }
+                }
                 className="absolute -bottom-10 -left-16 bg-[#0a3060]/90 p-3 rounded-lg shadow-lg transform -rotate-6 backdrop-blur-sm border border-blue-400/20 z-50 hidden sm:block"
                 aria-hidden="true"
               >
@@ -140,7 +243,7 @@ export const Hero = () => {
                     <p className="text-sm font-bold text-white">256 tarjetas</p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </motion.div>

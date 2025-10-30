@@ -1,5 +1,5 @@
 "use client";
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "motion/react";
 import PricingCard from "./PricingCard";
 
 export default function Pricing() {
@@ -35,21 +35,8 @@ export default function Pricing() {
         },
       };
 
-  // Datos de configuración para las tarjetas
+  // Datos de configuración para las tarjetas (sin botones para waitlist)
   const pricingPlans = [
-    {
-      title: "Aprendiz Ninja",
-      description: "Perfecto para comenzar tu camino ninja",
-      price: "Gratis",
-      features: [
-        { text: "Único ninja IA" },
-        { text: "Preguntas limitadas al mes" },
-        { text: "Flashcards Limitadas" },
-      ],
-      buttonText: "Comenzar con Aprendiz Ninja",
-      buttonHref: "/onboarding",
-      isHighlighted: false,
-    },
     {
       title: "Ninja Pro",
       description: "Desbloquea todo el potencial ninja",
@@ -61,11 +48,10 @@ export default function Pricing() {
         { text: "Organización por temas" },
         { text: "Guardar progreso en espacio personal" },
         { text: "Acceso a todas las funcionalidades" },
+        { text: "14 días de prueba gratuita" },
       ],
-      buttonText: "Comenzar con Ninja Pro",
-      buttonHref: "/onboarding",
       isHighlighted: true,
-      highlightText: "Recomendado",
+      highlightText: "Prueba gratis 14 días",
     },
   ];
   return (
@@ -115,12 +101,13 @@ export default function Pricing() {
           whileInView="show"
           viewport={{ amount: 0.25, margin: "0px", once: true }}
         >
-          <div className="mt-16 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-10">
+          <div className="mt-16 flex justify-center">
             {pricingPlans.map((plan, index) => (
               <motion.div
                 key={index}
                 variants={itemVariants}
                 style={{ willChange: "transform, opacity" }}
+                className="w-full max-w-md"
               >
                 <PricingCard
                   title={plan.title}
@@ -128,8 +115,6 @@ export default function Pricing() {
                   price={plan.price}
                   priceSubtext={plan.priceSubtext}
                   features={plan.features}
-                  buttonText={plan.buttonText}
-                  buttonHref={plan.buttonHref}
                   isHighlighted={plan.isHighlighted}
                   highlightText={plan.highlightText}
                 />

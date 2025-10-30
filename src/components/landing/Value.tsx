@@ -1,9 +1,7 @@
 "use client";
-
-import React from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "motion/react";
 
 // Componente para los problemas con iconos
 const ProblemItem = ({
