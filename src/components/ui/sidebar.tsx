@@ -1,7 +1,7 @@
 "use client";
 import { Slot } from "@radix-ui/react-slot";
 import { VariantProps, cva } from "class-variance-authority";
-import { PanelLeftIcon } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/utils/services/functions/helpers/cnFunction";
@@ -295,8 +295,9 @@ function SidebarTrigger({
   onClick,
   ...props
 }: ComponentProps<typeof Button>) {
-  const { toggleSidebar, state } = useSidebar();
+  const { toggleSidebar, state, isMobile } = useSidebar();
   const shouldReduceMotion = useReducedMotion();
+  const isExpanded = isMobile ? false : state === "expanded";
 
   return (
     <Button
@@ -304,30 +305,49 @@ function SidebarTrigger({
       data-slot="sidebar-trigger"
       variant="ghost"
       size="icon"
-      className={cn("size-7", className)}
+      className={cn("size-10 hover:bg-sidebar-accent", className)}
       onClick={(event) => {
         onClick?.(event);
         toggleSidebar();
       }}
       {...props}
     >
-      <motion.div
-        animate={{
-          rotate: state === "expanded" ? 0 : 180,
-        }}
-        transition={{
-          duration: shouldReduceMotion ? 0.01 : 0.3,
-          ease: "easeInOut",
-        }}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <PanelLeftIcon />
-      </motion.div>
-      <span className="sr-only">Toggle Sidebar</span>
+      <div className="relative size-6">
+        <AnimatePresence mode="wait">
+          {isExpanded ? (
+            <motion.div
+              key="close"
+              initial={{ opacity: 0, rotate: shouldReduceMotion ? 0 : -90 }}
+              animate={{ opacity: 1, rotate: 0 }}
+              exit={{ opacity: 0, rotate: shouldReduceMotion ? 0 : 90 }}
+              transition={{
+                duration: shouldReduceMotion ? 0.01 : 0.2,
+                ease: "easeInOut",
+              }}
+              className="absolute inset-0 flex items-center justify-center"
+            >
+              <X className="size-6" strokeWidth={2.5} />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="menu"
+              initial={{ opacity: 0, rotate: shouldReduceMotion ? 0 : 90 }}
+              animate={{ opacity: 1, rotate: 0 }}
+              exit={{ opacity: 0, rotate: shouldReduceMotion ? 0 : -90 }}
+              transition={{
+                duration: shouldReduceMotion ? 0.01 : 0.2,
+                ease: "easeInOut",
+              }}
+              className="absolute inset-0 flex items-center justify-center"
+            >
+              <Menu className="size-6" strokeWidth={2.5} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+      <span className="sr-only">
+        {isExpanded ? "Cerrar Sidebar" : "Abrir Sidebar"}
+      </span>
     </Button>
   );
 }
