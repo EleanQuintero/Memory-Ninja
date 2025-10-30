@@ -11,20 +11,26 @@ import { Provider } from "@/components/provider/Provider";
 import { Toaster } from "sonner";
 import { LazyMotion, domAnimation } from "motion/react";
 import { PageTransition } from "@/components/ui/page-transition";
+import { auth } from "@clerk/nextjs/server";
 
 export const metadata: Metadata = {
   title: "FlashCard Generator",
   description: "Generador de tarjetas de estudio con IA",
 };
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { sessionClaims } = await auth();
+  const isAdmin = sessionClaims?.publicMetadata?.isAdmin;
   return (
     <ClerkProvider localization={esES}>
-      <Protect plan={"pro_user"} fallback={<SubscriptionFallback />}>
+      <Protect
+        condition={(has) => has({ feature: "pro_user" }) || Boolean(isAdmin)}
+        fallback={<SubscriptionFallback />}
+      >
         <section className="grid grid-cols-[auto,1fr]">
           <Provider>
             <SidebarProvider>
