@@ -1,8 +1,5 @@
 "use client";
-
-import SubscriptionFallback from "@/components/fallbacks/subscription";
 import { Generator } from "@/app/dashboard/generate/components/generator/Generator";
-import { Protect } from "@clerk/nextjs";
 
 export default function GeneratorPage() {
   return (

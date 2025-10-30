@@ -14,8 +14,15 @@ interface Props {
 }
 
 export const FlashCardGenerator: React.FC<Props> = ({ loadingAnswers }) => {
-  const { handleSubmit, pregunta, handlePreguntaChange, textareaRef } =
-    useForm();
+  const {
+    handleSubmit,
+    pregunta,
+    handlePreguntaChange,
+    textareaRef,
+    isSavingFlashcards,
+    isErrorSaving,
+    savingError,
+  } = useForm();
   const { error } = useUIState();
 
   return (
@@ -58,13 +65,13 @@ export const FlashCardGenerator: React.FC<Props> = ({ loadingAnswers }) => {
 
             <Button
               type="submit"
-              disabled={!!error || loadingAnswers}
+              disabled={!!error || loadingAnswers || isSavingFlashcards}
               className="flex items-center gap-2 hover:cursor-pointer"
               aria-label="Generar Flashcards"
               variant={"ghost"}
             >
               <Send className="w-4 h-4 mr-2" />
-              Generar Flashcards
+              {isSavingFlashcards ? "Guardando..." : "Generar Flashcards"}
             </Button>
           </section>
         </form>
@@ -74,6 +81,14 @@ export const FlashCardGenerator: React.FC<Props> = ({ loadingAnswers }) => {
             aria-live="assertive"
           >
             {error}
+          </p>
+        )}
+        {isErrorSaving && savingError && (
+          <p
+            className="text-red-500 text-center px-4 pb-2"
+            aria-live="assertive"
+          >
+            Error al guardar: {savingError.message}
           </p>
         )}
         <InfoCards />
