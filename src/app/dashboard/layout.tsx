@@ -47,8 +47,14 @@ export default async function DashboardLayout({
                   <PageTransition>{children}</PageTransition>
                 </LazyMotion>
               </main>
-              <Toaster />
             </SidebarProvider>
+            <Toaster
+              position="top-right"
+              richColors
+              closeButton
+              expand={false}
+              duration={4000}
+            />
           </Provider>
         </section>
       </Protect>

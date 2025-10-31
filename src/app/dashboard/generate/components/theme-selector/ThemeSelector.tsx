@@ -1,9 +1,11 @@
+"use client";
 import { useState, useEffect } from "react";
-import { ThemeSelector } from "./theme-selector";
+import { Globe, ChevronDown } from "lucide-react";
 import { ThemeSetupModal } from "./theme-setup-modal";
 import { useThemeQuerys } from "@/app/dashboard/hooks/themes-query/useThemeQuerys";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ThemeSelectorModal } from "./theme-selector-modal";
 
 export default function ThemeSelectorComponent() {
   const {
@@ -12,13 +14,15 @@ export default function ThemeSelectorComponent() {
     updateStatus,
     isLoadingStatus,
     setSelectedTheme,
+    selectedTheme,
   } = useThemeQuerys();
-  const [isModalOpen, setIsModalOpen] = useState(false); // Inicialmente no mostramos nada
+  const [isSetupModalOpen, setIsSetupModalOpen] = useState(false);
+  const [isSelectorModalOpen, setIsSelectorModalOpen] = useState(false);
 
-  // Actualizamos el estado solo cuando theme_status ya está definido
+  // Actualizamos el estado del modal de configuración inicial
   useEffect(() => {
     if (theme_status !== undefined) {
-      setIsModalOpen(!theme_status);
+      setIsSetupModalOpen(!theme_status);
     }
   }, [theme_status]);
 
@@ -29,59 +33,62 @@ export default function ThemeSelectorComponent() {
     });
 
     updateStatus();
-    setIsModalOpen(false);
+    setIsSetupModalOpen(false);
     // Set the first theme as selected by default
     if (themes.length > 0) {
       setSelectedTheme(themes[0]);
     }
   };
 
-  // Si estamos cargando, no mostramos nada (o puedes mostrar un indicador de carga)
+  const handleOpenSelectorModal = () => {
+    setIsSelectorModalOpen(true);
+  };
+
+  // Si estamos cargando, mostramos un skeleton compacto
   if (isLoadingStatus) {
     return (
-      <Card>
-        <CardHeader>
-          <Skeleton className="h-6 w-1/2" />
-          <Skeleton className="h-4 w-3/4" />
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-4">
-            <div className="flex gap-2">
-              <Skeleton className="h-10 flex-1" />
-              <Skeleton className="h-10 w-10" />
-            </div>
-          </div>
-          <div>
-            <Skeleton className="h-5 w-1/4 mb-3" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <Skeleton className="h-12 rounded-md" />
-              <Skeleton className="h-12 rounded-md" />
-              <Skeleton className="h-12 rounded-md" />
-              <Skeleton className="h-12 rounded-md" />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="flex items-center gap-2">
+        <Skeleton className="h-5 w-5 rounded-full" />
+        <Skeleton className="h-10 w-40" />
+      </div>
     );
   }
 
   return (
-    <section className="container mx-auto py-2">
+    <>
+      {/* Modal de configuración inicial (primera vez) */}
       <ThemeSetupModal
-        isOpen={isModalOpen}
+        isOpen={isSetupModalOpen}
         onComplete={handleSetupComplete}
         minThemes={3}
         maxThemes={8}
         minChars={3}
       />
 
+      {/* Modal de selección de temas (después de configuración inicial) */}
       {theme_status && (
-        <ThemeSelector
-          onThemeChange={setSelectedTheme}
-          minChars={5}
-          maxThemes={10}
-        />
+        <>
+          <ThemeSelectorModal
+            isOpen={isSelectorModalOpen}
+            onClose={() => setIsSelectorModalOpen(false)}
+            minChars={5}
+            maxThemes={10}
+          />
+
+          {/* Botón compacto que muestra el tema seleccionado */}
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={handleOpenSelectorModal}
+            className="flex items-center gap-2 px-3 py-2 h-auto bg-[#24272b]/40"
+            aria-label="Seleccionar tema"
+          >
+            <Globe className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm">{selectedTheme || "Cualquiera"}</span>
+            <ChevronDown className="h-4 w-4 text-muted-foreground" />
+          </Button>
+        </>
       )}
-    </section>
+    </>
   );
 }

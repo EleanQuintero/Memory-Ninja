@@ -30,13 +30,13 @@ export const useFlashCardsQuery = () => {
         },
     })
 
-    const { mutate: saveFlashcards, isPending: isSavingFlashcards, isError: isErrorSaving, error: savingError } = useMutation({
+    const { mutate: saveFlashcards, mutateAsync: saveFlashcardsAsync, isPending: isSavingFlashcards, isError: isErrorSaving, error: savingError, isSuccess: flashcardSucces } = useMutation({
         mutationFn: async (flashcardsData: flashcardToSync) => {
             await flashcardUnitOfWork.commitFlashcards(flashcardsData);
         },
 
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEY] });
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: [QUERY_KEY] });
         },
     });
 
@@ -50,5 +50,5 @@ export const useFlashCardsQuery = () => {
         },
     });
 
-    return { flashcards, flashcardLoading, flashcardError, flashcardIsError, saveFlashcards, deleteFlashcard, isSavingFlashcards, isErrorSaving, savingError, isDeletingFlashcards, isErrorDeleting, deletingError, getAnswer };
+    return { flashcards, flashcardLoading, flashcardError, flashcardIsError, saveFlashcards, saveFlashcardsAsync, deleteFlashcard, isSavingFlashcards, flashcardSucces, isErrorSaving, savingError, isDeletingFlashcards, isErrorDeleting, deletingError, getAnswer };
 };
