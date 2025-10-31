@@ -7,13 +7,14 @@ import { flashcardToSync } from "@/domain/flashcards";
 import { useFlashCardsQuery } from "../../hooks/flashcards-query/useFlashCardsQuery";
 import { useThemeQuerys } from "../../hooks/themes-query/useThemeQuerys";
 import { useSourceStore } from "../store/sourceStore";
+import { toast } from "sonner";
 
 export const useForm = () => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [pregunta, setPregunta] = useState("");
   const { showError, debouncedSetError } = useErrorMessage();
   const { getAnswers } = useGetAnswers();
-  const { saveFlashcards, isSavingFlashcards, isErrorSaving, savingError } = useFlashCardsQuery();
+  const { saveFlashcardsAsync, isSavingFlashcards, isErrorSaving, savingError } = useFlashCardsQuery();
   const { selectedTheme } = useThemeQuerys()
   const { source } = useSourceStore();
 
@@ -48,14 +49,27 @@ export const useForm = () => {
         })),
       }
 
-      saveFlashcards(flashcardData, {
-        onSuccess: () => {
-          resetForm();
-        },
-        onError: (error) => {
-          showError(`Error al guardar las flashcards: ${error.message}`, 3000);
-        }
-      });
+
+      try {
+        await saveFlashcardsAsync(flashcardData);
+        resetForm();
+        toast.success("¡Flashcard creada con éxito!", {
+          description: "Tu flashcard se ha guardado correctamente",
+          duration: 4000,
+          icon: "✨",
+        });
+      } catch (saveError) {
+        const errorMessage = saveError instanceof Error ? saveError.message : "Error desconocido";
+        showError(`Error al guardar las flashcards: ${errorMessage}`, 3000);
+        toast.error("Error al guardar la flashcard", {
+          description: errorMessage,
+          duration: 5000,
+          action: {
+            label: "Reintentar",
+            onClick: () => window.location.reload(),
+          },
+        });
+      }
     } catch (error) {
       if (error instanceof Error)
         showError("Error al obtener la respuesta", 2000);
