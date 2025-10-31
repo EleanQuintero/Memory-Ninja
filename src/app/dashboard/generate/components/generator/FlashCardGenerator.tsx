@@ -30,13 +30,14 @@ export const FlashCardGenerator: React.FC<Props> = ({ loadingAnswers }) => {
       <div className="w-full max-w-3xl flex flex-col items-center gap-8">
         <div className="w-full flex flex-col items-center">
           <h1 className="text-4xl md:text-5xl font-bold text-white text-center mb-2">
-            Crear Flashcards
+            Genera Flashcards Inteligentes
           </h1>
           <p className="text-sm md:text-base text-[#84aed5] mb-2 text-center">
-            POTENCIADO POR IA PARA MEJORAR TU APRENDIZAJE
+            Transforma cualquier concepto en tarjetas de estudio personalizadas
+            con IA en segundos
           </p>
         </div>
-        <ThemeSelectorComponent />
+
         <form
           onSubmit={handleSubmit}
           className="w-full bg-opacity-[0.03] border border-[#4a525a]/20 rounded-xl shadow-lg"
@@ -58,9 +59,12 @@ export const FlashCardGenerator: React.FC<Props> = ({ loadingAnswers }) => {
             />
           </section>
           <section className="border-t border-[#4a525a]/20 p-3 flex flex-col md:flex-row items-center justify-between gap-3">
-            <div className="flex items-center gap-1">
-              <SourceSelector />
-              <SourceModelIcon model={models} />
+            <div className="flex items-center gap-5">
+              <div className="flex items-center gap-1">
+                <SourceSelector />
+                <SourceModelIcon model={models} />
+              </div>
+              <ThemeSelectorComponent />
             </div>
 
             <Button
