@@ -60,7 +60,6 @@ export const useForm = () => {
         });
       } catch (saveError) {
         const errorMessage = saveError instanceof Error ? saveError.message : "Error desconocido";
-        showError(`Error al guardar las flashcards: ${errorMessage}`, 3000);
         toast.error("Error al guardar la flashcard", {
           description: errorMessage,
           duration: 5000,
