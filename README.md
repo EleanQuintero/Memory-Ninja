@@ -1,4 +1,4 @@
-# FlashCard Generator
+# MemoryNinja 
 
 Generador de tarjetas de estudio con IA, personalizables por temas de interés y sincronizadas por usuario. Permite crear, organizar y estudiar flashcards generadas automáticamente mediante inteligencia artificial.
 
