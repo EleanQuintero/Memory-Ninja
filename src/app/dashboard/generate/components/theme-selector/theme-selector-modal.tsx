@@ -125,6 +125,7 @@ export function ThemeSelectorModal({
                   className="flex-1"
                 />
                 <Button
+                  type="button"
                   onClick={handleAddNewTheme}
                   size="icon"
                   disabled={

@@ -77,6 +77,7 @@ export default function ThemeSelectorComponent() {
 
           {/* Botón compacto que muestra el tema seleccionado */}
           <Button
+            type="button"
             variant="ghost"
             onClick={handleOpenSelectorModal}
             className="flex items-center gap-2 px-3 py-2 h-auto bg-[#24272b]/40"
