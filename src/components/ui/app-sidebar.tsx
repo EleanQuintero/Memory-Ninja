@@ -45,11 +45,6 @@ export function AppSidebar() {
 
   const items = [
     {
-      title: "Profile",
-      url: "/dashboard/user-profile",
-      icon: UserAvatar,
-    },
-    {
       title: "Home",
       url: "/dashboard",
       icon: Home,
@@ -78,7 +73,26 @@ export function AppSidebar() {
               className="flex flex-col items-center justify-center gap-6"
             >
               <SidebarMenu className="gap-14">
-                <UserButton />
+                <motion.div
+                  variants={userButtonVariants}
+                  className="flex flex-row items-center justify-center"
+                >
+                  <UserButton
+                    appearance={{
+                      elements: {
+                        avatarBox: "w-20 h-20",
+                      },
+                    }}
+                  >
+                    <UserButton.MenuItems>
+                      <UserButton.Link
+                        label="Mi Perfil"
+                        labelIcon={<User size={16} />}
+                        href="/dashboard/user-profile"
+                      />
+                    </UserButton.MenuItems>
+                  </UserButton>
+                </motion.div>
                 {/* Menu Items con stagger */}
                 {items.map((item, index) => {
                   const isActive = pathname === item.url;
