@@ -71,7 +71,7 @@ export default function ThemeSelectorComponent() {
           <ThemeSelectorModal
             isOpen={isSelectorModalOpen}
             onClose={() => setIsSelectorModalOpen(false)}
-            minChars={5}
+            minChars={3}
             maxThemes={10}
           />
 

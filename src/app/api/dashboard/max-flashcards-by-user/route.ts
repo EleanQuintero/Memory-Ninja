@@ -3,9 +3,17 @@ import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { getUserToken } from "@/utils/services/auth/getToken";
 
+export const runtime = 'edge';
 
 const getMaxFlashcardsByUser = async () => {
     const API_ENDPOINT = process.env.SERVER_GET_MAX_FLASHCARDS_BY_USER;
+
+    if (!API_ENDPOINT) {
+        return NextResponse.json(
+            { error: "API endpoint no está definido" },
+            { status: 500 }
+        );
+    }
 
     try {
         const token = await getUserToken()
@@ -19,11 +27,15 @@ const getMaxFlashcardsByUser = async () => {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
+                signal: AbortSignal.timeout(5000)
             }
         );
+
         if (!response.ok) {
-            throw new Error("Error al realizar la petición");
+            const errorData = await response.json();
+            throw new Error(errorData.details || "Error al obtener el máximo de flashcards por usuario");
         }
+
         const data = await response.json();
         return NextResponse.json(data);
 
@@ -36,4 +48,7 @@ const getMaxFlashcardsByUser = async () => {
     }
 }
 
-export const GET = rateLimitter({ fn: getMaxFlashcardsByUser, options: RATE_LIMIT_CONFIGS.DASHBOARD });
+export const GET = rateLimitter({
+    fn: getMaxFlashcardsByUser,
+    options: { ...RATE_LIMIT_CONFIGS.DASHBOARD, identifier: 'maxFlashcards' }
+});

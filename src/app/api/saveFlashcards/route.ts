@@ -4,16 +4,18 @@ import { getUserToken } from "@/utils/services/auth/getToken";
 import { NextResponse, NextRequest } from "next/server";
 import { currentUser } from '@clerk/nextjs/server'
 
+export const runtime = 'edge';
+
 async function saveFlashcards(req: NextRequest) {
 
-  const user = await currentUser();
-  if (!user) {
-    return NextResponse.json(
-      { error: "Unauthorized" },
-      { status: 401 }
-    );
+  const API_ENDPOINT = process.env.SERVER_SAVE_FLASHCARDS;
+
+  if (!API_ENDPOINT) {
+    throw new Error("API endpoint no está definido");
   }
-  const userId = user.id;
+
+  const user = await currentUser();
+  const userId = user?.id;
 
   try {
     const token = await getUserToken()
@@ -22,8 +24,6 @@ async function saveFlashcards(req: NextRequest) {
       user_id: userId,
       ...flashcardData
     }
-
-    console.log("datos en server:", rawData);
 
     const validationError = validateFlashcards(rawData);
 
@@ -36,8 +36,7 @@ async function saveFlashcards(req: NextRequest) {
         { status: 400 }
       );
     }
-    const response = await fetch(
-      "http://localhost:4444/api/user/flashcard/new",
+    const response = await fetch(API_ENDPOINT,
       {
         method: "POST",
         headers: {
@@ -51,17 +50,7 @@ async function saveFlashcards(req: NextRequest) {
 
     if (!response.ok) {
       const errorData = await response.text();
-
-      console.error("Backend API error:", {
-        status: response.status,
-        endpoint: "/api/user/flashcard/new",
-        error: errorData,
-      });
-
-      return NextResponse.json(
-        { error: "Error al guardar las flashcards" },
-        { status: 400 }
-      );
+      throw new Error(errorData || "Error al guardar las flashcards");
     }
 
     return NextResponse.json(
@@ -69,10 +58,11 @@ async function saveFlashcards(req: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Unexpected error in saveFlashcards:", {
-      error: error instanceof Error ? error.message : error,
-      stack: error instanceof Error ? error.stack : undefined,
+    console.error("Backend API error:", {
+      endpoint: "/api/user/flashcard/new",
+      error: error,
     });
+
     return NextResponse.json(
       { error: "Error al guardar las flashcards" },
       { status: 500 }
@@ -80,4 +70,7 @@ async function saveFlashcards(req: NextRequest) {
   }
 }
 
-export const POST = rateLimitter({ fn: saveFlashcards, options: RATE_LIMIT_CONFIGS.WRITE });
+export const POST = rateLimitter({
+  fn: saveFlashcards,
+  options: { ...RATE_LIMIT_CONFIGS.WRITE, identifier: 'saveFlashcards' }
+});
