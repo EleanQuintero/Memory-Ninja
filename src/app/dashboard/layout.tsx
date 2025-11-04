@@ -14,8 +14,8 @@ import { PageTransition } from "@/components/ui/page-transition";
 import { auth } from "@clerk/nextjs/server";
 
 export const metadata: Metadata = {
-  title: "FlashCard Generator",
-  description: "Generador de tarjetas de estudio con IA",
+  title: "MemoryNinja | Generator",
+  description: "Genera flashcards de manera rápida y sencilla con IA.",
 };
 
 export default async function DashboardLayout({

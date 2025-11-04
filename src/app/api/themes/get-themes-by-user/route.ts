@@ -2,12 +2,21 @@ import { getUserToken } from "@/utils/services/auth/getToken"
 import { RATE_LIMIT_CONFIGS, rateLimitter } from "@/middleware/rate-limit";
 import { NextResponse } from "next/server";
 
-export const getThemesByUser = async () => {
+export const runtime = 'edge';
+
+const getThemesByUser = async () => {
+    const API_ENDPOINT = process.env.SERVER_GET_USER_THEMES;
+
+    if (!API_ENDPOINT) {
+        return NextResponse.json(
+            { error: "API endpoint no está definido" },
+            { status: 500 }
+        );
+    }
 
     try {
 
         const token = await getUserToken()
-        const API_ENDPOINT = process.env.SERVER_GET_USER_THEMES;
 
         const response = await fetch(`${API_ENDPOINT}`, {
             method: "GET",
@@ -15,10 +24,12 @@ export const getThemesByUser = async () => {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`,
             },
+            signal: AbortSignal.timeout(5000)
         })
 
         if (!response.ok) {
-            throw new Error("Error al realizar la petición")
+            const errorData = await response.json();
+            throw new Error(errorData.details || "Error fetching themes for user");
         }
 
         const themes = await response.json();
@@ -26,12 +37,13 @@ export const getThemesByUser = async () => {
 
 
     } catch (error) {
-        console.error("Error fetching themes:", error);
-        return NextResponse.json({ error: "Error fetching themes" }, { status: 500 });
+        console.error({ error: error });
+        return NextResponse.json({ error: "error al obtener los temas del usuario" }, { status: 500 });
     }
-
-
 
 }
 
-export const GET = rateLimitter({ fn: getThemesByUser, options: RATE_LIMIT_CONFIGS.READ });
+export const GET = rateLimitter({
+    fn: getThemesByUser,
+    options: { ...RATE_LIMIT_CONFIGS.READ, identifier: 'getThemesByUser' }
+});

@@ -3,7 +3,18 @@ import { getUserToken } from "@/utils/services/auth/getToken";
 import { NextRequest, NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 
+export const runtime = 'edge';
+
 async function deleteFlashcard(req: NextRequest) {
+
+  const API_ENDPOINT = process.env.SERVER_DELETE_FLASHCARD;
+  if (!API_ENDPOINT) {
+    return NextResponse.json(
+      { error: "API endpoint no está definido" },
+      { status: 500 }
+    );
+  }
+
   const user = await currentUser();
   const userID = user?.id;
   const id = req.headers.get("x-flashcard-id");
@@ -27,18 +38,20 @@ async function deleteFlashcard(req: NextRequest) {
     const token = await getUserToken()
 
     const response = await fetch(
-      `http://localhost:4444/api/user/flashcard/delete/${userID}/${id}`,
+      `${API_ENDPOINT}${userID}/${id}`,
       {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json"
           , Authorization: `Bearer ${token}`
         },
+        signal: AbortSignal.timeout(5000)
       }
     );
 
     if (!response.ok) {
-      throw new Error("Error al eliminar la flashcard");
+      const errorData = await response.json();
+      throw new Error(errorData.details || "Error al eliminar la flashcard");
     }
 
     const data = response.json();
@@ -52,4 +65,7 @@ async function deleteFlashcard(req: NextRequest) {
   }
 }
 
-export const DELETE = rateLimitter({ fn: deleteFlashcard, options: RATE_LIMIT_CONFIGS.WRITE });
+export const DELETE = rateLimitter({
+  fn: deleteFlashcard,
+  options: { ...RATE_LIMIT_CONFIGS.WRITE, identifier: 'deleteFlashcard' }
+});

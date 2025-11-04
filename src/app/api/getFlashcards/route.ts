@@ -3,7 +3,16 @@ import { getUserToken } from "@/utils/services/auth/getToken";
 import { NextResponse } from "next/server";
 import { currentUser } from '@clerk/nextjs/server'
 
+export const runtime = 'edge';
+
 async function getFlashcards() {
+
+    const API_ENDPOINT = process.env.SERVER_GET_FLASHCARDS_BY_USER;
+
+    if (!API_ENDPOINT) {
+        throw new Error("API endpoint no está definido");
+    }
+
     try {
 
         const token = await getUserToken()
@@ -14,7 +23,7 @@ async function getFlashcards() {
             return NextResponse.json({ message: "ID del usuario es requerido" }, { status: 400 });
         }
 
-        const response = await fetch(`http://localhost:4444/api/user/flashcard/getByID/${user_id}`, {
+        const response = await fetch(`${API_ENDPOINT}${user_id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -26,8 +35,7 @@ async function getFlashcards() {
 
         if (!response.ok) {
             const errorData = await response.text();
-            console.error(errorData);
-            return NextResponse.json({ message: "Error al obtener las flashcards" }, { status: 404 })
+            throw new Error(errorData || "Error al obtener las flashcards");
         }
 
         const flashCardData = await response.json()
@@ -39,4 +47,7 @@ async function getFlashcards() {
     }
 }
 
-export const GET = rateLimitter({ fn: getFlashcards, options: RATE_LIMIT_CONFIGS.READ })
+export const GET = rateLimitter({
+    fn: getFlashcards,
+    options: { ...RATE_LIMIT_CONFIGS.READ, identifier: 'getFlashcards' }
+})
