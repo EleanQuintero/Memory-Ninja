@@ -1,8 +1,6 @@
 export const createUserTheme = async (themeName: string) => {
-    const API_ENDPOINT = process.env.NEXT_PUBLIC_CLIENT_CREATE_THEME
-
     try {
-        const response = await fetch(`${API_ENDPOINT}`, {
+        const response = await fetch('/api/themes/create-theme', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

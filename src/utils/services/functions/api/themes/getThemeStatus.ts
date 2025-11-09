@@ -1,11 +1,9 @@
 
 export const getThemeStatus = async () => {
 
-    const API_ENDPOINT = process.env.NEXT_PUBLIC_CLIENT_GET_THEME_STATUS
-
     try {
 
-        const response = await fetch(`${API_ENDPOINT}`, {
+        const response = await fetch('/api/themes/get-theme-status/', {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',

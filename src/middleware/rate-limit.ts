@@ -32,7 +32,7 @@ const createRatelimit = (options: RateLimitOptions) => {
       options.requests,
       options.duration as any // Corregir el tipo para la duración
     ),
-    analytics: true,
+    analytics: false,
     timeout: 10000,
   });
 };

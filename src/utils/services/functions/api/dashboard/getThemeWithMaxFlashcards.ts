@@ -1,12 +1,6 @@
 export const getThemeWithMaxFlashcards = async () => {
-    const API_ENDPOINT = process.env.NEXT_PUBLIC_CLIENT_GET_THEME_WITH_MAX_FLASHCARDS;
-
-    if (!API_ENDPOINT) {
-        throw new Error("CLIENT_GET_THEME_WITH_MAX_FLASHCARDS no está configurado");
-    }
-
     try {
-        const response = await fetch(API_ENDPOINT);
+        const response = await fetch('/api/dashboard/theme-with-most-flashcards');
 
         if (!response.ok) {
             throw new Error("Error al recibir datos");

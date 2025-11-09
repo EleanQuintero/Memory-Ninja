@@ -4,9 +4,17 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = 'nodejs';
 
-export async function POST(req: NextRequest) {
-    try {
+const API_ENDPOINT = process.env.SERVER_CREATE_USER;
 
+
+
+export async function POST(req: NextRequest) {
+
+    if (!API_ENDPOINT) {
+        throw new Error("SERVER_CREATE_USER environment variable is not set");
+    }
+
+    try {
         // Verificar autenticidad del webhook
         const evt = (await verifyWebhook(req, {
             signingSecret: process.env.CLERK_WEBHOOK_CREATE_USER_SIGNING_SECRET!,
@@ -36,7 +44,7 @@ export async function POST(req: NextRequest) {
 
         console.log("Guardando usuario:", newUser);
 
-        const res = await fetch("http://localhost:4444/api/user/create/new", {
+        const res = await fetch(API_ENDPOINT, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
