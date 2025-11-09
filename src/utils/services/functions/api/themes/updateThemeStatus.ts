@@ -1,9 +1,7 @@
 export const updateThemeStatus = async () => {
 
     try {
-        const API_ENDPOINT = process.env.NEXT_PUBLIC_CLIENT_UPDATE_THEME_STATUS
-
-        const response = await fetch(`${API_ENDPOINT}`, {
+        const response = await fetch('/api/themes/update-status', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

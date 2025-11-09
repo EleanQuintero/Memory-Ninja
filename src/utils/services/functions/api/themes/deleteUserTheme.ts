@@ -1,10 +1,8 @@
 export const deleteUserThemes = async (themeID: number) => {
 
-    const API_ENDPOINT = process.env.NEXT_PUBLIC_CLIENT_DELETE_THEME
-
     try {
 
-        const response = await fetch(`${API_ENDPOINT}`, {
+        const response = await fetch('/api/themes/delete-theme', {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json',

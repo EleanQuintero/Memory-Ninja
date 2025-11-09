@@ -1,10 +1,8 @@
 export const getUserThemes = async () => {
 
-    const API_ENDPOINT = process.env.NEXT_PUBLIC_CLIENT_GET_USER_THEMES
-
     try {
 
-        const response = await fetch(`${API_ENDPOINT}`, {
+        const response = await fetch('/api/themes/get-themes-by-user', {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
