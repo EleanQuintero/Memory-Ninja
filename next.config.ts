@@ -61,12 +61,7 @@ const nextConfig: NextConfig = {
     compress: true,
     poweredByHeader: false,
     reactStrictMode: true,
-    swcMinify: true,
     staticPageGenerationTimeout: 120, // Aumentado para evitar timeouts durante la generación
-    i18n: {
-      locales: ['es'],
-      defaultLocale: 'es',
-    },
   } : {}),
 };
 
