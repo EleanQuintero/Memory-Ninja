@@ -29,10 +29,9 @@ export async function POST(req: NextRequest) {
         // Validar datos del evento
         const newUser = {
             id: evt.data.id,
-            name: evt.data.first_name,
-            lastName: evt.data.last_name,
             email: evt.data.email_addresses?.[0]?.email_address,
-            role: 1
+            role: 1,
+            username: evt.data.username,
         }
 
         if (newUser.id === undefined || newUser.email === undefined) {
