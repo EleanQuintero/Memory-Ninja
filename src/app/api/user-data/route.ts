@@ -33,7 +33,6 @@ export async function POST(req: NextRequest) {
             role: 1,
             username: evt.data.username,
         }
-
         if (newUser.id === undefined || newUser.email === undefined) {
             console.error("Missing Data")
             return NextResponse.json({ error: "missing user information" }, { status: 400 })
