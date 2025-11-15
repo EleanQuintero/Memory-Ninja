@@ -71,7 +71,10 @@
   "pnpm": {
     "overrides": {
       "@types/react": "19.2.2",
-      "@types/react-dom": "19.2.2"
+      "@types/react-dom": "19.2.2",
+      "playwright": "1.55.1",
+      "playwright-core": "1.55.1",
+      "@playwright/test": "1.55.1"
     },
     "ignoredBuiltDependencies": [
       "@clerk/shared",
