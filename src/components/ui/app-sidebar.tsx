@@ -59,6 +59,11 @@ export function AppSidebar() {
       url: "/dashboard/generate",
       icon: CirclePlus,
     },
+    {
+      title: "Mi Perfil",
+      url: "/dashboard/user-profile",
+      icon: User,
+    },
   ];
 
   return (
@@ -73,26 +78,15 @@ export function AppSidebar() {
               className="flex flex-col items-center justify-center gap-6"
             >
               <SidebarMenu className="gap-14">
-                <motion.div
-                  variants={userButtonVariants}
-                  className="flex flex-row items-center justify-center"
-                >
+                <div className="flex flex-row items-center justify-center">
                   <UserButton
                     appearance={{
                       elements: {
                         avatarBox: "w-20 h-20",
                       },
                     }}
-                  >
-                    <UserButton.MenuItems>
-                      <UserButton.Link
-                        label="Mi Perfil"
-                        labelIcon={<User size={16} />}
-                        href="/dashboard/user-profile"
-                      />
-                    </UserButton.MenuItems>
-                  </UserButton>
-                </motion.div>
+                  />
+                </div>
                 {/* Menu Items con stagger */}
                 {items.map((item, index) => {
                   const isActive = pathname === item.url;
