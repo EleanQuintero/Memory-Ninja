@@ -4,6 +4,7 @@ import { sfPro } from "@/utils/fonts/sfPro";
 import { ClerkProvider } from "@clerk/nextjs";
 import { esES } from "@clerk/localizations";
 import { LazyMotion, domAnimation } from "motion/react";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "Memory Ninja - Generador de tarjetas de estudio con IA",
@@ -33,6 +34,7 @@ export default function RootLayout({
         <body className={` ${sfPro.className} antialiased`}>
           <LazyMotion features={domAnimation}>{children}</LazyMotion>
         </body>
+        <Analytics />
       </html>
     </ClerkProvider>
   );
