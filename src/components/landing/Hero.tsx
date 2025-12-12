@@ -149,12 +149,12 @@ export const Hero = () => {
                 asChild
               >
                 <motion.a
-                  href="#how-it-works"
+                  href="#como-funciona"
                   whileHover={shouldReduceMotion ? {} : { scale: 1.05, y: -2 }}
                   whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
                   transition={{ duration: 0.2, ease: "easeOut" }}
                 >
-                  Ver demostración
+                  ¿Como funciona?
                 </motion.a>
               </Button>
             </motion.div>

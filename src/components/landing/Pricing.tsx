@@ -38,19 +38,6 @@ export default function Pricing() {
   // Datos de configuración para las tarjetas
   const pricingPlans = [
     {
-      title: "Aprendiz Ninja",
-      description: "Perfecto para comenzar tu camino ninja",
-      price: "Gratis",
-      features: [
-        { text: "Único ninja IA" },
-        { text: "Preguntas limitadas al mes" },
-        { text: "Flashcards Limitadas" },
-      ],
-      buttonText: "Comenzar con Aprendiz Ninja",
-      buttonHref: "/onboarding",
-      isHighlighted: false,
-    },
-    {
       title: "Ninja Pro",
       description: "Desbloquea todo el potencial ninja",
       price: "$9.99",
@@ -109,13 +96,13 @@ export default function Pricing() {
 
         {/* Pricing Cards */}
         <motion.div
-          className="w-full max-w-7xl"
+          className="w-full max-w-3xl"
           variants={containerVariants}
           initial="hidden"
           whileInView="show"
           viewport={{ amount: 0.25, margin: "0px", once: true }}
         >
-          <div className="mt-16 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-10">
+          <div className="mt-16 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-1 items-center justify-center lg:gap-10">
             {pricingPlans.map((plan, index) => (
               <motion.div
                 key={index}
