@@ -210,31 +210,6 @@ export const HowItWorks = () => {
               </div>
             </motion.div>
           </motion.div>
-          {/* Stats section */}
-          <motion.div
-            className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6"
-            initial={prefersReduced ? false : { opacity: 0, y: 12 }}
-            whileInView={prefersReduced ? {} : { opacity: 1, y: 0 }}
-            viewport={{ amount: 0.25, margin: "0px", once: true }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
-          >
-            <div className="bg-[#0a3060]/50 rounded-lg p-6 border border-blue-500/20">
-              <p className="text-3xl font-bold text-white">500+</p>
-              <p className="text-gray-400 text-sm">Estudiantes activos</p>
-            </div>
-            <div className="bg-[#0a3060]/50 rounded-lg p-6 border border-blue-500/20">
-              <p className="text-3xl font-bold text-white">10k+</p>
-              <p className="text-gray-400 text-sm">Flashcards creadas</p>
-            </div>
-            <div className="bg-[#0a3060]/50 rounded-lg p-6 border border-blue-500/20">
-              <p className="text-3xl font-bold text-white">95%</p>
-              <p className="text-gray-400 text-sm">Tasa de retención</p>
-            </div>
-            <div className="bg-[#0a3060]/50 rounded-lg p-6 border border-blue-500/20">
-              <p className="text-3xl font-bold text-white">4.9</p>
-              <p className="text-gray-400 text-sm">Calificación promedio</p>
-            </div>
-          </motion.div>
         </div>
       </motion.section>
     </AnimatePresence>
