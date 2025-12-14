@@ -158,45 +158,6 @@ export const Hero = () => {
                 </motion.a>
               </Button>
             </motion.div>
-            {/* Avatares y stats con animación secuencial */}
-            <motion.div
-              variants={currentItemVariants}
-              className="mt-8 flex items-center justify-center md:justify-start"
-            >
-              <div className="flex -space-x-2">
-                {avatars.map((avatar, index) => (
-                  <motion.img
-                    key={index}
-                    custom={index}
-                    variants={
-                      shouldReduceMotion
-                        ? accessibleHeroItemVariants
-                        : heroAvatarVariants
-                    }
-                    initial="hidden"
-                    animate="visible"
-                    src={avatar.src}
-                    alt={avatar.alt}
-                    width={32}
-                    height={32}
-                    className="w-8 h-8 rounded-full border-2 border-[#05264f]"
-                    loading="lazy"
-                  />
-                ))}
-              </div>
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{
-                  delay: 1.1,
-                  duration: shouldReduceMotion ? 0.2 : 0.5,
-                }}
-                className="ml-4 text-sm text-gray-300"
-              >
-                <span className="font-bold text-blue-300">500+</span>{" "}
-                estudiantes satisfechos
-              </motion.span>
-            </motion.div>
           </div>
           {/* Columna derecha: imagen principal y tarjetas flotantes */}
           <div className="w-full md:w-1/2 flex justify-center md:justify-end relative mt-6 md:mt-0">
