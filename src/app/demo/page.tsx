@@ -2,8 +2,11 @@
 
 import { motion } from "motion/react";
 import { Brain } from "lucide-react";
+import useDemoAutoLogin from "./hooks/useDemo";
 
 function DemoEntryPage() {
+  useDemoAutoLogin();
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-background via-secondary/20 to-background p-4">
       <motion.div
