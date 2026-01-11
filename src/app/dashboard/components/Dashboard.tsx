@@ -12,11 +12,16 @@ import {
   fadeInUpVariants,
   dashboardCardVariants,
 } from "@/animations/utils";
+import { useUser } from "@clerk/nextjs";
 
 const Dashboard: React.FC = () => {
   const { dashboardStats } = useDashboardStats();
   const { countedFlashcardsData, latestFlashcardsData, isLoading } =
     dashboardStats;
+
+  const { user } = useUser();
+
+  const isDemo: boolean = user?.publicMetadata?.demoUser ?? false;
 
   useUserSync();
 
@@ -49,6 +54,22 @@ const Dashboard: React.FC = () => {
         >
           Bienvenido a tu Espacio de MemoryNinja 🥷🏻
         </motion.h1>
+        {isDemo && (
+          <motion.h2
+            className="text-xl text-center font-bold text-white"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              delay: 0.3,
+              type: "spring",
+              stiffness: 150,
+              damping: 20,
+            }}
+          >
+            Esto es una Demo Abierta para reclutadores. Su duración es de 5
+            minutos. ¡Disfruta explorando! 🚀
+          </motion.h2>
+        )}
       </motion.div>
       <motion.div
         variants={fadeInUpVariants}
