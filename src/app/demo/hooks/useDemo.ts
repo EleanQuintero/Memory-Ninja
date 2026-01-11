@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 
-export default function DemoAutoLogin() {
+export default function useDemoAutoLogin() {
     const { signIn, setActive, isLoaded } = useSignIn();
     const router = useRouter();
 
