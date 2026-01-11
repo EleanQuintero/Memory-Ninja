@@ -1,3 +1,4 @@
+"use client";
 import { useEffect } from "react";
 import { useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
@@ -6,13 +7,16 @@ export default function DemoAutoLogin() {
     const { signIn, setActive, isLoaded } = useSignIn();
     const router = useRouter();
 
-    const user = process.env.NEXT_PUBLIC_DEMO_USER
-    const password = process.env.NEXT_PUBLIC_DEMO_USER_PASSWORD
+
 
 
 
     useEffect(() => {
         async function autoLogin() {
+
+            const user = process.env.NEXT_PUBLIC_DEMO_USER
+            const password = process.env.NEXT_PUBLIC_DEMO_USER_PASSWORD
+
             if (!isLoaded || !signIn) return;
 
             try {
