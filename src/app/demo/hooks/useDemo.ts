@@ -31,7 +31,8 @@ export default function useDemoAutoLogin() {
 
                 if (result.status === "complete") {
                     await setActive({ session: result.createdSessionId });
-                    router.push("/dashboard");
+                    // Forzar navegación con replace en lugar de push
+                    window.location.href = "/dashboard";
                 }
             } catch (err) {
                 console.error("Error en el autologin:", err);
