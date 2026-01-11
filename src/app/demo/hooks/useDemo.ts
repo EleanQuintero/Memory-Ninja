@@ -7,37 +7,35 @@ export default function useDemoAutoLogin() {
     const { signIn, setActive, isLoaded } = useSignIn();
     const router = useRouter();
 
-
-
-
-
     useEffect(() => {
         async function autoLogin() {
-
-            const user = process.env.NEXT_PUBLIC_DEMO_USER
-            const password = process.env.NEXT_PUBLIC_DEMO_USER_PASSWORD
-
             if (!isLoaded || !signIn) return;
 
             try {
+                // Obtener el ticket de inicio de sesión desde la API
+                const response = await fetch('/api/demo-login', {
+                    method: 'POST'
+                });
 
-                if (!user || !password) {
-                    throw new Error("Demo user credentials are not set in environment variables.");
+                if (!response.ok) {
+                    throw new Error('Failed to get demo login ticket');
                 }
 
-                // Iniciamos sesión con la cuenta de invitado predefinida
+                const { ticket } = await response.json();
+
+                // Iniciar sesión con el ticket
                 const result = await signIn.create({
-                    identifier: user, // Cuenta real creada en Clerk
-                    password: password,
+                    strategy: 'ticket',
+                    ticket: ticket,
                 });
 
                 if (result.status === "complete") {
                     await setActive({ session: result.createdSessionId });
-                    router.push("/dashboard"); // Redirigir al área privada
+                    router.push("/dashboard");
                 }
             } catch (err) {
                 console.error("Error en el autologin:", err);
-                router.push("/login"); // Si falla, que vaya al login normal
+                router.push("/");
             }
         }
 
