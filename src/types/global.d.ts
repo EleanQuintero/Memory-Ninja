@@ -5,6 +5,7 @@ declare global {
         publicMetadata?: {
             onboarding?: boolean;
             isAdmin?: boolean;
+            demoUser?: boolean;
         };
     }
 }
