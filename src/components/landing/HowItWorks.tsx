@@ -6,6 +6,7 @@ import {
   type Variants,
 } from "motion/react";
 import { BookOpen, Brain, BarChart2, Check } from "lucide-react";
+import { Card, CardContent } from "../ui/card";
 
 /**
  * Sección "¿Cómo Funciona MemoryNinja?"
@@ -211,6 +212,42 @@ export const HowItWorks = () => {
             </motion.div>
           </motion.div>
         </div>
+        <motion.div
+          initial={prefersReduced ? false : { opacity: 0, y: -16 }}
+          whileInView={prefersReduced ? {} : { opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
+          transition={{
+            duration: 0.45,
+            ease: "easeOut",
+          }}
+          viewport={{
+            once: true,
+            amount: 0.25,
+            margin: "0px",
+          }}
+          className="text-center mb-20 flex flex-col gap-8 max-w-3xl mx-auto md:gap-12   "
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-white mt-20 mb-4">
+            Mira MemoryNinja en Acción
+          </h2>
+          <p className="text-gray-300 text-center">
+            Descubre cómo MemoryNinja puede transformar tu forma de aprender con
+            este breve video demostrativo.
+          </p>
+
+          <Card className="bg-surface-200 border-0 shadow-lg">
+            <CardContent>
+              <iframe
+                className="w-full aspect-video rounded-lg"
+                src="https://www.youtube.com/embed/1PFCJDUbvUU?si=ci7snW22CswmFRmS"
+                title="YouTube video player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
+            </CardContent>
+          </Card>
+        </motion.div>
       </motion.section>
     </AnimatePresence>
   );
