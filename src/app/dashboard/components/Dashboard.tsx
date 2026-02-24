@@ -13,6 +13,11 @@ import {
   dashboardCardVariants,
 } from "@/animations/utils";
 import { useUser } from "@clerk/nextjs";
+import { usePlanLimits } from "@/hooks/usePlanLimits";
+import { UpgradeNudge } from "@/components/ui/upgrade-nudge";
+import { UsageBar } from "@/components/ui/usage-bar";
+import { ProFeatureBadge } from "@/components/ui/pro-badge";
+import { Lock } from "lucide-react";
 
 const Dashboard: React.FC = () => {
   const { dashboardStats } = useDashboardStats();
@@ -20,10 +25,17 @@ const Dashboard: React.FC = () => {
     dashboardStats;
 
   const { user } = useUser();
+  const { isPro, limits } = usePlanLimits();
 
   const isDemo: boolean = user?.publicMetadata?.demoUser ?? false;
 
   useUserSync();
+
+  const totalFlashcards = dashboardStats.maxFlashcardsByUserData ?? 0;
+  const recentCardsToShow =
+    !isPro && latestFlashcardsData
+      ? latestFlashcardsData.slice(0, limits.maxVisibleRecentCards)
+      : latestFlashcardsData;
 
   if (dashboardStats.maxFlashcardsByUserData === 0) {
     return <WithoutData />;
@@ -71,6 +83,23 @@ const Dashboard: React.FC = () => {
           </motion.h2>
         )}
       </motion.div>
+      {!isPro && (
+        <UpgradeNudge />
+      )}
+
+      {!isPro && !isLoading && (
+        <motion.div
+          variants={fadeInUpVariants}
+          className="w-full max-w-full overflow-x-hidden md:max-w-7xl mb-4"
+        >
+          <UsageBar
+            current={totalFlashcards}
+            max={limits.maxFlashcards}
+            label="Flashcards usadas"
+          />
+        </motion.div>
+      )}
+
       <motion.div
         variants={fadeInUpVariants}
         className="w-full max-w-full overflow-x-hidden md:max-w-7xl"
@@ -89,25 +118,41 @@ const Dashboard: React.FC = () => {
           whileHover="hover"
           className="lg:col-span-2"
         >
-          <Card>
-            <CardHeader>
-              <CardTitle>Tarjetas por Tema</CardTitle>
-            </CardHeader>
-            <CardContent className="w-full">
-              <TopicDistributionChart
-                data={countedFlashcardsData}
-                loading={isLoading}
-              />
-            </CardContent>
-          </Card>
+          {isPro ? (
+            <Card>
+              <CardHeader>
+                <CardTitle>Tarjetas por Tema</CardTitle>
+              </CardHeader>
+              <CardContent className="w-full">
+                <TopicDistributionChart
+                  data={countedFlashcardsData}
+                  loading={isLoading}
+                />
+              </CardContent>
+            </Card>
+          ) : (
+            <Card className="relative overflow-hidden">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  Tarjetas por Tema <ProFeatureBadge />
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-col items-center justify-center h-[300px] text-center">
+                <Lock className="w-10 h-10 text-gray-500 mb-3" />
+                <p className="text-gray-400 text-sm">
+                  Mejora a Pro para ver los graficos de distribucion por tema
+                </p>
+              </CardContent>
+            </Card>
+          )}
         </motion.div>
         <motion.div variants={dashboardCardVariants} whileHover="hover">
           <Card>
             <CardHeader>
-              <CardTitle>Últimas Tarjetas Creadas</CardTitle>
+              <CardTitle>Ultimas Tarjetas Creadas</CardTitle>
             </CardHeader>
             <CardContent>
-              <RecentCards cards={latestFlashcardsData} loading={isLoading} />
+              <RecentCards cards={recentCardsToShow} loading={isLoading} />
             </CardContent>
           </Card>
         </motion.div>

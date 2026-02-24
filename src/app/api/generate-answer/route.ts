@@ -2,6 +2,8 @@ import { AnswerData } from "@/domain/flashcards";
 import { RATE_LIMIT_CONFIGS, rateLimitter } from "@/middleware/rate-limit";
 import { validateGetAnswers } from "@/utils/schemes/get-answers-validation/getAnswersValidation";
 import { getUserToken } from "@/utils/services/auth/getToken";
+import { isUserPro } from "@/utils/services/auth/checkUserPlan";
+import { FREE_LIMITS } from "@/utils/consts/planLimits";
 import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = 'nodejs';
@@ -28,7 +30,17 @@ async function generateAnswer(req: NextRequest) {
       );
     }
 
-    const { questions, theme, model } = rawData;
+    let { questions, theme, model } = rawData;
+
+    // Server-side plan enforcement
+    const isPro = await isUserPro();
+    if (!isPro) {
+      // Force free-tier model
+      const allowedModels = FREE_LIMITS.allowedModels as readonly string[];
+      if (!allowedModels.includes(model)) {
+        model = FREE_LIMITS.allowedModels[0];
+      }
+    }
 
     const response = await fetch(API_ENDPOINT, {
       method: "POST",

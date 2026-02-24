@@ -38,16 +38,33 @@ export default function Pricing() {
   // Datos de configuración para las tarjetas
   const pricingPlans = [
     {
+      title: "Ninja Novato",
+      description: "Empieza a aprender gratis",
+      price: "Gratis",
+      priceSubtext: "",
+      features: [
+        { text: "Hasta 25 flashcards" },
+        { text: "3 generaciones IA por dia" },
+        { text: "2 temas maximo" },
+        { text: "Modelo Koga (甲賀)" },
+        { text: "Espacio personal basico" },
+      ],
+      buttonText: "Empezar gratis",
+      buttonHref: "/onboarding",
+      isHighlighted: false,
+      highlightText: "",
+    },
+    {
       title: "Ninja Pro",
       description: "Desbloquea todo el potencial ninja",
       price: "$9.99",
       priceSubtext: "/mes",
       features: [
         { text: "Flashcards ilimitadas" },
-        { text: "Multiples ninjas de IA" },
-        { text: "Organización por temas" },
-        { text: "Guardar progreso en espacio personal" },
-        { text: "Acceso a todas las funcionalidades" },
+        { text: "Generaciones ilimitadas" },
+        { text: "Temas ilimitados" },
+        { text: "Todos los modelos de IA" },
+        { text: "Graficos y estadisticas avanzadas" },
       ],
       buttonText: "Comenzar con Ninja Pro",
       buttonHref: "/onboarding",
@@ -96,13 +113,13 @@ export default function Pricing() {
 
         {/* Pricing Cards */}
         <motion.div
-          className="w-full max-w-3xl"
+          className="w-full max-w-5xl"
           variants={containerVariants}
           initial="hidden"
           whileInView="show"
           viewport={{ amount: 0.25, margin: "0px", once: true }}
         >
-          <div className="mt-16 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-1 items-center justify-center lg:gap-10">
+          <div className="mt-16 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-2 items-center justify-center lg:gap-10">
             {pricingPlans.map((plan, index) => (
               <motion.div
                 key={index}
