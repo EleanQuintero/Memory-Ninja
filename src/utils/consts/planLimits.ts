@@ -1,6 +1,6 @@
 export const FREE_LIMITS = {
   maxFlashcards: 25,
-  maxThemes: 2,
+  maxThemes: 3,
   maxDailyGenerations: 3,
   allowedModels: ["Kōga (甲賀)"],
   maxVisibleRecentCards: 5,

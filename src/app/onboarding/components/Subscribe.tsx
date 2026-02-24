@@ -168,7 +168,7 @@ export default function Subscribe() {
               Continuar con el plan gratuito
             </Button>
             <p className="text-xs text-muted-foreground text-center">
-              25 flashcards, 3 generaciones/dia, 2 temas
+              25 flashcards, 3 generaciones/dia, 3 temas
             </p>
           </motion.div>
         </CardContent>
