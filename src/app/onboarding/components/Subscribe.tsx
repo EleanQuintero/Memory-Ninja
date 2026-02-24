@@ -8,6 +8,7 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { PricingTable } from "@clerk/nextjs";
 import { Sparkles, Zap } from "lucide-react";
 import {
@@ -15,9 +16,11 @@ import {
   onboardingContentVariants,
 } from "@/animations/onboardingVariants";
 import { useReducedMotion } from "@/animations/hooks/useReducedMotion";
+import { useRouter } from "next/navigation";
 
 export default function Subscribe() {
   const shouldReduceMotion = useReducedMotion();
+  const router = useRouter();
 
   return (
     <motion.div
@@ -145,6 +148,28 @@ export default function Subscribe() {
               }}
               newSubscriptionRedirectUrl="/onboarding/finished"
             />
+          </motion.div>
+          <motion.div
+            variants={onboardingContentVariants}
+            className="mt-6 flex flex-col items-center gap-2"
+          >
+            <div className="flex items-center gap-3 w-full">
+              <div className="flex-1 h-px bg-border" />
+              <span className="text-muted-foreground text-xs uppercase tracking-wide">
+                o
+              </span>
+              <div className="flex-1 h-px bg-border" />
+            </div>
+            <Button
+              variant="ghost"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+              onClick={() => router.push("/onboarding/finished")}
+            >
+              Continuar con el plan gratuito
+            </Button>
+            <p className="text-xs text-muted-foreground text-center">
+              25 flashcards, 3 generaciones/dia, 2 temas
+            </p>
           </motion.div>
         </CardContent>
       </Card>

@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { ChevronDownIcon, Brain } from "lucide-react";
+import { ChevronDownIcon, Brain, Lock } from "lucide-react";
 import { useSourceStore } from "../../store/sourceStore";
 import { useAuth } from "@clerk/nextjs";
 import { toast } from "sonner";
@@ -24,13 +24,8 @@ export const SourceSelector: React.FC = () => {
     const isDisabled = source.id === "Pro" && !hasKurayami && !isAdmin;
 
     if (isDisabled) {
-      toast("Actualiza a un plan superior para usar a Kurayami", {
-        description: "El acceso a Kurayami está restringido.",
-        action: {
-          label: "Undo",
-          onClick: () => toast("Recibido!"),
-        },
-        className: "bg-red-500 text-white",
+      toast.error("Mejora a Pro para usar a Kurayami", {
+        description: "El modelo Kurayami esta disponible exclusivamente en el plan Pro.",
       });
       return;
     }
@@ -68,20 +63,24 @@ export const SourceSelector: React.FC = () => {
       {isOpen && (
         <div className="absolute left-0 mt-1 w-48 rounded-md shadow-lg bg-[#24272b] border border-[#4a525a]/20 z-50">
           <div className="py-1">
-            {sources.map((source) => (
-              <button
-                key={source.id}
-                type="button"
-                className={`${
-                  selectedSource === source.id
-                    ? "bg-[#19324a] text-white"
-                    : "text-[#b3bac1] hover:bg-[#19324a]/50"
-                } block w-full text-left px-4 py-2 text-sm`}
-                onClick={() => handleClick(source)}
-              >
-                {source.name}
-              </button>
-            ))}
+            {sources.map((source) => {
+              const isLocked = source.id === "Pro" && !hasKurayami && !isAdmin;
+              return (
+                <button
+                  key={source.id}
+                  type="button"
+                  className={`${
+                    selectedSource === source.id
+                      ? "bg-[#19324a] text-white"
+                      : "text-[#b3bac1] hover:bg-[#19324a]/50"
+                  } ${isLocked ? "opacity-60" : ""} flex items-center justify-between w-full text-left px-4 py-2 text-sm`}
+                  onClick={() => handleClick(source)}
+                >
+                  <span>{source.name}</span>
+                  {isLocked && <Lock className="w-3.5 h-3.5 text-purple-400" />}
+                </button>
+              );
+            })}
           </div>
         </div>
       )}

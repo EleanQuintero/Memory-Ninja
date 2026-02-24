@@ -16,7 +16,9 @@ export const RATE_LIMIT_CONFIGS = {
   DASHBOARD: { requests: 20, duration: "60s" },
   AUTH: { requests: 3, duration: "60s" },
   READ: { requests: 20, duration: "60s" },
-  WRITE: { requests: 10, duration: "60s" }
+  WRITE: { requests: 10, duration: "60s" },
+  FREE_GENERATE: { requests: 3, duration: "86400s" },
+  FREE_WRITE: { requests: 5, duration: "60s" },
 };
 
 interface rateLimitterProps {
