@@ -45,7 +45,7 @@ export default function Pricing() {
       features: [
         { text: "Hasta 25 flashcards" },
         { text: "3 generaciones IA por dia" },
-        { text: "2 temas maximo" },
+        { text: "3 temas maximo" },
         { text: "Modelo Koga (甲賀)" },
         { text: "Espacio personal basico" },
       ],
