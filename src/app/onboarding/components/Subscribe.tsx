@@ -113,8 +113,8 @@ export default function Subscribe() {
               appearance={{
                 variables: {
                   colorPrimary: "#8b5cf6", // purple-500
-                  colorText: "rgb(var(--foreground))",
-                  colorTextSecondary: "rgb(var(--muted-foreground))",
+                  colorForeground: "rgb(var(--foreground))",
+                  colorMutedForeground: "rgb(var(--muted-foreground))",
                   colorBackground: "rgb(var(--background))",
                   colorDanger: "#ef4444",
                   borderRadius: "0.5rem",

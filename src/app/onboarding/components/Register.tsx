@@ -42,17 +42,12 @@ export default function Register() {
               fallbackRedirectUrl={"/onboarding/subscribe"}
               oauthFlow="popup"
               appearance={{
-                layout: {
-                  animations: true,
-                  socialButtonsVariant: "iconButton",
-                  socialButtonsPlacement: "bottom",
-                },
                 variables: {
                   colorPrimary: "#6366F1",
-                  colorText: "#FFFFFF",
+                  colorForeground: "#FFFFFF",
                   colorBackground: "#1F2937",
                 },
-                baseTheme: dark,
+                theme: dark,
                 elements: {
                   formButtonPrimary:
                     "bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/30",

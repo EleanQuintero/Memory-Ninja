@@ -28,7 +28,7 @@ export default function Register() {
               footer: "hidden",
             },
           }}
-          afterSignInUrl="/dashboard"
+          fallbackRedirectUrl="/dashboard"
         />
       </CardContent>
     </Card>

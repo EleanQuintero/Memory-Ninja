@@ -10,8 +10,7 @@ import {
 } from "@/components/ui/card";
 import {
   PricingTable,
-  SignedIn,
-  SignedOut,
+  Show,
   SignInButton,
   SignUpButton,
   UserButton,
@@ -41,7 +40,7 @@ export default function PricingPage() {
           </Button>
 
           <div className="flex items-center gap-3">
-            <SignedIn>
+            <Show when="signed-in">
               <UserButton
                 appearance={{
                   elements: {
@@ -51,8 +50,8 @@ export default function PricingPage() {
                   },
                 }}
               />
-            </SignedIn>
-            <SignedOut>
+            </Show>
+            <Show when="signed-out">
               <SignInButton mode="modal">
                 <Button variant="ghost" size="sm">
                   Iniciar sesión
@@ -66,7 +65,7 @@ export default function PricingPage() {
                   Registrarse
                 </Button>
               </SignUpButton>
-            </SignedOut>
+            </Show>
           </div>
         </div>
       </nav>
@@ -164,8 +163,8 @@ export default function PricingPage() {
                   appearance={{
                     variables: {
                       colorPrimary: "#8b5cf6", // purple-500
-                      colorText: "rgb(var(--foreground))",
-                      colorTextSecondary: "rgb(var(--muted-foreground))",
+                      colorForeground: "rgb(var(--foreground))",
+                      colorMutedForeground: "rgb(var(--muted-foreground))",
                       colorBackground: "rgb(var(--background))",
                       colorDanger: "#ef4444",
                       borderRadius: "0.5rem",
@@ -210,7 +209,7 @@ export default function PricingPage() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="mt-8 text-center space-y-3"
         >
-          <SignedOut>
+          <Show when="signed-out">
             <p className="text-sm text-muted-foreground">
               ¿Ya tienes una cuenta?{" "}
               <SignInButton mode="modal">
@@ -219,7 +218,7 @@ export default function PricingPage() {
                 </button>
               </SignInButton>
             </p>
-          </SignedOut>
+          </Show>
           <p className="text-sm text-muted-foreground">
             ¿Tienes preguntas? Contáctanos en{" "}
             <a

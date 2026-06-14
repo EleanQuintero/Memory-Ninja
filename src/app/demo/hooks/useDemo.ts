@@ -4,12 +4,12 @@ import { useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 
 export default function useDemoAutoLogin() {
-    const { signIn, setActive, isLoaded } = useSignIn();
+    const { signIn } = useSignIn();
     const router = useRouter();
 
     useEffect(() => {
         async function autoLogin() {
-            if (!isLoaded || !signIn) return;
+            if (!signIn) return;
 
             try {
                 // Obtener el ticket de inicio de sesión desde la API
@@ -23,14 +23,18 @@ export default function useDemoAutoLogin() {
 
                 const { ticket } = await response.json();
 
-                // Iniciar sesión con el ticket
-                const result = await signIn.create({
-                    strategy: 'ticket',
-                    ticket: ticket,
-                });
+                // Iniciar sesión con el ticket (Core 3 SignInFuture API)
+                const { error: ticketError } = await signIn.ticket({ ticket });
+                if (ticketError) {
+                    throw ticketError;
+                }
 
-                if (result.status === "complete") {
-                    await setActive({ session: result.createdSessionId });
+                if (signIn.status === "complete") {
+                    // Convertir el sign-in completado en la sesión activa
+                    const { error: finalizeError } = await signIn.finalize();
+                    if (finalizeError) {
+                        throw finalizeError;
+                    }
                     // Forzar navegación con replace en lugar de push
                     window.location.href = "/dashboard";
                 }
@@ -41,6 +45,6 @@ export default function useDemoAutoLogin() {
         }
 
         autoLogin();
-    }, [isLoaded, signIn, setActive, router])
+    }, [signIn, router])
 
 }

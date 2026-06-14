@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "@/app/globals.css";
 import { sfPro } from "@/utils/fonts/sfPro";
 
-import { ClerkProvider, SignedIn } from "@clerk/nextjs";
+import { ClerkProvider, Show } from "@clerk/nextjs";
 import { esES } from "@clerk/localizations";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/ui/app-sidebar";
@@ -23,7 +23,7 @@ export default async function DashboardLayout({
 }>) {
   return (
     <ClerkProvider localization={esES}>
-      <SignedIn>
+      <Show when="signed-in">
         <section className="grid grid-cols-[auto,1fr]">
           <Provider>
             <SidebarProvider>
@@ -50,7 +50,7 @@ export default async function DashboardLayout({
             />
           </Provider>
         </section>
-      </SignedIn>
+      </Show>
     </ClerkProvider>
   );
 }
