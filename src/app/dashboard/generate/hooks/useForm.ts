@@ -70,8 +70,13 @@ export const useForm = () => {
         });
       }
     } catch (error) {
-      if (error instanceof Error)
-        showError("Error al obtener la respuesta", 2000);
+      if (error instanceof Error) {
+        toast.error("Error al generar flashcard", {
+          description: error.message,
+          duration: 5000,
+        });
+        showError(error.message, 3000);
+      }
     }
   };
 

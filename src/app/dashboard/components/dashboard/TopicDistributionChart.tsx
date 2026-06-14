@@ -29,8 +29,8 @@ interface TopicDistributionChartProps {
 // custom tick renderer for XAxis to rotate labels
 
 type TickProps = {
-  x: number;
-  y: number;
+  x: string | number;
+  y: string | number;
   payload: { value: string };
 };
 

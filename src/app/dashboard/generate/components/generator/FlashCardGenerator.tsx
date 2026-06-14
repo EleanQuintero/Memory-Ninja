@@ -8,6 +8,11 @@ import { useUIState } from "@/store/uiState/uiState";
 import { InfoCards } from "./info-cards";
 import { SourceModelIcon } from "./SourceModel";
 import { models } from "@/utils/consts/ninjaModels";
+import { usePlanLimits } from "@/hooks/usePlanLimits";
+import { useFlashCardsQuery } from "@/app/dashboard/hooks/flashcards-query/useFlashCardsQuery";
+import { LimitReachedModal } from "@/components/ui/limit-reached-modal";
+import { UsageBar } from "@/components/ui/usage-bar";
+import { useState, type FormEvent } from "react";
 
 interface Props {
   loadingAnswers: boolean;
@@ -24,9 +29,41 @@ export const FlashCardGenerator: React.FC<Props> = ({ loadingAnswers }) => {
     savingError,
   } = useForm();
   const { error } = useUIState();
+  const { isPro, limits } = usePlanLimits();
+  const { flashcards } = useFlashCardsQuery();
+  const [limitModal, setLimitModal] = useState<{
+    open: boolean;
+    title: string;
+    description: string;
+  }>({ open: false, title: "", description: "" });
+
+  const totalFlashcards = flashcards?.length ?? 0;
+
+  const handleSubmitWithLimits = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!isPro) {
+      if (totalFlashcards >= limits.maxFlashcards) {
+        setLimitModal({
+          open: true,
+          title: "Limite de flashcards alcanzado",
+          description: `Has alcanzado el maximo de ${limits.maxFlashcards} flashcards del plan gratuito. Mejora a Pro para crear flashcards ilimitadas.`,
+        });
+        return;
+      }
+    }
+
+    handleSubmit(e);
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-full  p-4 md:p-8">
+      <LimitReachedModal
+        open={limitModal.open}
+        onOpenChange={(open) => setLimitModal((prev) => ({ ...prev, open }))}
+        title={limitModal.title}
+        description={limitModal.description}
+      />
       <div className="w-full max-w-3xl flex flex-col items-center gap-8">
         <div className="w-full flex flex-col items-center">
           <h1 className="text-4xl md:text-5xl font-bold text-white text-center mb-2">
@@ -38,8 +75,18 @@ export const FlashCardGenerator: React.FC<Props> = ({ loadingAnswers }) => {
           </p>
         </div>
 
+        {!isPro && (
+          <div className="w-full">
+            <UsageBar
+              current={totalFlashcards}
+              max={limits.maxFlashcards}
+              label="Flashcards usadas"
+            />
+          </div>
+        )}
+
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmitWithLimits}
           className="w-full bg-opacity-[0.03] border border-[#4a525a]/20 rounded-xl shadow-lg"
         >
           <section className="p-4 md:p-6 flex flex-col gap-4">

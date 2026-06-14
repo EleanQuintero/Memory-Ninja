@@ -1,10 +1,12 @@
 import { RATE_LIMIT_CONFIGS, rateLimitter } from "@/middleware/rate-limit";
 import { validateFlashcards } from "@/utils/schemes/flashcards-validation/flashcardsValidation";
 import { getUserToken } from "@/utils/services/auth/getToken";
+import { isUserPro } from "@/utils/services/auth/checkUserPlan";
+import { FREE_LIMITS } from "@/utils/consts/planLimits";
 import { NextResponse, NextRequest } from "next/server";
 import { currentUser } from '@clerk/nextjs/server'
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
 async function saveFlashcards(req: NextRequest) {
 
@@ -23,6 +25,37 @@ async function saveFlashcards(req: NextRequest) {
     const rawData = {
       user_id: userId,
       ...flashcardData
+    }
+
+    // Server-side plan enforcement: check flashcard limit for free users
+    const isPro = await isUserPro();
+    if (!isPro) {
+      const countEndpoint = process.env.SERVER_GET_FLASHCARDS_BY_USER;
+      if (countEndpoint && userId) {
+        try {
+          const countResponse = await fetch(`${countEndpoint}${userId}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            signal: AbortSignal.timeout(5000),
+          });
+          if (countResponse.ok) {
+            const existingCards = await countResponse.json();
+            const currentCount = Array.isArray(existingCards) ? existingCards.length : 0;
+            const newCards = Array.isArray(rawData.flashcard) ? rawData.flashcard.length : 1;
+            if (currentCount + newCards > FREE_LIMITS.maxFlashcards) {
+              return NextResponse.json(
+                { error: `Limite alcanzado: maximo ${FREE_LIMITS.maxFlashcards} flashcards en el plan gratuito. Mejora a Pro para crear mas.` },
+                { status: 403 }
+              );
+            }
+          }
+        } catch {
+          // If count check fails, allow the save to proceed
+        }
+      }
     }
 
     const validationError = validateFlashcards(rawData);

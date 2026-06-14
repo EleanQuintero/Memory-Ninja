@@ -2,16 +2,14 @@ import type { Metadata } from "next";
 import "@/app/globals.css";
 import { sfPro } from "@/utils/fonts/sfPro";
 
-import { ClerkProvider, Protect } from "@clerk/nextjs";
+import { ClerkProvider, SignedIn } from "@clerk/nextjs";
 import { esES } from "@clerk/localizations";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/ui/app-sidebar";
-import SubscriptionFallback from "@/components/fallbacks/subscription";
 import { Provider } from "@/components/provider/Provider";
 import { Toaster } from "sonner";
 import { LazyMotion, domAnimation } from "motion/react";
 import { PageTransition } from "@/components/ui/page-transition";
-import { auth } from "@clerk/nextjs/server";
 
 export const metadata: Metadata = {
   title: "MemoryNinja | Generator",
@@ -23,14 +21,9 @@ export default async function DashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { sessionClaims } = await auth();
-  const isAdmin = sessionClaims?.publicMetadata?.isAdmin;
   return (
     <ClerkProvider localization={esES}>
-      <Protect
-        condition={(has) => has({ feature: "pro_user" }) || Boolean(isAdmin)}
-        fallback={<SubscriptionFallback />}
-      >
+      <SignedIn>
         <section className="grid grid-cols-[auto,1fr]">
           <Provider>
             <SidebarProvider>
@@ -57,7 +50,7 @@ export default async function DashboardLayout({
             />
           </Provider>
         </section>
-      </Protect>
+      </SignedIn>
     </ClerkProvider>
   );
 }

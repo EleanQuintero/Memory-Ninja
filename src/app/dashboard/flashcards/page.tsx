@@ -9,16 +9,22 @@ import { useFilterFlashcards } from "@/app/dashboard/flashcards/hooks/useFilterF
 import { useFlashCardsQuery } from "../hooks/flashcards-query/useFlashCardsQuery";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Sparkles, AlertCircle, ArrowRight } from "lucide-react";
+import { Sparkles, AlertCircle, ArrowRight, Lock } from "lucide-react";
+import { usePlanLimits } from "@/hooks/usePlanLimits";
+import { UsageBar } from "@/components/ui/usage-bar";
 
 export default function FlashCardsPage() {
   const { user } = useUser();
+  const { isPro, limits } = usePlanLimits();
 
   const [selectedTheme, setSelectedTheme] = useState<string>("");
 
   const { filteredCards } = useFilterFlashcards({
     themeToFilter: selectedTheme,
   });
+
+  const { flashcards } = useFlashCardsQuery();
+  const totalFlashcards = flashcards?.length ?? 0;
 
   // Obtener datos del usuario
   const userName = user?.username;
@@ -127,6 +133,15 @@ export default function FlashCardsPage() {
           <p className="text-gray-400 text-base sm:text-lg">
             Aquí tienes tus flashcards listas para estudiar
           </p>
+          {!isPro && (
+            <div className="pt-2">
+              <UsageBar
+                current={totalFlashcards}
+                max={limits.maxFlashcards}
+                label="Flashcards usadas"
+              />
+            </div>
+          )}
         </div>
 
         <div className="mb-8 sm:mb-12">
@@ -147,21 +162,40 @@ export default function FlashCardsPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 animate-in fade-in duration-500">
-          {filteredCards.map((data, index) => (
-            <div
-              key={data.flashcard_id}
-              className="animate-in fade-in slide-in-from-bottom-4 duration-500"
-              style={{ animationDelay: `${index * 50}ms` }}
-            >
-              <Flashcard
-                flashcardID={data.flashcard_id}
-                question={data.question}
-                answer={data.answer}
-                theme={data.theme}
-              />
-            </div>
-          ))}
+          {(!isPro ? filteredCards.slice(0, 10) : filteredCards).map(
+            (data, index) => (
+              <div
+                key={data.flashcard_id}
+                className="animate-in fade-in slide-in-from-bottom-4 duration-500"
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                <Flashcard
+                  flashcardID={data.flashcard_id}
+                  question={data.question}
+                  answer={data.answer}
+                  theme={data.theme}
+                />
+              </div>
+            )
+          )}
         </div>
+
+        {!isPro && filteredCards.length > 10 && (
+          <div className="mt-8 flex flex-col items-center gap-3 p-6 rounded-2xl border border-purple-500/20 bg-purple-500/5">
+            <Lock className="w-6 h-6 text-purple-400" />
+            <p className="text-gray-300 text-sm text-center">
+              Mostrando 10 de {filteredCards.length} flashcards. Desbloquea Pro
+              para ver todas.
+            </p>
+            <Button
+              asChild
+              size="sm"
+              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+            >
+              <Link href="/#pricing">Mejorar a Pro</Link>
+            </Button>
+          </div>
+        )}
 
         {filteredCards.length > 0 && (
           <div className="mt-12 text-center">

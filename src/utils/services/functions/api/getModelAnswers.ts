@@ -12,7 +12,8 @@ export const getModelAnswer = async ({ questions, theme, model }: getAnswersProp
         })
 
         if (!response.ok) {
-            throw new Error(response.statusText);
+            const errorData = await response.json().catch(() => null);
+            throw new Error(errorData?.error || response.statusText);
         }
 
         const datos = await response.json()
